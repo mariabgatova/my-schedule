@@ -10,11 +10,15 @@
 <style>
   :root{--bg:#f5f7fb;--card:#ffffff;--text:#1b1f2a;--muted:#6b7280;--border:#e6e9f2;--accent:#6c5ce7;--on-accent:#ffffff;--shadow:0 2px 12px rgba(20,30,60,.07);--hover:#eef1f9;--lms:#38a94e;--miss:#e03131;}
   [data-theme="dark"]{--bg:#0a0b10;--card:#161925;--text:#f8f9fc;--muted:#8b90a6;--border:#2a2e42;--accent:#9d8cff;--on-accent:#161925;--shadow:0 4px 20px rgba(0,0,0,.6);--hover:#1f2335;--lms:#4fd96d;--miss:#ff6b6b;}
-  [data-theme="pink"]{--bg:#fdf2f8;--card:#ffffff;--text:#4c1d95;--muted:#9d7b8e;--border:#fbcfe8;--accent:#ec4899;--on-accent:#ffffff;--shadow:0 2px 12px rgba(236,72,153,.15);--hover:#fce7f3;--lms:#10b981;--miss:#ef4444;}
+  [data-theme="pink"]{--bg:#fff0f5;--card:#ffffff;--text:#603a48;--muted:#a88492;--border:#fbcfe8;--accent:#f06292;--on-accent:#ffffff;--shadow:0 4px 20px rgba(240,98,146,.12);--hover:#fce7f3;--lms:#10b981;--miss:#ef4444;}
   *{box-sizing:border-box}
-  html{transition:background .45s cubic-bezier(.4,0,.2,1)}
+  html{transition:background .45s cubic-bezier(.4,0,.2,1);scroll-behavior:smooth;}
   body{margin:0;padding:14px 14px 110px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;background:var(--bg);color:var(--text);transition:background .45s cubic-bezier(.4,0,.2,1), color .45s cubic-bezier(.4,0,.2,1);-webkit-font-smoothing:antialiased}
-  body *{transition-property:background-color, border-color, color, box-shadow;transition-duration:.45s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
+  [data-theme="pink"] body {
+    background-image: radial-gradient(#fbcfe8 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  body *{transition-property:background-color, border-color, color, box-shadow, transform;transition-duration:.3s;transition-timing-function:cubic-bezier(.4,0,.2,1)}
   .menu, .menu *, .toast, .modal, .modal *, .modal-backdrop, .card.dragging,
   .cal-event:hover, .link-item:hover, .day:hover, .week-nav .arrow:hover,
   .icon-btn:active, .profile-btn:active, .tabbar button, .toggle::after { transition-property: none }
@@ -319,7 +323,7 @@
   .toggle.on::after{left:21px}
   .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:#f2f4fb;color:#0e0f14;padding:12px 20px;border-radius:12px;font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.5);z-index:200;animation:pop .2s;max-width:88vw;text-align:center;font-weight:600}
   [data-theme="light"] .toast{background:#1b1f2a;color:#fff}
-  [data-theme="pink"] .toast{background:#ec4899;color:#fff}
+  [data-theme="pink"] .toast{background:#f06292;color:#fff}
   .materials-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:720px){.materials-grid{grid-template-columns:1fr}}
   .materials-col{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border);padding:14px;min-height:200px}
@@ -361,6 +365,169 @@
     .cal2-dot{width:6px;height:6px}
     .card-hw-add input{font-size:12px}
   }
+
+  /* ===== PLANNER STYLES ===== */
+  .planner-backdrop {
+    background: rgba(0,0,0,.4);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+  }
+  .planner-modal {
+    background-color: #fffbfc;
+    background-image: 
+      linear-gradient(rgba(240, 98, 146, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240, 98, 146, 0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+    border: 3px solid #f8bbd0;
+    border-radius: 24px;
+    padding: 20px;
+    max-width: 750px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(236, 72, 153, 0.25);
+    font-family: 'Nunito', 'Comic Sans MS', 'Segoe UI', sans-serif;
+    color: #603a48;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+  .planner-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background: #f48fb1;
+    border-radius: 15px;
+    padding: 12px 24px;
+    color: #fff;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(244, 143, 177, 0.3);
+  }
+  .planner-body {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .pl-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+  @media (max-width: 650px) {
+    .planner-body { flex-direction: column; }
+  }
+  .pl-block {
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .pl-textarea {
+    background: #fff;
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    resize: vertical;
+    color: #603a48;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    min-height: 100px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+    line-height: 1.5;
+  }
+  .pl-textarea:focus { border-color: #ec4899; }
+  .water-drops {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 5px 0;
+  }
+  .water-drop {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #fbcfe8;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .water-drop.filled {
+    background: #81d4fa;
+    border-color: #4fc3f7;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1);
+    transform: scale(1.05);
+  }
+  .pl-todo-list {
+    background: #fff;
+    border: 2px solid #f8bbd0;
+    border-radius: 12px;
+    padding: 10px;
+    flex: 1;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+  }
+  .pl-todo-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fce4ec;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+  .pl-todo-item:hover { background: #f8bbd0; }
+  .pl-todo-item .text {
+    background: transparent;
+    border: none;
+    flex: 1;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: #603a48;
+    font-weight: 600;
+  }
+  .pl-todo-item.done .text {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+  .pl-todo-item .del {
+    border: none;
+    background: transparent;
+    color: #c2185b;
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .pl-todo-item .del:hover { opacity: 1; }
+  .checklist-add.planner-add {
+    border: none;
+    padding: 0;
+    margin-top: 8px;
+    background: #fff;
+    border-radius: 10px;
+    border: 2px solid #f8bbd0;
+    padding: 4px;
+  }
+  .checklist-add.planner-add input { padding: 8px; }
+  .checklist-add.planner-add button {
+    background: #f06292;
+    border-radius: 8px;
+    height: 32px;
+    width: 32px;
+  }
+
 </style>
 </head>
 <body>
@@ -528,12 +695,12 @@ const SHARED_ID = 'shared-main';
 const ADMIN_PASSWORD = 'admines25.';
 
 const FIXED_PROFILES = [
-  { id:'common', name:'Общая' },
-  { id:'me', name:'Моя' },
-  { id:'varya', name:'Варя' },
-  { id:'sonya_g', name:'Соня Гончарова' },
-  { id:'sonya_e', name:'Соня Ермошкина' },
-  { id:'milana', name:'Милана' }
+  { id:'common', name:'общая.' },
+  { id:'me', name:'мой.' },
+  { id:'varya', name:'варя.' },
+  { id:'sonya_g', name:'соня гончарова.' },
+  { id:'sonya_e', name:'соня ермошкина.' },
+  { id:'milana', name:'милана.' }
 ];
 
 let isAdmin = sessionStorage.getItem('admin-auth') === '1';
@@ -653,11 +820,14 @@ function isSameData(a, b){
 }
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function defaultPlanner(){
+  return { water: 0, breakfast: '', lunch: '', dinner: '', shopping: '' };
+}
 function defaultPersonal(){
-  return { checklists:{}, clubs:[], links:[], itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
+  return { checklists:{}, clubs:[], links:[], planner:{}, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
 }
 function defaultData(){
-  return { days:{}, checklists:{}, homework:{}, clubs:[], links:[], materials:{ notes:[], autos:[] }, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
+  return { days:{}, checklists:{}, homework:{}, clubs:[], links:[], planner:{}, materials:{ notes:[], autos:[] }, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
 }
 function normClub(c){ return { id: c.id || uid(), date: String(c.date||''), time: String(c.time||''), name: String(c.name||''), place: String(c.place||'') }; }
 function normLink(l){
@@ -673,6 +843,7 @@ function splitData(d){
   const shared = { days:{}, homework:{}, materials:{ notes:[], autos:[] } };
   const personal = defaultPersonal();
   personal.checklists = d.checklists || {};
+  personal.planner = d.planner || {};
   personal.clubs = (d.clubs || []).map(normClub).filter(c => c.name || c.date);
   personal.links = (d.links || []).map(normLink).filter(l => l.title || l.url);
   
@@ -754,6 +925,7 @@ function mergeData(shared, personal){
     });
   });
   if(personal.checklists) out.checklists = personal.checklists;
+  if(personal.planner) out.planner = personal.planner;
   if(Array.isArray(personal.clubs)) out.clubs = personal.clubs.map(normClub).filter(c => c.name || c.date);
   if(Array.isArray(personal.links)) out.links = personal.links.map(normLink).filter(l => l.title || l.url);
   if(personal.settings) out.settings = { ...out.settings, ...personal.settings };
@@ -918,6 +1090,7 @@ function isCurrentDay(){ return sameDay(viewDate, todayDate()); }
 function itemsFor(key){ if(!data.days[key]) data.days[key] = []; return data.days[key]; }
 function findItem(key, id){ const arr = data.days[key] || []; return arr.find(i => i.id === id); }
 function currentChecklist(){ const k = currentKey(); if(!data.checklists[k]) data.checklists[k] = []; return data.checklists[k]; }
+function currentPlanner(){ const k = currentKey(); if(!data.planner) data.planner = {}; if(!data.planner[k]) data.planner[k] = defaultPlanner(); return data.planner[k]; }
 function findHWById(hwId){
   for(const subj of Object.keys(data.homework)){
     const it = (data.homework[subj]||[]).find(h => h.id === hwId);
@@ -2285,33 +2458,106 @@ themeBtn.onclick = () => {
 /* ============ ДЕЙСТВИЯ ============ */
 function openPlannerModal() {
   const backdrop = document.createElement('div');
-  backdrop.className = 'modal-backdrop';
+  backdrop.className = 'modal-backdrop planner-backdrop';
+  const plannerData = currentPlanner();
+  
   backdrop.innerHTML = `
-    <div class="modal" style="max-width:500px">
-      <h3>🗓 Планер на ${formatDateHuman(viewDate)}</h3>
-      <div class="checklist" id="modalChecklist" style="margin-top:14px"></div>
-      <form class="checklist-add" id="modalChecklistAdd" autocomplete="off">
-        <input id="modalChecklistInput" placeholder="Новое дело…">
-        <button type="submit">+</button>
-      </form>
-      <div class="modal-actions"><button class="primary" id="plannerClose">Закрыть</button></div>
+    <div class="planner-modal">
+      <div class="planner-header">
+        <div class="planner-title-left">Date</div>
+        <div class="planner-title-right">To Do</div>
+      </div>
+      <div class="planner-body">
+         <div class="pl-col" style="flex: 1.2;">
+            <div class="pl-block" style="background:#ffcdd2; color:#c62828;">
+               <span style="font-size:24px;">🐷</span> Shopping List
+            </div>
+            <textarea class="pl-textarea" data-field="shopping" placeholder="Что нужно купить или сделать..."></textarea>
+            <div class="pl-block" style="margin-top:10px; background:#f8bbd0; color:#880e4f;">
+               🎀 Extra Notes
+            </div>
+            <textarea class="pl-textarea" data-field="extra" placeholder="Заметки на день..."></textarea>
+         </div>
+         <div class="pl-col">
+            <div class="pl-block" style="background:#e1bee7; color:#4a148c;">
+               💧 Water
+            </div>
+            <div class="water-drops" id="waterDrops"></div>
+            <div class="pl-block" style="background:#ffcdd2; color:#c62828; margin-top:5px;">
+               🍳 Breakfast
+            </div>
+            <textarea class="pl-textarea" data-field="breakfast" style="min-height:60px;" placeholder="..."></textarea>
+            <div class="pl-block" style="margin-top:10px; background:#ffcdd2; color:#c62828;">
+               🥗 Lunch
+            </div>
+            <textarea class="pl-textarea" data-field="lunch" style="min-height:60px;" placeholder="..."></textarea>
+            <div class="pl-block" style="margin-top:10px; background:#ffcdd2; color:#c62828;">
+               🍲 Dinner
+            </div>
+            <textarea class="pl-textarea" data-field="dinner" style="min-height:60px;" placeholder="..."></textarea>
+         </div>
+         <div class="pl-col" style="flex: 1.1;">
+            <div class="pl-block" style="background:#f8bbd0; color:#880e4f;">
+               📝 To Do
+            </div>
+            <div class="pl-todo-list" id="modalChecklist"></div>
+            <form class="checklist-add planner-add" id="modalChecklistAdd" autocomplete="off">
+               <input id="modalChecklistInput" placeholder="Добавить...">
+               <button type="submit">+</button>
+            </form>
+            <div style="text-align:right; font-size:48px; margin-top: auto; opacity: 0.8;">🐱</div>
+         </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 20px;">
+        <button class="primary" id="plannerClose" style="background: #f06292; border-radius: 20px; padding: 10px 24px; font-size:16px;">Готово ✓</button>
+      </div>
     </div>`;
   document.body.appendChild(backdrop);
-  
+
+  // Textareas bind
+  const textareas = backdrop.querySelectorAll('.pl-textarea');
+  textareas.forEach(ta => {
+     const field = ta.dataset.field;
+     ta.value = plannerData[field] || '';
+     ta.addEventListener('input', (e) => {
+        plannerData[field] = e.target.value;
+        save();
+     });
+  });
+
+  // Water tracker bind
+  const waterDrops = backdrop.querySelector('#waterDrops');
+  function renderWater() {
+     waterDrops.innerHTML = '';
+     for (let i = 0; i < 8; i++) {
+        const drop = document.createElement('span');
+        drop.className = 'water-drop' + (i < plannerData.water ? ' filled' : '');
+        drop.onclick = () => {
+           if (plannerData.water === i + 1) plannerData.water = i; // toggle off
+           else plannerData.water = i + 1; // fill to
+           save();
+           renderWater();
+        };
+        waterDrops.appendChild(drop);
+     }
+  }
+  renderWater();
+
+  // Todo list bind (existing logic)
   const list = backdrop.querySelector('#modalChecklist');
   
   function renderModalList() {
     list.innerHTML = '';
     const arr = currentChecklist();
     if (!arr.length) {
-      list.innerHTML = '<div class="checklist-empty">Пусто. Добавь первое дело 👇</div>';
+      list.innerHTML = '<div style="color:#a88492; font-size:13px; text-align:center; margin-top:20px;">Пусто...</div>';
     } else {
       arr.forEach(item => {
         const row = document.createElement('div');
-        row.className = 'checklist-item' + (item.done ? ' done' : '');
+        row.className = 'pl-todo-item' + (item.done ? ' done' : '');
         row.dataset.id = item.id;
         row.innerHTML = `
-          <label class="cl-check"><input type="checkbox" ${item.done ? 'checked' : ''}><span class="cl-box"></span></label>
+          <label class="cl-check"><input type="checkbox" ${item.done ? 'checked' : ''}><span class="cl-box" style="border-color:#ec4899; width:18px; height:18px;"></span></label>
           <input class="text" value="${esc(item.text)}" placeholder="Что нужно сделать…">
           <button class="del" type="button">×</button>
         `;
@@ -2324,7 +2570,7 @@ function openPlannerModal() {
   
   list.addEventListener('change', e => {
     if (e.target.type !== 'checkbox') return;
-    const row = e.target.closest('.checklist-item');
+    const row = e.target.closest('.pl-todo-item');
     const item = currentChecklist().find(i => i.id === row.dataset.id);
     if (!item) return;
     item.done = e.target.checked;
@@ -2334,7 +2580,7 @@ function openPlannerModal() {
   
   list.addEventListener('input', e => {
     if (!e.target.classList.contains('text')) return;
-    const row = e.target.closest('.checklist-item');
+    const row = e.target.closest('.pl-todo-item');
     const item = currentChecklist().find(i => i.id === row.dataset.id);
     if (!item) return;
     item.text = e.target.value;
@@ -2343,7 +2589,7 @@ function openPlannerModal() {
   
   list.addEventListener('click', e => {
     if (!e.target.classList.contains('del')) return;
-    const row = e.target.closest('.checklist-item');
+    const row = e.target.closest('.pl-todo-item');
     const key = currentKey();
     data.checklists[key] = currentChecklist().filter(i => i.id !== row.dataset.id);
     if (!data.checklists[key].length) delete data.checklists[key];
@@ -2403,7 +2649,7 @@ function openActionsModal(adminMode){
     if(a === 'jsonIn') $('#fileInput').click();
     if(a === 'wipePersonal'){
       if(confirm('Очистить только твои личные данные?')){
-        data.checklists = {}; data.clubs = []; data.links = [];
+        data.checklists = {}; data.clubs = []; data.links = []; data.planner = {};
         data.itemStates = {}; data.hwStates = {}; data.materialStates = {};
         data.settings = { notifyEnabled: true, notifyMinutes: 15 };
         save(); renderAll(); toast('Личные данные очищены');
