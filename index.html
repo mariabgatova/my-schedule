@@ -381,13 +381,16 @@
     border: 3px solid #f8bbd0;
     border-radius: 24px;
     padding: 20px;
-    max-width: 750px;
+    max-width: 800px;
     width: 100%;
     box-shadow: 0 20px 60px rgba(236, 72, 153, 0.25);
     font-family: 'Nunito', 'Comic Sans MS', 'Segoe UI', sans-serif;
-    color: #603a48;
+    color: #603a48 !important; /* Ensure text is always dark */
     max-height: 95vh;
     overflow-y: auto;
+  }
+  .planner-modal * {
+    color: #603a48 !important; /* Force dark text everywhere inside planner */
   }
   .planner-header {
     display: flex;
@@ -396,12 +399,14 @@
     background: #f48fb1;
     border-radius: 15px;
     padding: 12px 24px;
-    color: #fff;
     font-weight: 800;
     font-size: 20px;
     letter-spacing: 1px;
     text-transform: uppercase;
     box-shadow: 0 4px 10px rgba(244, 143, 177, 0.3);
+  }
+  .planner-header * {
+    color: #fff !important; /* Header text is white */
   }
   .planner-body {
     display: flex;
@@ -419,13 +424,15 @@
   }
   .pl-block {
     border-radius: 12px;
-    padding: 10px 14px;
+    padding: 8px 14px;
     font-weight: 800;
     font-size: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    background: #f8bbd0;
+    color: #880e4f !important; /* Dark pink for block titles */
   }
   .pl-textarea {
     background: #fff;
@@ -434,7 +441,6 @@
     padding: 12px;
     width: 100%;
     resize: vertical;
-    color: #603a48;
     font-family: inherit;
     font-size: 14px;
     outline: none;
@@ -494,7 +500,6 @@
     outline: none;
     font-family: inherit;
     font-size: 14px;
-    color: #603a48;
     font-weight: 600;
   }
   .pl-todo-item.done .text {
@@ -504,7 +509,7 @@
   .pl-todo-item .del {
     border: none;
     background: transparent;
-    color: #c2185b;
+    color: #c2185b !important;
     cursor: pointer;
     font-size: 18px;
     opacity: 0.6;
@@ -527,7 +532,6 @@
     height: 32px;
     width: 32px;
   }
-
 </style>
 </head>
 <body>
@@ -821,7 +825,7 @@ function isSameData(a, b){
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function defaultPlanner(){
-  return { water: 0, breakfast: '', lunch: '', dinner: '', shopping: '' };
+  return { water: 0, breakfast: '', lunch: '', dinner: '', shopping: '', extra: '' };
 }
 function defaultPersonal(){
   return { checklists:{}, clubs:[], links:[], planner:{}, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
@@ -2472,11 +2476,11 @@ function openPlannerModal() {
             <div class="pl-block" style="background:#ffcdd2; color:#c62828;">
                <span style="font-size:24px;">🐷</span> Shopping List
             </div>
-            <textarea class="pl-textarea" data-field="shopping" placeholder="Что нужно купить или сделать..."></textarea>
+            <textarea class="pl-textarea" data-field="shopping" placeholder="Что нужно купить...">${esc(plannerData.shopping || '')}</textarea>
             <div class="pl-block" style="margin-top:10px; background:#f8bbd0; color:#880e4f;">
                🎀 Extra Notes
             </div>
-            <textarea class="pl-textarea" data-field="extra" placeholder="Заметки на день..."></textarea>
+            <textarea class="pl-textarea" data-field="extra" placeholder="Заметки на день...">${esc(plannerData.extra || '')}</textarea>
          </div>
          <div class="pl-col">
             <div class="pl-block" style="background:#e1bee7; color:#4a148c;">
@@ -2486,15 +2490,15 @@ function openPlannerModal() {
             <div class="pl-block" style="background:#ffcdd2; color:#c62828; margin-top:5px;">
                🍳 Breakfast
             </div>
-            <textarea class="pl-textarea" data-field="breakfast" style="min-height:60px;" placeholder="..."></textarea>
+            <textarea class="pl-textarea" data-field="breakfast" style="min-height:60px;" placeholder="...">${esc(plannerData.breakfast || '')}</textarea>
             <div class="pl-block" style="margin-top:10px; background:#ffcdd2; color:#c62828;">
                🥗 Lunch
             </div>
-            <textarea class="pl-textarea" data-field="lunch" style="min-height:60px;" placeholder="..."></textarea>
+            <textarea class="pl-textarea" data-field="lunch" style="min-height:60px;" placeholder="...">${esc(plannerData.lunch || '')}</textarea>
             <div class="pl-block" style="margin-top:10px; background:#ffcdd2; color:#c62828;">
                🍲 Dinner
             </div>
-            <textarea class="pl-textarea" data-field="dinner" style="min-height:60px;" placeholder="..."></textarea>
+            <textarea class="pl-textarea" data-field="dinner" style="min-height:60px;" placeholder="...">${esc(plannerData.dinner || '')}</textarea>
          </div>
          <div class="pl-col" style="flex: 1.1;">
             <div class="pl-block" style="background:#f8bbd0; color:#880e4f;">
@@ -2514,27 +2518,24 @@ function openPlannerModal() {
     </div>`;
   document.body.appendChild(backdrop);
 
-  // Textareas bind
   const textareas = backdrop.querySelectorAll('.pl-textarea');
   textareas.forEach(ta => {
      const field = ta.dataset.field;
-     ta.value = plannerData[field] || '';
      ta.addEventListener('input', (e) => {
         plannerData[field] = e.target.value;
         save();
      });
   });
 
-  // Water tracker bind
   const waterDrops = backdrop.querySelector('#waterDrops');
   function renderWater() {
      waterDrops.innerHTML = '';
      for (let i = 0; i < 8; i++) {
         const drop = document.createElement('span');
-        drop.className = 'water-drop' + (i < plannerData.water ? ' filled' : '');
+        drop.className = 'water-drop' + (i < (plannerData.water || 0) ? ' filled' : '');
         drop.onclick = () => {
-           if (plannerData.water === i + 1) plannerData.water = i; // toggle off
-           else plannerData.water = i + 1; // fill to
+           if (plannerData.water === i + 1) plannerData.water = i; 
+           else plannerData.water = i + 1;
            save();
            renderWater();
         };
@@ -2543,7 +2544,6 @@ function openPlannerModal() {
   }
   renderWater();
 
-  // Todo list bind (existing logic)
   const list = backdrop.querySelector('#modalChecklist');
   
   function renderModalList() {
