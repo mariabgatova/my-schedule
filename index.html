@@ -14,16 +14,37 @@
     --accent:#6c5ce7; --on-accent:#ffffff; --shadow:0 2px 12px rgba(20,30,60,.07); 
     --hover:#eef1f9; --lms:#38a94e; --miss:#e03131;
   }
+  
+  /* КИСЛОТНАЯ ТЕМНАЯ ТЕМА */
   [data-theme="dark"] {
-    --bg:#0a0b10; --card:#161925; --text:#ffffff; --muted:#a0a5ba; --border:#2a2e42; 
-    --accent:#9d8cff; --on-accent:#161925; --shadow:0 4px 20px rgba(0,0,0,.6); 
-    --hover:#1f2335; --lms:#4fd96d; --miss:#ff6b6b;
+    --bg:#050505; 
+    --card:#141414; 
+    --text:#e0ffe0; 
+    --muted:#99cc99; 
+    --border:#224422; 
+    --accent:#ccff00; 
+    --on-accent:#000000; 
+    --shadow:0 4px 20px rgba(204,255,0,.15); 
+    --hover:#1a2a1a; 
+    --lms:#00ffcc; 
+    --miss:#ff0055;
   }
+  
+  /* РОЗОВАЯ ТЕМА (ПИКМИ) */
   [data-theme="pink"] {
-    --bg:#fff0f5; --card:#ffffff; --text:#603a48; --muted:#a88492; --border:#fbcfe8; 
-    --accent:#f06292; --on-accent:#ffffff; --shadow:0 4px 20px rgba(240,98,146,.12); 
-    --hover:#fce7f3; --lms:#10b981; --miss:#ef4444;
+    --bg:#fff0f5; 
+    --card:#ffffff; 
+    --text:#603a48; 
+    --muted:#a88492; 
+    --border:#fbcfe8; 
+    --accent:#f06292; 
+    --on-accent:#ffffff; 
+    --shadow:0 4px 20px rgba(240,98,146,.12); 
+    --hover:#fce7f3; 
+    --lms:#10b981; 
+    --miss:#ef4444;
   }
+  
   [data-theme="pink"] body {
     background-image: radial-gradient(#fbcfe8 1.5px, transparent 1.5px);
     background-size: 24px 24px;
@@ -34,7 +55,7 @@
   body { margin:0; padding:14px 14px 110px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif; background:var(--bg); color:var(--text); transition:background .45s, color .45s; -webkit-font-smoothing:antialiased; }
   body * { transition: background-color .3s, border-color .3s, color .3s, box-shadow .3s; }
 
-  /* Фикс двойных чекбоксов - скрываем дефолтные */
+  /* Скрываем дефолтные чекбоксы везде */
   input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
 
   .menu, .menu *, .toast, .modal, .modal *, .modal-backdrop, .card.dragging,
@@ -80,10 +101,7 @@
 
   .days { display:flex; gap:6px; padding-bottom:4px; margin-bottom:10px; }
   .day { flex:1 1 0; min-width:42px; border:none; background:var(--card); color:var(--muted); padding:6px 3px 7px; border-radius:12px; font-weight:600; cursor:pointer; box-shadow:var(--shadow); position:relative; font-family:inherit; display:flex; flex-direction:column; align-items:center; gap:0; border:1px solid transparent; }
-  
-  /* Фикс текста "послезавтра" */
   .day .rel { font-size:8px; font-weight:600; line-height:11px; height:11px; white-space:nowrap; color:var(--muted); opacity:.7; width:100%; text-align:center; overflow:hidden; text-overflow:ellipsis; padding:0 2px; }
-  
   .day.today .rel { color:var(--accent); opacity:1; font-weight:800; }
   .day.active .rel { color:var(--on-accent); opacity:.85; }
   .day .dow { font-size:11px; opacity:.85; margin-top:1px; }
@@ -100,11 +118,7 @@
   .empty .big { font-size:30px; margin-bottom:6px; opacity:.7; }
 
   .card { display:flex; gap:10px; align-items:flex-start; position:relative; background:var(--card); border-radius:14px; padding:12px 12px 12px 10px; border-left:6px solid var(--c,#999); box-shadow:var(--shadow); margin-bottom:8px; transition:opacity .3s; }
-  
-  /* Красивое зачеркивание */
-  .card.done input, .card.done textarea, .card.done .subject, .card.done .time, .card.done .room, .card.done .teacher {
-    text-decoration: line-through !important; opacity: 0.6;
-  }
+  .card.done input, .card.done textarea, .card.done .subject, .card.done .time, .card.done .room, .card.done .teacher { text-decoration: line-through !important; opacity: 0.6; }
   .card.done .grip, .card.done .type, .card.done .check, .card.done .dot, .card.done .lms-block { opacity:.5; }
   .card.done { background:color-mix(in srgb,var(--card) 70%,var(--bg)); }
   
@@ -142,9 +156,9 @@
   .type[data-t="lec"] { background-color:#38a94e29; color:#38a94e; border-color:#38a94e66; }
   .type[data-t="prac"] { background-color:#4dabf729; color:#4dabf7; border-color:#4dabf766; }
   .type[data-t="lab"] { background-color:#e74c3c29; color:#e74c3c; border-color:#e74c3c66; }
-  [data-theme="dark"] .type[data-t="lec"] { background-color:#4fd96d29; color:#4fd96d; border-color:#4fd96d66; }
-  [data-theme="dark"] .type[data-t="prac"] { background-color:#5cb8ff29; color:#5cb8ff; border-color:#5cb8ff66; }
-  [data-theme="dark"] .type[data-t="lab"] { background-color:#ff6b6b29; color:#ff6b6b; border-color:#ff6b6b66; }
+  [data-theme="dark"] .type[data-t="lec"] { background-color:#ccff0029; color:#ccff00; border-color:#ccff0066; }
+  [data-theme="dark"] .type[data-t="prac"] { background-color:#00ffcc29; color:#00ffcc; border-color:#00ffcc66; }
+  [data-theme="dark"] .type[data-t="lab"] { background-color:#ff005529; color:#ff0055; border-color:#ff005566; }
   .type option { background:var(--card); color:var(--text); text-transform:none; font-weight:500; }
   .day-badge { display:none; font-size:10.5px; font-weight:700; background:var(--hover); color:var(--muted); padding:2px 7px; border-radius:6px; margin-right:2px; }
   .search-mode .day-badge { display:inline-block; }
@@ -212,6 +226,14 @@
   .add-note { width:100%; font-size:12px; color:var(--muted); margin-top:2px; padding-left:4px; }
   .add-note b { color:var(--text); font-weight:600; }
   
+  /* Главный экран: Мои дела */
+  .home-checklist-sec { margin-top: 14px; background: var(--card); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); }
+  .home-checklist-sec h3 { margin: 0 0 10px; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+  .home-checklist-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+  .home-checklist-add { display: flex; gap: 8px; align-items: center; }
+  .home-checklist-add input { flex: 1; background: var(--hover); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; color: var(--text); outline: none; font-size: 14px; }
+  .home-checklist-add button { background: var(--accent); color: var(--on-accent); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+
   .checklist { display:flex; flex-direction:column; gap:1px; margin-bottom:6px; }
   .checklist-empty { color:var(--muted); font-size:13px; text-align:center; padding:8px 0 6px; opacity:.75; }
   .checklist-item { display:flex; gap:10px; align-items:center; padding:7px 6px; border-radius:9px; }
@@ -357,7 +379,7 @@
   .toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%); background:#f2f4fb; color:#0e0f14; padding:12px 20px; border-radius:12px; font-size:14px; box-shadow:0 8px 30px rgba(0,0,0,.5); z-index:200; animation:pop .2s; max-width:88vw; text-align:center; font-weight:600; }
   [data-theme="light"] .toast { background:#1b1f2a; color:#fff; }
   [data-theme="pink"] .toast { background:#f06292; color:#fff; }
-  [data-theme="dark"] .toast { background:#fff; color:#000; }
+  [data-theme="dark"] .toast { background:#ccff00; color:#000; }
   
   .materials-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px; }
   @media (max-width:720px) { .materials-grid { grid-template-columns:1fr; } }
@@ -460,7 +482,7 @@
   .pl-todo-list {
     background: #fff; border: 2px solid #f8bbd0; border-radius: 12px; padding: 10px;
     flex: 1; min-height: 200px; display: flex; flex-direction: column; gap: 6px;
-    overflow-y: auto; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); position: relative;
+    overflow-y: auto; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
   }
   .pl-todo-item {
     display: flex; align-items: center; gap: 8px; background: #fce4ec; padding: 8px 12px;
@@ -472,10 +494,10 @@
   .pl-todo-item .del { border: none; background: transparent; cursor: pointer; font-size: 18px; opacity: 0.6; transition: opacity 0.2s; }
   .pl-todo-item .del:hover { opacity: 1; }
   
-  /* Встроенная форма добавления */
+  /* Встроенная форма добавления в To Do */
   .planner-add {
-    display: flex; gap: 6px; margin-top: 6px; padding: 4px; border-radius: 8px;
-    background: #fff; border: 2px solid #f8bbd0; margin-bottom: 2px;
+    display: flex; gap: 6px; margin-top: auto; padding: 4px; border-radius: 8px;
+    background: #fff; border: 2px solid #f8bbd0; flex: 0 0 auto;
   }
   .planner-add input { flex: 1; padding: 8px; border: none; outline: none; font-family: inherit; font-size: 14px; background: transparent; }
   .planner-add button { background: #f06292; border-radius: 8px; height: 32px; width: 32px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff !important; border: none; cursor: pointer; }
@@ -515,6 +537,16 @@
       <p class="stats" id="stats"></p>
       <div id="list"></div>
     </div>
+    
+    <div class="home-checklist-sec">
+      <h3>📝 Мои дела</h3>
+      <div class="checklist" id="homeChecklistList"></div>
+      <form class="home-checklist-add" id="homeChecklistAddForm" autocomplete="off">
+        <input name="task" placeholder="Добавить дело..." required>
+        <button type="submit">+</button>
+      </form>
+    </div>
+
     <div class="bottom">
       <form class="add" id="addForm" autocomplete="off">
         <input name="time" placeholder="09:00-10:30">
@@ -655,7 +687,7 @@ const MONTHS_SHORT = ['янв','фев','мар','апр','мая','июн','и�
 const MONTHS_NOM = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 const TYPE_LABEL = { lec:'Лекция', prac:'Практика', lab:'Лаба' };
 const TYPE_COLORS = { lec:'#38a94e', prac:'#4dabf7', lab:'#e74c3c' };
-const TYPE_COLORS_DARK = { lec:'#4fd96d', prac:'#5cb8ff', lab:'#ff6b6b' };
+const TYPE_COLORS_DARK = { lec:'#ccff00', prac:'#00ffcc', lab:'#ff0055' };
 const NO_TYPE_COLOR = '#8b90a6';
 const PROFILES_KEY = 'app-profiles-v1';
 const DATA_KEY_PREFIX = 'study-schedule-sb-';
@@ -1302,7 +1334,64 @@ function renderHome(){
   renderDays();
   renderList();
   renderAddNote();
+  renderHomeChecklist();
 }
+function renderHomeChecklist() {
+  const list = document.getElementById('homeChecklistList');
+  list.innerHTML = '';
+  const arr = currentChecklist();
+  if (!arr.length) {
+    list.innerHTML = '<div style="color:var(--muted); font-size:13px; padding:5px;">Пока пусто</div>';
+    return;
+  }
+  arr.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'checklist-item' + (item.done ? ' done' : '');
+    row.dataset.id = item.id;
+    row.innerHTML = `
+      <label class="cl-check"><input type="checkbox" ${item.done ? 'checked' : ''}><span class="cl-box"></span></label>
+      <span class="text" contenteditable="true" data-id="${item.id}">${esc(item.text)}</span>
+      <button class="del" type="button">×</button>
+    `;
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('homeChecklistList').addEventListener('change', e => {
+  if (e.target.type !== 'checkbox') return;
+  const row = e.target.closest('.checklist-item');
+  const item = currentChecklist().find(i => i.id === row.dataset.id);
+  if (!item) return;
+  item.done = e.target.checked;
+  row.classList.toggle('done', item.done);
+  save();
+});
+document.getElementById('homeChecklistList').addEventListener('input', e => {
+  if (!e.target.classList.contains('text')) return;
+  const row = e.target.closest('.checklist-item');
+  const item = currentChecklist().find(i => i.id === row.dataset.id);
+  if (!item) return;
+  item.text = e.target.textContent;
+  save();
+});
+document.getElementById('homeChecklistList').addEventListener('click', e => {
+  if (!e.target.classList.contains('del')) return;
+  const row = e.target.closest('.checklist-item');
+  const key = currentKey();
+  data.checklists[key] = currentChecklist().filter(i => i.id !== row.dataset.id);
+  if (!data.checklists[key].length) delete data.checklists[key];
+  save(); renderHomeChecklist();
+});
+document.getElementById('homeChecklistAddForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = e.target.querySelector('input');
+  const text = input.value.trim();
+  if (!text) return;
+  currentChecklist().push({ id: uid(), text, done: false });
+  input.value = '';
+  save(); renderHomeChecklist();
+});
+
 function renderWeekNav(){
   const s = currentWeekStart(), e = addDays(s, 6);
   const today = todayDate();
@@ -2586,8 +2675,9 @@ function openPlannerModal() {
   const input = backdrop.querySelector('#modalChecklistInput');
   
   function renderModalList() {
+    // Удаляем старые элементы, кроме формы добавления
     Array.from(list.children).forEach(child => {
-      if (child.id !== 'modalChecklistAdd') child.remove();
+      if (child !== addForm) child.remove();
     });
     
     const arr = currentChecklist();
@@ -2650,15 +2740,14 @@ function openPlannerModal() {
     save(); renderModalList(); input.focus();
   });
 
-  const close = () => backdrop.remove();
+  const close = (e) => {
+    if(e) { e.preventDefault(); e.stopPropagation(); }
+    backdrop.remove();
+  };
   backdrop.addEventListener('click', e => { if(e.target === backdrop) close(); });
   
   const closeBtn = backdrop.querySelector('#plannerClose');
-  closeBtn.onclick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    close();
-  };
+  closeBtn.onclick = close;
 }
 
 function openActionsModal(adminMode){
