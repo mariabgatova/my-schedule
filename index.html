@@ -324,13 +324,14 @@
   .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:#f2f4fb;color:#0e0f14;padding:12px 20px;border-radius:12px;font-size:14px;box-shadow:0 8px 30px rgba(0,0,0,.5);z-index:200;animation:pop .2s;max-width:88vw;text-align:center;font-weight:600}
   [data-theme="light"] .toast{background:#1b1f2a;color:#fff}
   [data-theme="pink"] .toast{background:#f06292;color:#fff}
-  .materials-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .materials-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px}
   @media (max-width:720px){.materials-grid{grid-template-columns:1fr}}
-  .materials-col{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border);padding:14px;min-height:200px}
+  .materials-col{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border);padding:14px;min-height:200px;display:flex;flex-direction:column;}
   .materials-col h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:6px}
-  .materials-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+  .materials-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;flex:1;overflow-y:auto;max-height: 400px;}
   .mat-item{background:var(--hover);border-radius:10px;padding:8px 10px 8px 10px;font-size:14px;position:relative;display:flex;flex-direction:column;gap:6px}
-  .mat-item .mat-text{word-break:break-word;white-space:pre-wrap;padding-right:24px}
+  .mat-item .mat-text{word-break:break-word;white-space:pre-wrap;padding-right:24px;outline:none;border-radius:4px;transition:background 0.2s}
+  .mat-item .mat-text:focus{background:color-mix(in srgb, var(--accent) 10%, transparent);padding: 4px; margin: -4px -4px 0 -4px;}
   .mat-item img.mat-img{max-width:100%;border-radius:8px;display:block;margin-top:4px}
   .mat-item a.mat-link{color:var(--accent);text-decoration:none;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:4px;padding-right:24px;word-break:break-all;margin-top:4px}
   .mat-item .mat-del{position:absolute;top:4px;right:4px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:15px;opacity:.5;padding:2px 6px;border-radius:6px;font-family:inherit;line-height:1}
@@ -339,7 +340,7 @@
   .mat-add input[type=text]{flex:2 1 150px; background:var(--hover); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-size:13px; color:var(--text); outline:none; font-family:inherit;}
   .mat-add button{background:var(--accent);color:var(--on-accent);border:none;padding:8px 14px;border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit;font-size:13px}
   .mat-file-btn{background:var(--hover)!important;color:var(--text)!important;border:1px solid var(--border)!important}
-  .mat-item.done .mat-text { text-decoration: line-through; opacity: 0.5; }
+  .mat-item.done .mat-text, .mat-item.done .mat-link { text-decoration: line-through; opacity: 0.5; }
   @media (max-width:720px){
     .bottom{grid-template-columns:1fr;gap:16px}
     .hw-add{grid-template-columns:1fr}
@@ -385,12 +386,12 @@
     width: 100%;
     box-shadow: 0 20px 60px rgba(236, 72, 153, 0.25);
     font-family: 'Nunito', 'Comic Sans MS', 'Segoe UI', sans-serif;
-    color: #603a48 !important; /* Ensure text is always dark */
+    color: #603a48 !important;
     max-height: 95vh;
     overflow-y: auto;
   }
   .planner-modal * {
-    color: #603a48 !important; /* Force dark text everywhere inside planner */
+    color: #603a48 !important;
   }
   .planner-header {
     display: flex;
@@ -406,7 +407,7 @@
     box-shadow: 0 4px 10px rgba(244, 143, 177, 0.3);
   }
   .planner-header * {
-    color: #fff !important; /* Header text is white */
+    color: #fff !important;
   }
   .planner-body {
     display: flex;
@@ -432,7 +433,7 @@
     gap: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     background: #f8bbd0;
-    color: #880e4f !important; /* Dark pink for block titles */
+    color: #880e4f !important;
   }
   .pl-textarea {
     background: #fff;
@@ -631,8 +632,9 @@
   </main>
 
   <main class="view" data-view="materials" id="viewMaterials" hidden>
-    <h2 class="page-title">📂 Конспекты и автоматы</h2>
+    <h2 class="page-title">📂 Учебные материалы</h2>
     <div class="materials-grid">
+      
       <section class="materials-col">
         <h3>📝 Конспекты</h3>
         <div class="materials-list" id="materialsNotesList"></div>
@@ -640,10 +642,11 @@
           <select name="subject" class="mat-subj"><option value="">Предмет</option></select>
           <input type="text" name="text" placeholder="Текст конспекта…">
           <input type="file" id="materialsNotesFile" hidden>
-          <button type="button" class="mat-file-btn" data-col="notes">📎 Файл</button>
+          <button type="button" class="mat-file-btn" data-col="notes">📎</button>
           <button type="submit">+</button>
         </form>
       </section>
+      
       <section class="materials-col">
         <h3>🎯 Автоматы</h3>
         <div class="materials-list" id="materialsAutosList"></div>
@@ -653,6 +656,19 @@
           <button type="submit">+</button>
         </form>
       </section>
+
+      <section class="materials-col">
+        <h3>📚 Методички</h3>
+        <div class="materials-list" id="materialsMethodichkiList"></div>
+        <form class="mat-add" id="materialsMethodichkiForm" autocomplete="off">
+          <select name="subject" class="mat-subj"><option value="">Предмет</option></select>
+          <input type="text" name="text" placeholder="Описание…">
+          <input type="file" id="materialsMethodichkiFile" hidden>
+          <button type="button" class="mat-file-btn" data-col="methodichki">📎</button>
+          <button type="submit">+</button>
+        </form>
+      </section>
+
     </div>
   </main>
 
@@ -831,7 +847,7 @@ function defaultPersonal(){
   return { checklists:{}, clubs:[], links:[], planner:{}, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
 }
 function defaultData(){
-  return { days:{}, checklists:{}, homework:{}, clubs:[], links:[], planner:{}, materials:{ notes:[], autos:[] }, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
+  return { days:{}, checklists:{}, homework:{}, clubs:[], links:[], planner:{}, materials:{ notes:[], autos:[], methodichki:[] }, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
 }
 function normClub(c){ return { id: c.id || uid(), date: String(c.date||''), time: String(c.time||''), name: String(c.name||''), place: String(c.place||'') }; }
 function normLink(l){
@@ -844,7 +860,7 @@ function normMaterial(m){
 }
 
 function splitData(d){
-  const shared = { days:{}, homework:{}, materials:{ notes:[], autos:[] } };
+  const shared = { days:{}, homework:{}, materials:{ notes:[], autos:[], methodichki:[] } };
   const personal = defaultPersonal();
   personal.checklists = d.checklists || {};
   personal.planner = d.planner || {};
@@ -854,11 +870,20 @@ function splitData(d){
   if(d.materials){
     shared.materials = {
       notes: (d.materials.notes||[]).map(normMaterial),
-      autos: (d.materials.autos||[]).map(normMaterial)
+      autos: (d.materials.autos||[]).map(normMaterial),
+      methodichki: (d.materials.methodichki||[]).map(normMaterial)
     };
     shared.materials.notes.forEach(n => {
       personal.materialStates[n.id] = { done: !!n.done };
       delete n.done;
+    });
+    shared.materials.autos.forEach(a => {
+      personal.materialStates[a.id] = { done: !!a.done };
+      delete a.done;
+    });
+    shared.materials.methodichki.forEach(m => {
+      personal.materialStates[m.id] = { done: !!m.done };
+      delete m.done;
     });
   }
   if(d.settings) personal.settings = { ...personal.settings, ...d.settings };
@@ -892,17 +917,24 @@ function splitData(d){
 
 function mergeData(shared, personal){
   const out = defaultData();
-  shared = shared || { days:{}, homework:{}, materials:{ notes:[], autos:[] } };
+  shared = shared || { days:{}, homework:{}, materials:{ notes:[], autos:[], methodichki:[] } };
   personal = personal || defaultPersonal();
   const itemStates = personal.itemStates || {}, hwStates = personal.hwStates || {}, matStates = personal.materialStates || {};
   
-  out.materials = { notes:[], autos:[] };
+  out.materials = { notes:[], autos:[], methodichki:[] };
   if(shared.materials){
     out.materials.notes = (shared.materials.notes||[]).map(n => {
       const st = matStates[n.id] || {};
       return { ...normMaterial(n), done: !!st.done };
     });
-    out.materials.autos = (shared.materials.autos||[]).map(normMaterial);
+    out.materials.autos = (shared.materials.autos||[]).map(n => {
+      const st = matStates[n.id] || {};
+      return { ...normMaterial(n), done: !!st.done };
+    });
+    out.materials.methodichki = (shared.materials.methodichki||[]).map(n => {
+      const st = matStates[n.id] || {};
+      return { ...normMaterial(n), done: !!st.done };
+    });
   }
 
   Object.keys(shared.days || {}).forEach(k => {
@@ -2040,6 +2072,7 @@ function updateSubjectDropdowns(){
   if(data.materials){
     (data.materials.notes||[]).forEach(n => { if(n.subject) subjects.add(n.subject); });
     (data.materials.autos||[]).forEach(a => { if(a.subject) subjects.add(a.subject); });
+    (data.materials.methodichki||[]).forEach(m => { if(m.subject) subjects.add(m.subject); });
   }
   
   const opts = '<option value="">— Предмет —</option>' + Array.from(subjects).sort().map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
@@ -2295,55 +2328,49 @@ async function storeMaterialFile(file){
     return { url: dataUrl, name: file.name };
   }
 }
-function renderMaterials(){
-  updateSubjectDropdowns();
+
+function renderMaterialList(arr, containerId, colId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  if(!arr.length) container.innerHTML = '<div class="checklist-empty">Пусто</div>';
   
-  const notesList = document.getElementById('materialsNotesList');
-  notesList.innerHTML = '';
-  const notes = (data.materials && data.materials.notes) || [];
-  if(!notes.length) notesList.innerHTML = '<div class="checklist-empty">Пусто</div>';
-  notes.forEach(item => {
+  arr.forEach(item => {
     const el = document.createElement('div');
     el.className = 'mat-item' + (item.done ? ' done' : '');
     el.dataset.id = item.id;
-    el.dataset.col = 'notes';
+    el.dataset.col = colId;
+    
     let content = '';
-    if(item.type === 'text') content = `<span class="mat-text">${esc(item.text)}</span>`;
+    if(item.type === 'text') content = `<span class="mat-text" contenteditable="true" data-id="${item.id}" data-col="${colId}">${esc(item.text)}</span>`;
     else if(item.type === 'image') content = `<a href="${esc(item.url)}" target="_blank"><img class="mat-img" src="${esc(item.url)}"></a>`;
     else content = `<a class="mat-link" href="${esc(item.url)}" target="_blank">📎 ${esc(item.name||'файл')}</a>`;
     
     el.innerHTML = `
       <div style="display:flex;gap:8px;align-items:flex-start">
-        <label class="cl-check" style="margin-top:2px"><input type="checkbox" ${item.done?'checked':''} class="mat-note-check" data-id="${item.id}"><span class="hw-box"></span></label>
+        <label class="cl-check" style="margin-top:2px">
+          <input type="checkbox" ${item.done?'checked':''} class="mat-check" data-id="${item.id}" data-col="${colId}">
+          <span class="hw-box"></span>
+        </label>
         <div style="flex:1;min-width:0">
           ${item.subject ? `<span class="hw-subj-label">${esc(item.subject)}</span>` : ''}
           ${content}
         </div>
       </div>
-      <button class="mat-del" type="button">×</button>
+      ${isAdmin ? '<button class="mat-del" type="button">×</button>' : ''}
     `;
-    notesList.appendChild(el);
-  });
-
-  const autosList = document.getElementById('materialsAutosList');
-  autosList.innerHTML = '';
-  const autos = (data.materials && data.materials.autos) || [];
-  if(!autos.length) autosList.innerHTML = '<div class="checklist-empty">Пусто</div>';
-  autos.forEach(item => {
-    const el = document.createElement('div');
-    el.className = 'mat-item';
-    el.dataset.id = item.id;
-    el.dataset.col = 'autos';
-    el.innerHTML = `
-      <div style="padding-right:24px">
-        ${item.subject ? `<span class="hw-subj-label">${esc(item.subject)}</span>` : ''}
-        <span class="mat-text">${esc(item.text)}</span>
-      </div>
-      <button class="mat-del" type="button">×</button>
-    `;
-    autosList.appendChild(el);
+    container.appendChild(el);
   });
 }
+
+function renderMaterials(){
+  updateSubjectDropdowns();
+  if(!data.materials) data.materials = { notes:[], autos:[], methodichki:[] };
+  
+  renderMaterialList(data.materials.notes || [], 'materialsNotesList', 'notes');
+  renderMaterialList(data.materials.autos || [], 'materialsAutosList', 'autos');
+  renderMaterialList(data.materials.methodichki || [], 'materialsMethodichkiList', 'methodichki');
+}
+
 $('#materialsNotesForm').addEventListener('submit', e => {
   e.preventDefault();
   const input = e.target.querySelector('input[name="text"]');
@@ -2351,10 +2378,11 @@ $('#materialsNotesForm').addEventListener('submit', e => {
   const text = input.value.trim();
   if(!text) return;
   if(!data.materials.notes) data.materials.notes = [];
-  data.materials.notes.push({ id: uid(), subject: subj, type: 'text', text });
+  data.materials.notes.push({ id: uid(), subject: subj, type: 'text', text, done: false });
   input.value = '';
   save(); renderMaterials();
 });
+
 $('#materialsAutosForm').addEventListener('submit', e => {
   e.preventDefault();
   const input = e.target.querySelector('input[name="text"]');
@@ -2362,46 +2390,79 @@ $('#materialsAutosForm').addEventListener('submit', e => {
   const text = input.value.trim();
   if(!text) return;
   if(!data.materials.autos) data.materials.autos = [];
-  data.materials.autos.push({ id: uid(), subject: subj, type: 'text', text });
+  data.materials.autos.push({ id: uid(), subject: subj, type: 'text', text, done: false });
   input.value = '';
   save(); renderMaterials();
 });
+
+$('#materialsMethodichkiForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = e.target.querySelector('input[name="text"]');
+  const subj = e.target.querySelector('select[name="subject"]').value;
+  const text = input.value.trim();
+  if(!text) return;
+  if(!data.materials.methodichki) data.materials.methodichki = [];
+  data.materials.methodichki.push({ id: uid(), subject: subj, type: 'text', text, done: false });
+  input.value = '';
+  save(); renderMaterials();
+});
+
 document.querySelectorAll('.mat-file-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const col = btn.dataset.col;
-    const input = document.getElementById(col === 'notes' ? 'materialsNotesFile' : 'materialsAutosFile');
+    const input = document.getElementById(col === 'notes' ? 'materialsNotesFile' : col === 'autos' ? 'materialsAutosFile' : 'materialsMethodichkiFile');
     if(input) input.click();
   });
 });
-document.getElementById('materialsNotesFile').addEventListener('change', async e => {
+
+async function handleFileUpload(e, col) {
   const file = e.target.files && e.target.files[0];
   if(!file) return;
-  const subj = document.querySelector('#materialsNotesForm select[name="subject"]').value;
+  const formId = col === 'notes' ? 'materialsNotesForm' : col === 'methodichki' ? 'materialsMethodichkiForm' : 'materialsAutosForm';
+  const subj = document.querySelector(`#${formId} select[name="subject"]`).value;
   try {
     const res = await storeMaterialFile(file);
     const isImg = file.type.startsWith('image/');
-    if(!data.materials.notes) data.materials.notes = [];
-    data.materials.notes.push({ id: uid(), subject: subj, type: isImg ? 'image' : 'file', url: res.url, name: file.name });
+    if(!data.materials[col]) data.materials[col] = [];
+    data.materials[col].push({ id: uid(), subject: subj, type: isImg ? 'image' : 'file', url: res.url, name: file.name, done: false });
     save(); renderMaterials();
     toast('Файл загружен ✓');
   } catch(err){
     toast('Ошибка: ' + (err.message || ''));
   }
   e.target.value = '';
-});
+}
+
+document.getElementById('materialsNotesFile').addEventListener('change', e => handleFileUpload(e, 'notes'));
+document.getElementById('materialsMethodichkiFile').addEventListener('change', e => handleFileUpload(e, 'methodichki'));
+
 $('#viewMaterials').addEventListener('change', e => {
-  if(e.target.classList.contains('mat-note-check')){
+  if(e.target.classList.contains('mat-check')){
     const id = e.target.dataset.id;
-    const note = data.materials.notes.find(n => n.id === id);
-    if(!note) return;
-    note.done = e.target.checked;
-    e.target.closest('.mat-item').classList.toggle('done', note.done);
+    const col = e.target.dataset.col;
+    const item = data.materials[col].find(n => n.id === id);
+    if(!item) return;
+    item.done = e.target.checked;
+    e.target.closest('.mat-item').classList.toggle('done', item.done);
     save();
   }
 });
+
+$('#viewMaterials').addEventListener('input', e => {
+  if(!e.target.classList.contains('mat-text')) return;
+  const el = e.target;
+  const id = el.dataset.id;
+  const col = el.dataset.col;
+  const item = data.materials[col].find(x => x.id === id);
+  if(!item) return;
+  item.text = el.textContent; 
+  save();
+});
+
 $('#viewMaterials').addEventListener('click', e => {
   const del = e.target.closest('.mat-del');
   if(!del) return;
+  if(!isAdmin){ toast('Удалять материалы может только админ'); return; }
   const item = del.closest('.mat-item');
   const col = item.dataset.col;
   data.materials[col] = (data.materials[col]||[]).filter(i => i.id !== item.dataset.id);
