@@ -8,18 +8,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-  /* ===== ЦВЕТОВАЯ ПАЛИТРА (ТЕМНАЯ, КРАСНАЯ, БЕЖЕВАЯ) ===== */
   :root {
-    /* Темная красно-бежевая тема */
     --c-dark-bg: #110b0b;
     --c-dark-card: #1c1414;
     --c-dark-border: #332222;
     --c-dark-accent: #d32f2f;
-    --c-dark-beige: #e8d5b7;
-    --c-dark-beige-dark: #c4a882;
+    --c-dark-beige: #e6d7b8;
+    --c-dark-beige-dark: #c9a878;
     --c-dark-text: #fdfbf7;
     --c-dark-muted: #a89a92;
-    
+
     --c-light-bg: #f8f9fa;
     --c-light-card: #ffffff;
     --c-light-border: #e5e7eb;
@@ -37,25 +35,22 @@
     --accent: var(--c-dark-accent);
     --on-accent: #ffffff;
     --hover: #2a1e1e;
-    --lms: #c4a882;
+    --lms: #c9a878;
     --miss: var(--c-dark-accent);
     --shadow: 0 8px 30px rgba(0,0,0,.6);
-    
     --icon-bg: var(--card);
     --icon-border: var(--border);
     --card-radius: 16px;
     --card-border: 1px solid var(--border);
-    
     --tab-active-bg: var(--c-dark-beige);
     --on-tab-active: var(--c-dark-bg);
-    
     --strike-color: var(--c-dark-accent);
     --btn-accent: var(--c-dark-accent);
     --on-btn-accent: #ffffff;
-    
-    --type-lec: var(--c-dark-beige);
-    --type-prac: var(--c-dark-beige-dark);
-    --type-lab: var(--c-dark-accent);
+    /* Типы пар: тёмно-синий / бежевый / бордовый */
+    --type-lec: #4a6fa5;
+    --type-prac: #c9a878;
+    --type-lab: #a23a4a;
   }
 
   [data-theme="light"] {
@@ -70,22 +65,18 @@
     --lms: #10b981;
     --miss: var(--c-light-accent);
     --shadow: 0 4px 20px rgba(0,0,0,.05);
-    
     --icon-bg: var(--card);
     --icon-border: var(--border);
     --card-radius: 14px;
     --card-border: none;
-    
     --tab-active-bg: var(--c-light-accent);
     --on-tab-active: #ffffff;
-    
     --strike-color: currentColor;
     --btn-accent: var(--c-light-accent);
     --on-btn-accent: #ffffff;
-    
-    --type-lec: #3b82f6;
-    --type-prac: #10b981;
-    --type-lab: #ef4444;
+    --type-lec: #2c4a6e;
+    --type-prac: #a8875c;
+    --type-lab: #7a1f2e;
   }
 
   * { box-sizing: border-box; }
@@ -96,7 +87,6 @@
   input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
   button { font-family: inherit; cursor: pointer; border: none; background: transparent; color: inherit; padding: 0; }
 
-  /* СЛАЙДЕР */
   .slider-container { position: relative; overflow: hidden; }
   .slider-bg {
     position: absolute;
@@ -113,32 +103,30 @@
     transition: color 0.2s ease;
   }
 
-  /* СВАЙП-АНИМАЦИЯ */
   .view-wrapper { position: relative; width: 100%; overflow: hidden; }
   .view { display: flex; flex-direction: column; width: 100%; will-change: transform, opacity; }
   .view[hidden] { display: none !important; }
-  
-  @keyframes slideInRight { from { transform: translate3d(40px, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
-  @keyframes slideInLeft { from { transform: translate3d(-40px, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
-  
-  .view.slide-in-right { animation: slideInRight 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-  .view.slide-in-left { animation: slideInLeft 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-  
+
+  @keyframes slideInRight { from { transform: translate3d(50px, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
+  @keyframes slideInLeft { from { transform: translate3d(-50px, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
+
+  .view.slide-in-right { animation: slideInRight 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+  .view.slide-in-left { animation: slideInLeft 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
   .app { max-width:900px; margin:0 auto; }
-  
-  /* ШАПКА */
+
   header.topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; position:relative; }
   header.topbar h1 { font-size:20px; margin:0; letter-spacing:-.3px; }
   .sync-status { display:flex; align-items:center; justify-content:center; font-size:18px; width:40px; height:40px; border-radius:50%; background:var(--icon-bg); border:var(--icon-border); box-shadow:var(--shadow); flex:0 0 auto; }
   .sync-status.spin { animation: syncSpin 1s linear infinite; }
   @keyframes syncSpin { 0%{transform:rotate(0)} 50%{transform:rotate(180deg)} 100%{transform:rotate(360deg)} }
-  
+
   .actions { display:flex; gap:8px; align-items:center; }
   .icon-btn { background:var(--icon-bg); border:var(--icon-border); width:40px; height:40px; border-radius:50%; font-size:16px; cursor:pointer; box-shadow:var(--shadow); color:var(--text); display:flex; align-items:center; justify-content:center; position:relative; flex:0 0 auto; }
   .icon-btn:active { transform:scale(.9); }
   .icon-btn .bell-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--lms); border:2px solid var(--icon-bg); display:none; }
   .icon-btn.bell-on .bell-dot { display:block; }
-  
+
   .profile-btn { display:flex; align-items:center; gap:8px; background:var(--icon-bg); border:var(--icon-border); height:40px; padding:0 16px 0 7px; border-radius:20px; cursor:pointer; box-shadow:var(--shadow); font-family:inherit; color:var(--text); font-size:13px; font-weight:600; }
   .profile-btn .profile-emoji { width:28px; height:28px; border-radius:50%; background:var(--accent); color:var(--on-accent); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; overflow:hidden; }
   .profile-btn .profile-emoji img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
@@ -147,7 +135,6 @@
   .strike { position: relative; text-decoration: none !important; opacity: 0.6; }
   .strike::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 1.5px; background-color: var(--strike-color); pointer-events: none; }
 
-  /* ОСНОВНОЙ КОНТЕНТ */
   .search-wrap { position:relative; margin-bottom:10px; }
   .search { width:100%; padding:12px 42px 12px 40px; border-radius:16px; background:var(--card); border:var(--card-border); box-shadow:var(--shadow); font:inherit; font-size:14px; color:var(--text); outline:none; }
   .search::placeholder { color:var(--muted); opacity:.8; }
@@ -173,40 +160,34 @@
   .day .mini-dots { display:flex; gap:2px; margin-top:2px; flex-wrap:wrap; justify-content:center; max-width:100%; height:5px; align-items:center; }
   .day .mini-dot { width:5px; height:5px; border-radius:50%; flex:0 0 auto; }
   .day .mini-more { font-size:8px; color:var(--muted); line-height:1; margin-left:1px; }
-  
   .day.active { color:var(--on-tab-active); }
   .day.active .num { color:var(--on-tab-active); }
   .day.today:not(.active) .num { color:var(--accent); }
   .day.today:not(.active) { border-color:var(--accent); }
-  
+
   .stats { font-size:13px; color:var(--muted); margin:0 0 10px 4px; min-height:16px; }
   .empty { text-align:center; color:var(--muted); padding:28px 12px 16px; font-size:14px; }
   .empty .big { font-size:30px; margin-bottom:6px; opacity:.7; }
 
-  /* КАРТОЧКИ */
   .card { display:flex; gap:10px; align-items:flex-start; position:relative; background:var(--card); border-radius:var(--card-radius); padding:14px 14px 14px 12px; border-left:6px solid var(--c,#999); box-shadow:var(--shadow); margin-bottom:10px; border-top: var(--card-border); border-right: var(--card-border); border-bottom: var(--card-border); }
-  
   [data-theme="dark"] .card { border: 1px solid var(--border); border-left: none; }
-  [data-theme="dark"] .card::before {
-    content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 6px; border-radius: 0 6px 6px 0; background: var(--c, #999);
-  }
-  
+  [data-theme="dark"] .card::before { content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 6px; border-radius: 0 6px 6px 0; background: var(--c, #999); }
+
   .card.done .strike-target { opacity: 0.6; }
   .card.done .grip, .card.done .type, .card.done .check, .card.done .dot, .card.done .lms-block { opacity:.5; }
   .card.done { background:color-mix(in srgb,var(--card) 70%,var(--bg)); }
-  
+
   .grip { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:grab; font-size:20px; padding:2px 3px; line-height:1; opacity:.45; font-family:inherit; }
-  
   .check { display:flex; padding-top:2px; cursor:pointer; flex:0 0 auto; }
   .box { width:22px; height:22px; border-radius:50%; border:2px solid var(--c,#999); display:block; position:relative; }
   .check input:checked + .box { background:var(--c,#999); }
   .check input:checked + .box::after { content:''; position:absolute; left:7px; top:3px; width:5px; height:10px; border:solid var(--on-accent); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
-  
+
   .body { flex:1 1 auto; min-width:0; }
   .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
   .dot { flex:0 0 auto; width:12px; height:12px; border-radius:50%; background:#8b90a6; }
   .card.current .dot, .card.future .dot { background:var(--c); }
-  
+
   input, textarea, select { font:inherit; background:transparent; border:none; color:inherit; outline:none; padding:2px 0; min-width:0; }
   input::placeholder, textarea::placeholder { color:var(--muted); opacity:.7; }
   .time { width:92px; font-size:14px; color:var(--muted); font-variant-numeric:tabular-nums; }
@@ -214,22 +195,20 @@
   .room { width:80px; font-size:14px; color:var(--muted); text-align:right; }
   .teacher { width:100%; margin-top:3px; font-size:13px; color:var(--muted); font-style:italic; }
   textarea { resize:none; width:100%; margin-top:6px; font-size:13px; color:var(--muted); line-height:1.45; overflow:hidden; }
-  
+
   .type { appearance:none; border:1px solid var(--border); border-radius:8px; padding:3px 22px 3px 9px; font-size:11.5px; font-weight:700; cursor:pointer; background:var(--hover); color:var(--muted); text-transform:uppercase; outline:none; font-family:inherit; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'><path d='M0 0l4 4 4-4' fill='none' stroke='%238b90a6' stroke-width='1.4'/></svg>"); background-repeat:no-repeat; background-position:right 6px center; }
   .type[data-t="lec"] { background-color:color-mix(in srgb, var(--type-lec) 15%, transparent); color:var(--type-lec); border-color:color-mix(in srgb, var(--type-lec) 40%, transparent); }
   .type[data-t="prac"] { background-color:color-mix(in srgb, var(--type-prac) 15%, transparent); color:var(--type-prac); border-color:color-mix(in srgb, var(--type-prac) 40%, transparent); }
   .type[data-t="lab"] { background-color:color-mix(in srgb, var(--type-lab) 15%, transparent); color:var(--type-lab); border-color:color-mix(in srgb, var(--type-lab) 40%, transparent); }
-  
+
   .lms-block { flex:0 0 auto; align-self:flex-start; display:flex; flex-direction:column; align-items:center; gap:4px; padding-top:1px; }
   .lms-label { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; color:var(--muted); text-align:center; line-height:1.15; white-space:nowrap; }
   .lms-btns { display:flex; gap:4px; }
   .lms-btn { width:28px; height:28px; border-radius:50%; border:1.5px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; font-size:13px; font-weight:800; line-height:1; display:flex; align-items:center; justify-content:center; font-family:inherit; padding:0; }
   .lms-btn.attended.active { background:var(--lms); color:#fff; border-color:var(--lms); }
   .lms-btn.missed.active { background:var(--miss); color:#fff; border-color:var(--miss); }
-  
   .more { flex:0 0 auto; align-self:flex-start; background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:20px; padding:3px 7px; border-radius:50%; opacity:.6; line-height:1; font-family:inherit; }
 
-  /* МЕНЮ */
   .menu { position: fixed; z-index: 2000; background: var(--card); border: var(--card-border); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.5); padding: 7px; min-width: 210px; max-height: 80vh; overflow-y: auto; overscroll-behavior: contain; }
   .menu::-webkit-scrollbar { width: 6px; }
   .menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -238,10 +217,10 @@
   .menu button:hover { background:var(--hover); }
   .menu button.danger:hover { background:rgba(255,107,107,.18); color:#ff6b6b; }
   .menu hr { border:none; border-top:1px solid var(--border); margin:6px 4px; }
-  
+
   .chips { display:flex; flex-wrap:wrap; gap:5px; padding:2px 8px 8px; }
   .chips button { width:auto; display:inline-block; padding:6px 10px; font-size:12.5px; font-weight:600; background:var(--hover); border-radius:8px; }
-  
+
   .profile-menu { min-width:230px; }
   .profile-item { display:flex; align-items:center; gap:9px; width:100%; padding:8px 10px; background:transparent; color:var(--text); border-radius:10px; cursor:pointer; font-size:14px; text-align:left; }
   .profile-item:hover { background:var(--hover); }
@@ -251,33 +230,15 @@
   .profile-item .pi-name { flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:600; }
   .profile-item .pi-badge { font-size:10px; font-weight:700; color:var(--accent); text-transform:uppercase; }
   .profile-item .pi-del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 6px; border-radius:50%; opacity:.5; font-family:inherit; }
-  
+
   .modal-input { width:100%; background:var(--hover); border:1px solid var(--border); border-radius:12px; padding:10px 12px; font-size:14px; color:var(--text); outline:none; font-family:inherit; margin-bottom:4px; }
-  
-  /* ЧЕК-ЛИСТ НА ГЛАВНОЙ */
+
   .home-checklist-sec { margin-top: 14px; background: var(--card); border: var(--card-border); border-radius: var(--card-radius); padding: 16px; box-shadow: var(--shadow); }
   .home-checklist-sec h3 { margin: 0 0 12px; font-size: 15px; display: flex; align-items: center; gap: 6px; }
   .home-checklist-add { display: flex; gap: 8px; align-items: center; }
   .home-checklist-add input { flex: 1; background: var(--hover); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: var(--text); outline: none; font-size: 14px; }
-  
-  /* КРУГЛАЯ КНОПКА ПЛЮС */
-  .home-checklist-add button { 
-    background: var(--btn-accent); 
-    color: var(--on-btn-accent); 
-    border: none; 
-    border-radius: 50%; 
-    width: 36px; 
-    height: 36px; 
-    cursor: pointer; 
-    font-size: 24px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    flex: 0 0 auto; 
-    padding: 0; 
-    line-height: 1;
-  }
-  
+  .home-checklist-add button { background: var(--btn-accent); color: var(--on-btn-accent); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 0; line-height: 1; }
+
   .checklist { display:flex; flex-direction:column; gap:1px; margin-bottom:6px; }
   .checklist-empty { color:var(--muted); font-size:13px; text-align:center; padding:8px 0 6px; opacity:.75; }
   .checklist-item { display:flex; gap:10px; align-items:center; padding:8px 6px; border-radius:10px; }
@@ -287,8 +248,7 @@
   .cl-check input:checked + .cl-box::after { content:''; position:absolute; left:7px; top:3px; width:5px; height:10px; border:solid var(--on-accent); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
   .checklist-item .text { flex:1 1 auto; font-size:14px; color:var(--text); padding:2px 0; min-width:0; outline:none; }
   .checklist-item .del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 7px; border-radius:50%; opacity:.5; font-family:inherit; }
-  
-  /* ФОРМА ДОБАВЛЕНИЯ */
+
   .bottom { display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px; align-items:start; }
   .add { display:flex; gap:8px; flex-wrap:wrap; padding:14px; border-radius:var(--card-radius); border:2px dashed var(--border); }
   .add input { flex:1 1 120px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:14px; color:var(--text); }
@@ -297,7 +257,6 @@
   .add-note { width:100%; font-size:12px; color:var(--muted); margin-top:2px; padding-left:4px; }
   .add-note b { color:var(--text); font-weight:600; }
 
-  /* КАЛЕНДАРЬ */
   .cal-box { background:var(--card); border-radius:var(--card-radius); padding:16px; box-shadow:var(--shadow); border:var(--card-border); margin-bottom:14px; }
   .cal-head { display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:12px; }
   .cal-head .cal-month { font-size:15px; font-weight:700; text-align:center; flex:1 1 auto; }
@@ -305,27 +264,21 @@
   .cal-dow { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:4px; }
   .cal-dow span { font-size:10.5px; font-weight:700; color:var(--muted); text-align:center; letter-spacing:.4px; padding:2px 0; }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
-  
-  /* МАЛЕНЬКИЙ КРУЖОК ДЛЯ СЕГОДНЯШНЕГО ДНЯ */
+
   .cal-cell { aspect-ratio:1; border:1px solid transparent; background:transparent; border-radius:12px; cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px; font-family:inherit; overflow:hidden; }
   .cal-cell.empty { visibility:hidden; pointer-events:none; }
-  .cal-cell .num { 
-    font-size:14px; font-weight:700; color:var(--text); line-height:1; 
-    width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  }
-  
+  .cal-cell .num { font-size:14px; font-weight:700; color:var(--text); line-height:1; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
   .cal-cell.today .num { background:var(--accent); color:var(--on-accent); }
-  
-  .cal-cell.selected { background:var(--accent); border-color:var(--accent); }
-  .cal-cell.selected .num { color:var(--on-accent); background: transparent; }
-  
+  /* Выделение — только кругом вокруг числа, без красного квадрата */
+  .cal-cell.selected { background:var(--hover); border-color:var(--border); }
+  .cal-cell.selected:not(.today) .num { box-shadow: 0 0 0 2px var(--accent); }
   .cal2-dots { display:flex; gap:2px; justify-content:center; flex-wrap:wrap; max-width:100%; min-height:6px; margin-top:2px; }
   .cal2-dot { width:6px; height:6px; border-radius:50%; flex:0 0 auto; }
-  
+
   .cal-legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin-top:12px; padding:0 4px; border-top:1px dashed var(--border); padding-top:10px; }
   .cal-legend .lg { display:flex; align-items:center; gap:6px; }
   .cal-legend .lg .dot { width:9px; height:9px; border-radius:50%; }
-  
+
   .cal-events-title { font-size:14px; font-weight:700; margin:16px 0 8px 4px; color:var(--text); }
   .cal-event { display:flex; gap:10px; align-items:center; background:var(--card); border-radius:16px; padding:12px 14px; border-left:4px solid var(--c,#999); box-shadow:var(--shadow); margin-bottom:8px; cursor:pointer; border:var(--card-border); border-left:4px solid var(--c,#999); }
   .cal-event .ce-time { font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; flex:0 0 80px; }
@@ -333,7 +286,7 @@
   .cal-event .ce-name { font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .cal-event .ce-meta { font-size:12px; color:var(--muted); margin-top:1px; }
   .cal-event .ce-type { font-size:10px; font-weight:800; padding:2px 6px; border-radius:6px; background:var(--hover); color:var(--muted); text-transform:uppercase; letter-spacing:.3px; }
-  
+
   .cal-empty-day { text-align:center; color:var(--muted); padding:18px 12px; font-size:13px; background:var(--card); border-radius:16px; box-shadow:var(--shadow); }
   .cal-hw-title { font-size:14px; font-weight:700; margin:16px 0 8px 4px; color:var(--text); display:flex; align-items:center; gap:8px; }
   .cal-hw-title .count { font-size:11px; font-weight:700; color:var(--muted); background:var(--card); padding:3px 9px; border-radius:8px; box-shadow:var(--shadow); }
@@ -349,46 +302,44 @@
   .cal-hw-card.done { opacity:.65; }
   .cal-hw-card.done .hw-txt { text-decoration:line-through; color:var(--muted); }
   .cal-hw-empty { text-align:center; color:var(--muted); padding:14px 12px; font-size:13px; background:var(--card); border-radius:16px; box-shadow:var(--shadow); opacity:.8; }
-  
+
   .dup-from-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 16px; margin-top:14px; border:2px dashed var(--border); border-radius:16px; background:transparent; color:var(--muted); font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; }
-  
-  /* ДЗ */
+
   .page-title { font-size:18px; margin:0 0 14px; letter-spacing:-.3px; display:flex; align-items:center; gap:8px; }
   .page-title .badge { font-size:11px; font-weight:700; color:var(--muted); background:var(--card); padding:3px 9px; border-radius:8px; box-shadow:var(--shadow); }
-  
+
   .hw-add { display:grid; grid-template-columns:1fr 1fr auto; gap:8px; margin-bottom:16px; }
   .hw-add input, .hw-add select { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:14px; color:var(--text); outline:none; }
   .hw-add button { background:var(--btn-accent); color:var(--on-btn-accent); border:none; padding:10px 18px; border-radius:12px; font-weight:700; cursor:pointer; font-size:14px; font-family:inherit; white-space:nowrap; }
   .hw-add .full { grid-column:1 / -1; }
-  
-  .hw-group { background:var(--card); border-radius:var(--card-radius); box-shadow:var(--shadow); border:var(--card-border); margin-bottom:12px; border-left:6px solid var(--accent); overflow:hidden; }
+
+  .hw-group { background:var(--card); border-radius:var(--card-radius); box-shadow:var(--shadow); border:var(--card-border); margin-bottom:12px; border-left:6px solid var(--subj-color, var(--accent)); overflow:hidden; }
   .hw-group-head { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; }
-  .hw-dot { width:12px; height:12px; border-radius:50%; flex:0 0 auto; background:var(--accent); }
+  .hw-dot { width:12px; height:12px; border-radius:50%; flex:0 0 auto; background:var(--subj-color, var(--accent)); }
   .hw-name { flex:1 1 auto; font-weight:700; font-size:15px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .hw-counter { font-size:11px; font-weight:700; color:var(--muted); background:var(--hover); padding:4px 8px; border-radius:8px; }
   .hw-arrow { color:var(--muted); font-size:14px; transition:transform .3s; }
   .hw-group.collapsed .hw-arrow { transform:rotate(-90deg); }
   .hw-group.collapsed .hw-group-body { display:none; }
   .hw-group-body { padding:0 16px 14px; }
-  
+
   .hw-item { display:flex; gap:10px; align-items:center; padding:8px 6px; border-radius:10px; flex-wrap:wrap; }
   .hw-item .cl-check { position:relative; display:flex; align-items:center; cursor:pointer; flex:0 0 auto; }
-  .hw-box { width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:block; position:relative; background:transparent; }
-  .hw-item .cl-check input:checked + .hw-box { background:var(--accent); }
+  .hw-box { width:20px; height:20px; border-radius:50%; border:2px solid var(--subj-color, var(--accent)); display:block; position:relative; background:transparent; }
+  .hw-item .cl-check input:checked + .hw-box { background:var(--subj-color, var(--accent)); }
   .hw-item .cl-check input:checked + .hw-box::after { content:''; position:absolute; left:6px; top:2px; width:5px; height:10px; border:solid var(--on-accent); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
   .hw-text { flex:1 1 auto; font-size:14px; color:var(--text); padding:2px 0; min-width:0; word-break:break-word; outline:none; border-radius:6px; }
   .hw-text:focus { background:var(--hover); padding:2px 6px; }
   .hw-item.done .hw-text { text-decoration:line-through; color:var(--muted); opacity:.7; }
   .hw-dl-input { flex:0 0 auto; font-size:11px; font-weight:700; padding:4px 8px; border-radius:8px; border:1px solid var(--border); background:var(--hover); color:var(--muted); font-family:inherit; width:120px; outline:none; cursor:pointer; }
   .hw-dl-input:focus { border-color:var(--accent); }
-  .hw-from-card { font-size:10px; color:var(--accent); background:color-mix(in srgb,var(--accent) 15%,transparent); padding:1px 5px; border-radius:4px; font-weight:700; margin-left:6px; }
+  .hw-from-card { font-size:10px; color:var(--subj-color, var(--accent)); background:color-mix(in srgb,var(--subj-color, var(--accent)) 15%,transparent); padding:1px 5px; border-radius:4px; font-weight:700; margin-left:6px; }
   .hw-item .del, .club-item .del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 7px; border-radius:50%; opacity:.5; font-family:inherit; }
   .hw-group.hw-done-group { border-left-color:var(--lms); }
   .hw-group.hw-done-group .hw-dot { background:var(--lms); }
   .hw-group.hw-done-group .hw-arrow { color:var(--lms); }
-  .hw-item .hw-subj-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; color:var(--muted); opacity:.8; margin-right:6px; }
-  
-  /* КРУЖКИ */
+  .hw-item .hw-subj-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; color:var(--subj-color, var(--muted)); opacity:.9; margin-right:6px; }
+
   .club-day { background:var(--card); border-radius:var(--card-radius); box-shadow:var(--shadow); border:var(--card-border); margin-bottom:12px; overflow:hidden; border-left:6px solid var(--accent); }
   .club-day-head { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; }
   .club-day-name { flex:1 1 auto; font-weight:700; font-size:15px; }
@@ -401,8 +352,7 @@
   .club-item input.club-time { font-size:13px; color:var(--muted); }
   .club-item input.club-name { font-weight:600; }
   .club-item input.club-place { font-size:13px; color:var(--muted); }
-  
-  /* ССЫЛКИ */
+
   .links-add { display:grid; grid-template-columns:1fr 2fr auto; gap:8px; margin-bottom:16px; }
   .links-add input { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:14px; color:var(--text); outline:none; }
   .links-add button { background:var(--btn-accent); color:var(--on-btn-accent); border:none; padding:10px 18px; border-radius:12px; font-weight:700; cursor:pointer; font-size:14px; font-family:inherit; white-space:nowrap; }
@@ -412,14 +362,12 @@
   .link-title { font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .link-url { font-size:12px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px; }
   .link-del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:4px 8px; border-radius:50%; opacity:.5; font-family:inherit; }
-  
-  /* НИЖНЕЕ МЕНЮ */
-  .tabbar { position:fixed; left:50%; transform:translateX(-50%); bottom:14px; width:calc(100% - 28px); max-width:900px; background:var(--card); border:var(--card-border); border-radius:24px; box-shadow:0 8px 30px rgba(0,0,0,.4); display:grid; grid-template-columns:repeat(6,1fr); padding:8px; gap:4px; z-index:100; }
-  .tabbar button { border:none; background:transparent; color:var(--muted); padding:8px 2px; border-radius:16px; cursor:pointer; font-family:inherit; font-size:10px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:4px; line-height:1; }
+
+  .tabbar { position:fixed; left:50%; transform:translateX(-50%); bottom:14px; width:calc(100% - 28px); max-width:900px; background:var(--card); border:var(--card-border); border-radius:24px; box-shadow:0 8px 30px rgba(0,0,0,.4); display:grid; grid-template-columns:repeat(7,1fr); padding:8px; gap:3px; z-index:100; }
+  .tabbar button { border:none; background:transparent; color:var(--muted); padding:8px 1px; border-radius:16px; cursor:pointer; font-family:inherit; font-size:10px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:4px; line-height:1; }
   .tabbar button .tb-icon { font-size:20px; line-height:1; }
   .tabbar button.active { color:var(--on-tab-active); }
-  
-  /* МОДАЛКИ */
+
   .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:300; padding:16px; }
   .modal { background:var(--card); border-radius:24px; padding:24px; max-width:440px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.6); border:var(--card-border); max-height:90vh; overflow-y:auto; }
   .modal h3 { margin:0 0 16px; font-size:18px; }
@@ -435,17 +383,16 @@
   .modal-actions button { border:none; padding:12px 20px; border-radius:12px; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; }
   .modal-actions .primary { background:var(--btn-accent); color:var(--on-btn-accent); }
   .modal-actions .secondary { background:var(--hover); color:var(--text); }
-  
+
   .toggle { position:relative; width:44px; height:26px; border-radius:13px; background:var(--border); cursor:pointer; border:none; padding:0; flex:0 0 auto; }
   .toggle::after { content:''; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; transition:left .25s; box-shadow:0 1px 3px rgba(0,0,0,.25); }
   .toggle.on { background:var(--accent); }
   .toggle.on::after { left:21px; }
-  
+
   .toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%); background:#f2f4fb; color:#0e0f14; padding:14px 24px; border-radius:16px; font-size:14px; box-shadow:0 8px 30px rgba(0,0,0,.5); z-index:200; max-width:88vw; text-align:center; font-weight:600; }
   [data-theme="light"] .toast { background:#1b1f2a; color:#fff; }
   [data-theme="dark"] .toast { background:var(--c-dark-card); color:#fff; border:1px solid var(--border); }
-  
-  /* МАТЕРИАЛЫ */
+
   .materials-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
   @media (max-width:720px) { .materials-grid { grid-template-columns:1fr; } }
   .materials-col { background:var(--card); border-radius:var(--card-radius); box-shadow:var(--shadow); border:var(--card-border); padding:16px; min-height:200px; display:flex; flex-direction:column; }
@@ -465,6 +412,100 @@
   .mat-file-btn { background:var(--hover)!important; color:var(--text)!important; border:1px solid var(--border)!important; }
   .mat-item.done .mat-text, .mat-item.done .mat-link { text-decoration:line-through; opacity:0.5; }
 
+  /* ===== НОВЫЙ ПЛАНЕР: КРАСИВЫЙ ДИЗАЙН ===== */
+  body.planner-page #main-app { display: none; }
+  body.planner-page #planner-standalone { display: block; min-height: 100vh; background: var(--bg); padding: 20px; }
+  #planner-standalone { display: none; }
+
+  .planner-hero {
+    background: linear-gradient(135deg, var(--card) 0%, color-mix(in srgb, var(--accent) 8%, var(--card)) 100%);
+    border-radius: 24px;
+    padding: 22px;
+    margin-bottom: 22px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .ph-nav { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .ph-arrow { width: 40px; height: 40px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); color: var(--text); font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit; }
+  .ph-arrow:hover { background: var(--hover); }
+  .ph-today { padding: 9px 18px; border-radius: 12px; background: var(--btn-accent); color: var(--on-btn-accent); border: none; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 13px; }
+  .ph-main { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .ph-date-block { flex: 1 1 160px; min-width: 0; }
+  .ph-dow { font-size: 11px; letter-spacing: 2px; color: var(--accent); font-weight: 800; text-transform: uppercase; }
+  .ph-day { font-size: 54px; font-weight: 800; line-height: 1; margin: 6px 0 2px; letter-spacing: -2px; }
+  .ph-month { font-size: 14px; color: var(--muted); font-weight: 500; }
+  .ph-progress-block { position: relative; width: 150px; height: 150px; flex: 0 0 auto; margin-left: auto; }
+  .cp-svg { width: 100%; height: 100%; display: block; }
+  .cp-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+  .cp-fill { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .cp-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; pointer-events: none; }
+  .cp-percent { font-size: 28px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+  .cp-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 700; }
+
+  .planner-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .btn-planner { padding: 10px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); font-weight: 700; cursor: pointer; font-family: inherit; font-size: 13px; color: var(--text); transition: all .2s; }
+  .btn-planner.active { background: var(--tab-active-bg); color: var(--on-tab-active); border-color: var(--tab-active-bg); }
+
+  .planner-body { flex: 1; overflow: auto; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+
+  .daily-planner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 900px) { .daily-planner-grid { grid-template-columns: 1fr; } }
+
+  .p-section { background: var(--card); border-radius: 18px; border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow); }
+  .p-section-head { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 8px; outline: none; color: var(--text); padding-bottom: 4px; }
+  .p-section-head::before { content: ''; width: 4px; height: 16px; border-radius: 2px; background: var(--accent); }
+  .p-list { display: flex; flex-direction: column; gap: 4px; }
+  .p-item { display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--bg); border-radius: 10px; border: 1px solid transparent; }
+  .p-item:hover { border-color: var(--border); }
+  .p-item.done .p-text { text-decoration: line-through; color: var(--muted); }
+  .p-item input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-size: 14px; padding: 2px 4px; border-radius: 6px; }
+  .p-item input[type="text"]:focus { background: var(--hover); }
+  .p-item .tsk-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--btn-accent); cursor: pointer; flex: 0 0 auto; position: relative; background: transparent; transition: background .2s; }
+  .p-item .tsk-check.checked { background: var(--btn-accent); }
+  .p-item .tsk-check.checked::after { content: ''; position: absolute; left: 5px; top: 1px; width: 4px; height: 9px; border: solid var(--on-btn-accent); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .p-item .p-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 0 4px; opacity: .5; font-family: inherit; }
+
+  .p-add-form { display: flex; gap: 6px; margin-top: 4px; }
+  .p-add-form input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; color: var(--text); font-size: 13px; outline: none; font-family: inherit; }
+  .p-add-form input:focus { border-color: var(--accent); }
+  .p-add-form button { background: var(--btn-accent); color: var(--on-btn-accent); border: none; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto; font-size: 20px; line-height: 1; }
+
+  .weekly-planner { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 12px; }
+  .weekly-day { flex: 0 0 280px; background: var(--card); border-radius: 18px; border: 1px solid var(--border); display: flex; flex-direction: column; box-shadow: var(--shadow); }
+  .weekly-day-head { padding: 14px; text-align: center; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 14px; }
+  .weekly-tasks { padding: 12px; flex: 1; overflow-y: auto; min-height: 180px; }
+
+  .monthly-calendar { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .mc-head h3 { margin: 0; font-size: 20px; }
+  .mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .mc-day { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; transition: background .2s; }
+  .mc-day:hover { background: var(--hover); }
+  .mc-day.today { border-color: var(--accent); }
+  .mc-day .num { font-size: 16px; font-weight: bold; }
+  .mc-day.today .num { color: var(--accent); }
+  .mc-dots { display: flex; gap: 2px; margin-top: 4px; }
+  .mc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  .habits-grid { display: grid; grid-template-columns: 150px repeat(7, 1fr); gap: 4px; align-items: center; }
+  .habit-name { font-size: 12px; font-weight: 600; text-align: right; padding-right: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .habit-cell { aspect-ratio: 1; border-radius: 6px; background: var(--border); cursor: pointer; transition: background 0.2s; max-height: 28px; }
+  .habit-cell.active { background: var(--btn-accent); }
+
+  .planner-modal-content {
+    background: var(--bg); width: 100%; max-width: 1400px; margin: 0 auto; border-radius: 20px;
+    display: flex; flex-direction: column; border: 1px solid var(--border); overflow: hidden;
+  }
+  .planner-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px; background: var(--card); border-bottom: 1px solid var(--border);
+    flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 10;
+  }
+  .planner-header h2 { margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
   @media (max-width:720px) {
     .bottom { grid-template-columns:1fr; gap:16px; }
     .hw-add { grid-template-columns:1fr; }
@@ -483,79 +524,20 @@
     .week-nav .arrow { min-width:36px; padding:0 5px; font-size:22px; }
     .profile-btn .profile-name { display:none; }
     .profile-btn { padding:0; width:40px; justify-content:center; height:40px; }
-    .tabbar { bottom:10px; width:calc(100% - 20px); }
-    .tabbar button { font-size:8px; }
+    .tabbar { bottom:10px; width:calc(100% - 20px); padding:6px; gap:2px; }
+    .tabbar button { font-size:8px; padding:6px 0; }
+    .tabbar button .tb-icon { font-size:17px; }
     .club-item { grid-template-columns:64px 1fr auto; }
     .cal-cell .num { font-size:15px; width: 24px; height: 24px; }
     .cal2-dot { width:6px; height:6px; }
     .card-hw-add input { font-size:12px; }
+    .planner-hero { padding: 16px; }
+    .ph-day { font-size: 42px; }
+    .ph-progress-block { width: 110px; height: 110px; }
+    .cp-percent { font-size: 22px; }
+    .habits-grid { grid-template-columns: 110px repeat(7, 1fr); }
+    .habit-name { font-size: 10px; }
   }
-
-  /* ===== ПЛАНЕР (СТРАНИЦА) ===== */
-  body.planner-page #main-app { display: none; }
-  body.planner-page #planner-standalone { display: block; min-height: 100vh; background: var(--bg); padding: 20px; }
-  #planner-standalone { display: none; }
-
-  .planner-modal-content {
-    background: var(--bg); width: 100%; max-width: 1400px; margin: 0 auto; border-radius: 20px;
-    display: flex; flex-direction: column; border: 1px solid var(--border); overflow: hidden;
-  }
-  .planner-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 20px; background: var(--card); border-bottom: 1px solid var(--border);
-    flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 10;
-  }
-  .planner-header h2 { margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-  
-  .planner-body { flex: 1; overflow: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
-
-  /* --- Ежедневный планер --- */
-  .daily-planner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 900px) { .daily-planner-grid { grid-template-columns: 1fr; } }
-  
-  .p-section { background: var(--card); border-radius: var(--card-radius); border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .p-section-head { font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; outline: none; color: var(--text); }
-  .p-list { display: flex; flex-direction: column; gap: 4px; }
-  .p-item { display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--bg); border-radius: 8px; }
-  .p-item.done .p-text { text-decoration: line-through; color: var(--muted); }
-  .p-item input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-size: 14px; }
-  .p-item .tsk-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--btn-accent); cursor: pointer; flex: 0 0 auto; }
-  .p-item .tsk-check.checked { background: var(--btn-accent); }
-  .p-item .p-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; }
-  
-  .p-add-form { display: flex; gap: 6px; margin-top: 4px; }
-  .p-add-form input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; color: var(--text); font-size: 13px; outline: none; }
-  .p-add-form button { background: var(--btn-accent); color: var(--on-btn-accent); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto; }
-
-  .progress-bar-wrap { background: var(--bg); border-radius: 10px; height: 20px; overflow: hidden; position: relative; margin-bottom: 10px; border: 1px solid var(--border); }
-  .progress-bar-fill { background: var(--accent); height: 100%; transition: width 0.3s ease; }
-  .progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; mix-blend-mode: difference; }
-
-  /* --- Недельный планер --- */
-  .weekly-planner { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; }
-  .weekly-day { flex: 0 0 280px; background: var(--card); border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
-  .weekly-day-head { padding: 12px; text-align: center; border-bottom: 1px solid var(--border); font-weight: bold; }
-  .weekly-tasks { padding: 10px; flex: 1; overflow-y: auto; min-height: 200px; }
-
-  /* --- Месячный календарь --- */
-  .monthly-calendar { background: var(--card); border-radius: var(--card-radius); padding: 20px; border: 1px solid var(--border); }
-  .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .mc-head h3 { margin: 0; font-size: 20px; }
-  .mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-  .mc-day { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; }
-  .mc-day:hover { background: var(--hover); }
-  .mc-day.today { border-color: var(--accent); }
-  .mc-day .num { font-size: 16px; font-weight: bold; }
-  .mc-day.today .num { color: var(--accent); }
-  .mc-dots { display: flex; gap: 2px; margin-top: 4px; }
-  .mc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
-
-  /* --- Трекер привычек --- */
-  .habits-grid { display: grid; grid-template-columns: 150px repeat(7, 1fr); gap: 4px; align-items: center; }
-  .habit-name { font-size: 12px; font-weight: 600; text-align: right; padding-right: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .habit-cell { aspect-ratio: 1; border-radius: 6px; background: var(--border); cursor: pointer; transition: background 0.2s; }
-  .habit-cell.active { background: var(--btn-accent); }
-
 </style>
 </head>
 <body>
@@ -593,7 +575,7 @@
         <p class="stats" id="stats"></p>
         <div id="list"></div>
       </div>
-      
+
       <div class="home-checklist-sec">
         <h3>📝 Мои дела</h3>
         <div class="checklist" id="homeChecklistList"></div>
@@ -683,7 +665,7 @@
             <button type="submit">+</button>
           </form>
         </section>
-        
+
         <section class="materials-col">
           <h3>🎯 Автоматы</h3>
           <div class="materials-list" id="materialsAutosList"></div>
@@ -708,14 +690,24 @@
       </div>
     </main>
 
+    <main class="view" data-view="links" id="viewLinks" hidden>
+      <h2 class="page-title">🔗 Ссылки</h2>
+      <form class="links-add" id="linksAddForm" autocomplete="off">
+        <input name="title" placeholder="Название" required>
+        <input name="url" placeholder="https://..." required>
+        <button type="submit">+ Добавить</button>
+      </form>
+      <div id="linksList"></div>
+    </main>
+
     <main class="view" data-view="planner" id="viewPlanner" hidden>
       <h2 class="page-title">🗓 Мой планер</h2>
-      <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-        <button class="btn-planner active" data-ptab="daily" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">День</button>
-        <button class="btn-planner" data-ptab="weekly" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Неделя</button>
-        <button class="btn-planner" data-ptab="monthly" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Месяц</button>
-        <button class="btn-planner" data-ptab="recurring" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Повторяющиеся</button>
-        <button class="btn-planner" data-ptab="extra" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Заметки</button>
+      <div class="planner-tabs">
+        <button class="btn-planner active" data-ptab="daily">День</button>
+        <button class="btn-planner" data-ptab="weekly">Неделя</button>
+        <button class="btn-planner" data-ptab="monthly">Месяц</button>
+        <button class="btn-planner" data-ptab="recurring">Повторяющиеся</button>
+        <button class="btn-planner" data-ptab="extra">Заметки</button>
       </div>
       <div id="plannerContent"></div>
     </main>
@@ -728,6 +720,7 @@
     <button data-tab="homework"><span class="tb-icon">📝</span><span>ДЗ</span></button>
     <button data-tab="clubs"><span class="tb-icon">🎨</span><span>Кружки</span></button>
     <button data-tab="materials"><span class="tb-icon">📂</span><span>Материалы</span></button>
+    <button data-tab="links"><span class="tb-icon">🔗</span><span>Ссылки</span></button>
   </nav>
 </div>
 
@@ -750,6 +743,12 @@ const NOTIFIED_KEY = 'notified-events-v1';
 const SHARED_LOCAL_KEY = 'shared-cache-sb-v1';
 const SHARED_ID = 'shared-main';
 const ADMIN_PASSWORD = 'admines25.';
+
+const SUBJECT_COLORS = [
+  '#7a5c3e', '#5c6b7a', '#6b5c7a', '#7a6b5c', '#5c7a6b',
+  '#7a5c5c', '#5c5c7a', '#6b7a5c', '#7a7a5c', '#5c7a7a',
+  '#7a5c6b', '#5c6b5c'
+];
 
 const FIXED_PROFILES = [
   { id:'common', name:'общая.' },
@@ -830,6 +829,14 @@ function getTypeColor(type) {
   return NO_TYPE_COLOR;
 }
 
+function getSubjectColor(subject) {
+  if (!subject) return NO_TYPE_COLOR;
+  let hash = 0;
+  const s = String(subject);
+  for (let i = 0; i < s.length; i++) hash = s.charCodeAt(i) + ((hash << 5) - hash);
+  return SUBJECT_COLORS[Math.abs(hash) % SUBJECT_COLORS.length];
+}
+
 function classColor(item){
   if(!item || !item.type) return NO_TYPE_COLOR;
   return getTypeColor(item.type);
@@ -878,9 +885,14 @@ function isSameData(a, b){
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function defaultPlanner(){
-  return { 
-    tasks: {}, habits: {}, 
-    excel: { days: {}, daily: [], monthly: [], quarterly: [], halfYear: [], extra: '', ideas: '', headers: { daily: 'Ежедневно', monthly: 'Ежемесячно', quarterly: 'Ежеквартально', halfYear: 'Раз в полгода', extra: 'Дополнительно', ideas: 'Идеи и мысли' } },
+  return {
+    tasks: {}, habits: {},
+    excel: {
+      days: {},
+      daily: [], weekly: [], monthly: [], quarterly: [], halfYear: [],
+      extra: '', ideas: '',
+      headers: { daily: 'Ежедневно', weekly: 'Еженедельно', monthly: 'Ежемесячно', quarterly: 'Ежеквартально', halfYear: 'Раз в полгода', extra: 'Дополнительно', ideas: 'Идеи и мысли' }
+    },
     headers: {
       important: 'Важные дела',
       additional: 'Дополнительные задачи',
@@ -890,7 +902,8 @@ function defaultPlanner(){
       notes: 'Заметки'
     },
     days: {},
-    habitList: []
+    habitList: [],
+    recurring: []
   };
 }
 function defaultPersonal(){
@@ -916,7 +929,7 @@ function splitData(d){
   personal.planner = d.planner || defaultPlanner();
   personal.clubs = (d.clubs || []).map(normClub).filter(c => c.name || c.date);
   personal.links = (d.links || []).map(normLink).filter(l => l.title || l.url);
-  
+
   if(d.materials){
     shared.materials = {
       notes: (d.materials.notes||[]).map(normMaterial),
@@ -937,7 +950,7 @@ function splitData(d){
     });
   }
   if(d.settings) personal.settings = { ...personal.settings, ...d.settings };
-  
+
   Object.keys(d.days || {}).forEach(k => {
     const arr = d.days[k];
     if(!Array.isArray(arr) || !arr.length) return;
@@ -970,7 +983,7 @@ function mergeData(shared, personal){
   shared = shared || { days:{}, homework:{}, materials:{ notes:[], autos:[], methodichki:[] } };
   personal = personal || defaultPersonal();
   const itemStates = personal.itemStates || {}, hwStates = personal.hwStates || {}, matStates = personal.materialStates || {};
-  
+
   out.materials = { notes:[], autos:[], methodichki:[] };
   if(shared.materials){
     out.materials.notes = (shared.materials.notes||[]).map(n => {
@@ -1183,15 +1196,15 @@ function findHWById(hwId){
   return null;
 }
 
-function clubsForDate(date){ 
-  const key = iso(date); 
+function clubsForDate(date){
+  const key = iso(date);
   const dow = date.getDay();
   return data.clubs.filter(c => {
     if (c.repeat === 'weekly') {
       return new Date(c.date + 'T00:00:00').getDay() === dow;
     }
     return c.date === key;
-  }); 
+  });
 }
 
 function homeworkForDate(date){
@@ -1285,33 +1298,36 @@ document.addEventListener('focusout', () => {
 });
 
 let prevTabIdx = 0;
-const TABS_ORDER = ['home','calendar','planner','homework','clubs','materials'];
+const TABS_ORDER = ['home','calendar','planner','homework','clubs','materials','links'];
 
 function switchTab(tab){
   const newIdx = TABS_ORDER.indexOf(tab);
   const dir = newIdx > prevTabIdx ? 'right' : 'left';
   prevTabIdx = newIdx;
   currentTab = tab;
-  
-  $$('.view').forEach(v => { 
-    v.hidden = v.dataset.view !== tab; 
+
+  $$('.view').forEach(v => {
+    v.hidden = v.dataset.view !== tab;
     v.classList.remove('slide-in-right', 'slide-in-left');
   });
-  
+
   const targetView = $(`[data-view="${tab}"]`);
   if (targetView) {
+    // force reflow so the animation reliably triggers for all tabs (including planner)
+    void targetView.offsetHeight;
     targetView.classList.add(`slide-in-${dir}`);
   }
-  
+
   $$('.tabbar button').forEach(b => { b.classList.toggle('active', b.dataset.tab === tab); });
-  
+
   if(tab === 'home') renderHome();
   if(tab === 'calendar') renderCalendar();
   if(tab === 'planner') renderPlanner();
   if(tab === 'homework') renderHomework();
   if(tab === 'clubs') renderClubs();
   if(tab === 'materials') renderMaterials();
-  
+  if(tab === 'links') renderLinks();
+
   setTimeout(() => moveSlider(document.getElementById('tabbar')), 10);
 }
 
@@ -1837,12 +1853,12 @@ function openCardMenu(card){
     <button class="danger" data-act="delete">Удалить пару</button>
   `;
   document.body.appendChild(menu);
-  
+
   const rect = card.getBoundingClientRect();
   menu.style.top = `${rect.bottom + 5}px`;
   menu.style.left = `${rect.left}px`;
   if(rect.bottom + 400 > window.innerHeight) menu.style.top = `${rect.top - menu.offsetHeight - 5}px`;
-  
+
   menu.addEventListener('click', ev => {
     const moveBtn = ev.target.closest('[data-move]');
     if(moveBtn){ moveItem(id, fromKey, moveBtn.dataset.move); closeMenus(); return; }
@@ -2173,16 +2189,16 @@ function updateSubjectDropdowns(){
     (data.materials.autos||[]).forEach(a => { if(a.subject) subjects.add(a.subject); });
     (data.materials.methodichki||[]).forEach(m => { if(m.subject) subjects.add(m.subject); });
   }
-  
+
   const opts = '<option value="">— Предмет —</option>' + Array.from(subjects).sort().map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
-  
+
   const hwSelect = document.querySelector('#hwSubjectSelect');
   if(hwSelect){
     const cur = hwSelect.value;
     hwSelect.innerHTML = opts;
     hwSelect.value = cur;
   }
-  
+
   document.querySelectorAll('.mat-subj').forEach(sel => {
     const cur = sel.value;
     sel.innerHTML = '<option value="">Предмет</option>' + Array.from(subjects).sort().map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
@@ -2223,9 +2239,10 @@ function renderHomework(){
   }
 
   function hwItemHtml(h, subj, doneGroup){
-    const fromCardTag = h.fromCard ? '<span class="hw-from-card">с карточки</span>' : '';
+    const color = getSubjectColor(subj);
+    const fromCardTag = h.fromCard ? `<span class="hw-from-card" style="--subj-color:${color}">с карточки</span>` : '';
     const check = h.done ? 'checked' : '';
-    return `<div class="hw-item${doneGroup ? ' done' : ''}" data-id="${h.id}" data-subject="${esc(subj)}">
+    return `<div class="hw-item${doneGroup ? ' done' : ''}" data-id="${h.id}" data-subject="${esc(subj)}" style="--subj-color:${color}">
       <label class="cl-check"><input type="checkbox" ${check}><span class="hw-box"></span></label>
       <span class="hw-text ${h.done ? 'strike' : ''}" contenteditable="true" data-hw-id="${h.id}" data-subject="${esc(subj)}">${esc(h.text)}</span>
       ${fromCardTag}
@@ -2237,9 +2254,11 @@ function renderHomework(){
   activeSubjects.forEach(subject => {
     const items = activeBySubject[subject];
     const collapsed = openGroups['hw_' + subject] === false;
+    const color = getSubjectColor(subject);
     const group = document.createElement('div');
     group.className = 'hw-group' + (collapsed ? ' collapsed' : '');
     group.dataset.subject = subject;
+    group.style.setProperty('--subj-color', color);
     const itemsHtml = items.map(h => hwItemHtml(h, subject, false)).join('');
     group.innerHTML = `<div class="hw-group-head"><span class="hw-dot"></span><span class="hw-name">${esc(subject)}</span><span class="hw-counter">${items.length}</span><span class="hw-arrow">▾</span></div><div class="hw-group-body">${itemsHtml}</div>`;
     list.appendChild(group);
@@ -2406,6 +2425,51 @@ $('#clubsList').addEventListener('input', e => {
   item[field] = e.target.value; save();
 });
 
+/* ============ ССЫЛКИ ============ */
+function renderLinks(){
+  const list = $('#linksList');
+  if(!list) return;
+  list.innerHTML = '';
+  if(!data.links || !data.links.length){
+    list.innerHTML = '<p class="empty"><div class="big">🔗</div>Пока нет ссылок</p>';
+    return;
+  }
+  data.links.forEach(l => {
+    const el = document.createElement('div');
+    el.className = 'link-item';
+    el.dataset.id = l.id;
+    el.innerHTML = `
+      <span class="link-fav">${esc((l.title||'?').trim().charAt(0).toUpperCase() || '?')}</span>
+      <div class="link-info">
+        <div class="link-title"><a href="${esc(l.url)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${esc(l.title)}</a></div>
+        <div class="link-url">${esc(l.url)}</div>
+      </div>
+      <button class="link-del" type="button" data-id="${l.id}">×</button>
+    `;
+    list.appendChild(el);
+  });
+}
+$('#linksAddForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const title = String(fd.get('title')||'').trim();
+  let url = String(fd.get('url')||'').trim();
+  if(!title || !url) return;
+  if(!/^https?:\/\//i.test(url)) url = 'https://' + url;
+  if(!data.links) data.links = [];
+  data.links.push({ id: uid(), title, url });
+  save(); renderLinks();
+  e.target.reset();
+  toast('Ссылка добавлена');
+});
+$('#linksList').addEventListener('click', e => {
+  const del = e.target.closest('.link-del');
+  if(!del) return;
+  const id = del.dataset.id;
+  data.links = data.links.filter(l => l.id !== id);
+  save(); renderLinks();
+});
+
 /* ============ МАТЕРИАЛЫ ============ */
 async function storeMaterialFile(file){
   const MAX_BASE64 = 1.5 * 1024 * 1024;
@@ -2433,18 +2497,18 @@ function renderMaterialList(arr, containerId, colId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
   if(!arr.length) container.innerHTML = '<div class="checklist-empty">Пусто</div>';
-  
+
   arr.forEach(item => {
     const el = document.createElement('div');
     el.className = 'mat-item' + (item.done ? ' done' : '');
     el.dataset.id = item.id;
     el.dataset.col = colId;
-    
+
     let content = '';
     if(item.type === 'text') content = `<span class="mat-text ${item.done ? 'strike' : ''}" contenteditable="true" data-id="${item.id}" data-col="${colId}">${esc(item.text)}</span>`;
     else if(item.type === 'image') content = `<a href="${esc(item.url)}" target="_blank"><img class="mat-img" src="${esc(item.url)}"></a>`;
     else content = `<a class="mat-link ${item.done ? 'strike' : ''}" href="${esc(item.url)}" target="_blank">📎 ${esc(item.name||'файл')}</a>`;
-    
+
     el.innerHTML = `
       <div style="display:flex;gap:8px;align-items:flex-start">
         <label class="cl-check" style="margin-top:2px">
@@ -2465,7 +2529,7 @@ function renderMaterialList(arr, containerId, colId) {
 function renderMaterials(){
   updateSubjectDropdowns();
   if(!data.materials) data.materials = { notes:[], autos:[], methodichki:[] };
-  
+
   renderMaterialList(data.materials.notes || [], 'materialsNotesList', 'notes');
   renderMaterialList(data.materials.autos || [], 'materialsAutosList', 'autos');
   renderMaterialList(data.materials.methodichki || [], 'materialsMethodichkiList', 'methodichki');
@@ -2558,7 +2622,7 @@ $('#viewMaterials').addEventListener('input', e => {
   const col = el.dataset.col;
   const item = data.materials[col].find(x => x.id === id);
   if(!item) return;
-  item.text = el.textContent; 
+  item.text = el.textContent;
   save();
 });
 
@@ -2592,8 +2656,58 @@ themeBtn.onclick = () => {
   renderAll();
 };
 
-/* ============ ПЛАНЕР (НОВЫЙ) ============ */
+/* ============ ПЛАНЕР ============ */
 let currentPlannerTab = 'daily';
+
+function svgCircularProgress(percent, done, total){
+  const r = 42;
+  const c = 2 * Math.PI * r;
+  const offset = c * (1 - Math.max(0, Math.min(100, percent)) / 100);
+  return `
+    <div class="ph-progress-block">
+      <svg class="cp-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="${r}" class="cp-bg"/>
+        <circle cx="50" cy="50" r="${r}" class="cp-fill"
+          style="stroke-dasharray:${c.toFixed(2)};stroke-dashoffset:${offset.toFixed(2)}"
+          transform="rotate(-90 50 50)"/>
+      </svg>
+      <div class="cp-center">
+        <div class="cp-percent">${percent}%</div>
+        <div class="cp-label">${done} / ${total}</div>
+      </div>
+    </div>
+  `;
+}
+
+function recurringMatchesDate(r, date){
+  const key = iso(date);
+  if(r.type === 'daily'){
+    if(Array.isArray(r.daysOfWeek) && r.daysOfWeek.length){
+      const dow = (date.getDay() + 6) % 7;
+      return r.daysOfWeek.includes(dow);
+    }
+    return true;
+  }
+  if(r.type === 'weekly'){
+    const dow = (date.getDay() + 6) % 7;
+    return r.dayOfWeek === dow;
+  }
+  if(r.type === 'monthly') return date.getDate() === r.dayOfMonth;
+  if(r.type === 'quarterly'){
+    const q = Math.floor(date.getMonth() / 3) + 1;
+    return q === r.quarter && date.getDate() === (r.dayOfMonth || 1);
+  }
+  if(r.type === 'halfYear'){
+    const half = date.getMonth() < 6 ? 1 : 2;
+    return half === r.half && date.getDate() === (r.dayOfMonth || 1);
+  }
+  return false;
+}
+
+function getRecurringForDate(date){
+  const list = (data.planner && data.planner.recurring) || [];
+  return list.filter(r => recurringMatchesDate(r, date));
+}
 
 function renderPlanner() {
   const container = document.getElementById('plannerContent');
@@ -2603,14 +2717,13 @@ function renderPlanner() {
   if (!data.planner.days) data.planner.days = {};
   if (!data.planner.habitList) data.planner.habitList = [];
   if (!data.planner.headers) data.planner.headers = defaultPlanner().headers;
+  if (!data.planner.recurring) data.planner.recurring = [];
 
   const key = iso(viewDate);
 
   const pTabBtns = document.querySelectorAll('.btn-planner');
   pTabBtns.forEach(btn => {
     btn.classList.toggle('active', btn.dataset.ptab === currentPlannerTab);
-    btn.style.color = btn.dataset.ptab === currentPlannerTab ? 'var(--on-tab-active)' : 'var(--text)';
-    btn.style.background = btn.dataset.ptab === currentPlannerTab ? 'var(--tab-active-bg)' : 'var(--card)';
   });
 
   if (currentPlannerTab === 'daily') {
@@ -2624,23 +2737,35 @@ function renderPlanner() {
     const totalTasks = important.length + additional.length;
     const doneTasks = important.filter(t=>t.done).length + additional.filter(t=>t.done).length;
     const progress = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
+    const dow = DOW_SHORT[(viewDate.getDay()+6)%7];
+    const dayNum = viewDate.getDate();
+    const monthName = MONTHS_GEN[viewDate.getMonth()];
+    const year = viewDate.getFullYear();
+
+    const recToday = getRecurringForDate(viewDate);
+    const recChecks = (data.planner.recurringChecks = data.planner.recurringChecks || {});
+    const recDone = recToday.filter(r => recChecks[r.id + '@' + key]).length;
 
     container.innerHTML = `
-      <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-        <button class="icon-btn" id="pPrevDay">‹</button>
-        <h3 style="margin:0; flex:1; text-align:center;" contenteditable="true" data-phead="title">${formatDateFull(viewDate)}</h3>
-        <button class="icon-btn" id="pNextDay">›</button>
-        <button class="btn-planner" style="background:var(--btn-accent); color:var(--on-btn-accent); padding:8px 12px; border-radius:8px;" id="pToday">Сегодня</button>
-      </div>
-
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-fill" style="width:${progress}%"></div>
-        <div class="progress-text">${doneTasks} / ${totalTasks} (${progress}%)</div>
+      <div class="planner-hero">
+        <div class="ph-nav">
+          <button class="ph-arrow" id="pPrevDay">‹</button>
+          <button class="ph-today" id="pToday">Сегодня</button>
+          <button class="ph-arrow" id="pNextDay">›</button>
+        </div>
+        <div class="ph-main">
+          <div class="ph-date-block">
+            <div class="ph-dow">${dow}</div>
+            <div class="ph-day">${dayNum}</div>
+            <div class="ph-month">${monthName} ${year}</div>
+          </div>
+          ${svgCircularProgress(progress, doneTasks, totalTasks)}
+        </div>
       </div>
 
       <div class="daily-planner-grid">
-        <div style="display:flex; flex-direction:column; gap:20px;">
-          
+        <div style="display:flex; flex-direction:column; gap:18px;">
+
           <div class="p-section">
             <div class="p-section-head" contenteditable="true" data-phead="important">${esc(data.planner.headers.important)}</div>
             <div class="p-list" id="pListImportant"></div>
@@ -2663,22 +2788,27 @@ function renderPlanner() {
             <div class="p-section-head" contenteditable="true" data-phead="schedule">${esc(data.planner.headers.schedule)}</div>
             <div class="p-list" id="pListSchedule"></div>
             <form class="p-add-form" data-list="schedule">
-              <input type="text" placeholder="Время" style="flex:0 0 60px;" class="p-time-input">
+              <input type="text" placeholder="Время" style="flex:0 0 70px;" class="p-time-input">
               <input type="text" placeholder="Дело..." required style="flex:1;">
               <button type="submit">+</button>
             </form>
           </div>
 
+          ${recToday.length ? `
+          <div class="p-section">
+            <div class="p-section-head">🔁 Повторяющиеся (${recDone}/${recToday.length})</div>
+            <div class="p-list" id="pListRecurring"></div>
+          </div>` : ''}
+
         </div>
-        
-        <div style="display:flex; flex-direction:column; gap:20px;">
-          
+
+        <div style="display:flex; flex-direction:column; gap:18px;">
+
           <div class="p-section">
             <div class="p-section-head" contenteditable="true" data-phead="habits">${esc(data.planner.headers.habits)}</div>
             <div class="habits-grid" id="pHabitGrid" style="grid-template-columns: 1fr repeat(7, 1fr);">
               <div style="font-size:10px; text-align:right; padding-right:8px; color:var(--muted);">Привычка</div>
               ${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<div style="font-size:10px; text-align:center; color:var(--muted);">${d}</div>`).join('')}
-              <!-- habits injected here -->
             </div>
             <form class="p-add-form" id="pAddHabitForm">
               <input type="text" placeholder="Новая привычка..." required>
@@ -2697,7 +2827,7 @@ function renderPlanner() {
 
           <div class="p-section">
             <div class="p-section-head" contenteditable="true" data-phead="notes">${esc(data.planner.headers.notes)}</div>
-            <textarea id="pNotesArea" style="width:100%; min-height:100px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:var(--text); outline:none; resize:vertical;">${esc(notes)}</textarea>
+            <textarea id="pNotesArea" style="width:100%; min-height:100px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px; color:var(--text); outline:none; resize:vertical; font-family:inherit;">${esc(notes)}</textarea>
           </div>
 
         </div>
@@ -2716,7 +2846,7 @@ function renderPlanner() {
           row.className = 'p-item' + (task.done ? ' done' : '');
           row.innerHTML = `
             <div class="tsk-check ${task.done ? 'checked' : ''}" data-action="toggle" data-list="${listName}" data-idx="${idx}"></div>
-            ${listName === 'schedule' ? `<span style="font-size:12px; color:var(--muted); flex:0 0 60px;">${esc(task.time||'')}</span>` : ''}
+            ${listName === 'schedule' ? `<span style="font-size:12px; color:var(--muted); flex:0 0 70px;">${esc(task.time||'')}</span>` : ''}
             <input type="text" value="${esc(task.text)}" data-action="edit" data-list="${listName}" data-idx="${idx}">
             <button class="p-del" data-action="del" data-list="${listName}" data-idx="${idx}">×</button>
           `;
@@ -2729,9 +2859,25 @@ function renderPlanner() {
     renderPList('pListSchedule', schedule, 'schedule');
     renderPList('pListDontForget', dontForget, 'dontForget');
 
+    // Recurring tasks for today
+    const recListEl = container.querySelector('#pListRecurring');
+    if (recListEl && recToday.length) {
+      recToday.forEach(r => {
+        const isDone = !!recChecks[r.id + '@' + key];
+        const row = document.createElement('div');
+        row.className = 'p-item' + (isDone ? ' done' : '');
+        row.innerHTML = `
+          <div class="tsk-check ${isDone ? 'checked' : ''}" data-rec-toggle="${r.id}"></div>
+          <input type="text" value="${esc(r.text)}" readonly tabindex="-1" style="cursor:default;">
+        `;
+        recListEl.appendChild(row);
+      });
+    }
+
+    // Habits grid
     const weekStart = startOfWeek(viewDate);
     const habitGrid = container.querySelector('#pHabitGrid');
-    data.planner.habitList.forEach((habit, hIdx) => {
+    data.planner.habitList.forEach((habit) => {
       const nameCell = document.createElement('div');
       nameCell.className = 'habit-name';
       nameCell.innerHTML = `<span contenteditable="true" data-habit-id="${habit.id}">${esc(habit.name)}</span> <button class="p-del" style="font-size:12px;" data-del-habit="${habit.id}">×</button>`;
@@ -2781,7 +2927,7 @@ function renderPlanner() {
     };
 
     container.querySelector('#plannerContent').addEventListener('click', e => {
-      if (e.target.classList.contains('tsk-check')) {
+      if (e.target.classList.contains('tsk-check') && e.target.dataset.list) {
         const listName = e.target.dataset.list;
         const idx = parseInt(e.target.dataset.idx);
         const list = data.planner.days[key][listName];
@@ -2789,6 +2935,12 @@ function renderPlanner() {
           list[idx].done = !list[idx].done;
           save(); renderPlanner();
         }
+      }
+      if (e.target.dataset.recToggle) {
+        const rid = e.target.dataset.recToggle;
+        const ck = rid + '@' + key;
+        recChecks[ck] = !recChecks[ck];
+        save(); renderPlanner();
       }
       if (e.target.classList.contains('p-del') && e.target.dataset.list) {
         const listName = e.target.dataset.list;
@@ -2848,29 +3000,31 @@ function renderPlanner() {
     const weekStart = startOfWeek(viewDate);
     let html = `<div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
       <button class="icon-btn" id="pPrevWeek">‹</button>
-      <h3 style="margin:0; flex:1; text-align:center;">Неделя: ${formatWeekRange(weekStart, addDays(weekStart, 6))}</h3>
+      <h3 style="margin:0; flex:1; text-align:center; font-size:15px;">${formatWeekRange(weekStart, addDays(weekStart, 6))}</h3>
       <button class="icon-btn" id="pNextWeek">›</button>
     </div>
     <div class="weekly-planner">`;
-    
+
     for (let i=0; i<7; i++) {
       const d = addDays(weekStart, i);
       const dKey = iso(d);
       const dayData = data.planner.days[dKey] || { important: [], additional: [] };
       const allTasks = [...(dayData.important||[]), ...(dayData.additional||[])];
-      
+      const doneCnt = allTasks.filter(t=>t.done).length;
+      const pct = allTasks.length ? Math.round((doneCnt / allTasks.length) * 100) : 0;
+
       html += `
         <div class="weekly-day">
           <div class="weekly-day-head">
             <div>${formatDateHuman(d)}</div>
-            <div style="font-size:10px; color:var(--muted); margin-top:4px;">${allTasks.length} задач</div>
+            <div style="font-size:11px; color:var(--muted); margin-top:4px;">${doneCnt}/${allTasks.length} · ${pct}%</div>
           </div>
           <div class="weekly-tasks">
-            ${allTasks.map(t => `<div style="font-size:12px; text-decoration:${t.done?'line-through':'none'}; opacity:${t.done?0.5:1}; margin-bottom:4px;">• ${esc(t.text)}</div>`).join('')}
-            ${!allTasks.length ? '<div style="font-size:12px; color:var(--muted); text-align:center;">Пусто</div>' : ''}
+            ${allTasks.map(t => `<div style="font-size:12px; text-decoration:${t.done?'line-through':'none'}; opacity:${t.done?0.5:1}; margin-bottom:6px; padding:4px 6px; background:var(--bg); border-radius:6px;">• ${esc(t.text)}</div>`).join('')}
+            ${!allTasks.length ? '<div style="font-size:12px; color:var(--muted); text-align:center; padding:10px;">Пусто</div>' : ''}
           </div>
           <div style="padding:10px; border-top:1px solid var(--border);">
-            <button class="btn-goto-day" data-date="${dKey}" style="width:100%; padding:6px; border-radius:6px; background:var(--btn-accent); color:var(--on-btn-accent); font-weight:bold;">Открыть день</button>
+            <button class="btn-goto-day" data-date="${dKey}" style="width:100%; padding:8px; border-radius:8px; background:var(--btn-accent); color:var(--on-btn-accent); font-weight:700; font-family:inherit; font-size:12px; cursor:pointer; border:none;">Открыть день</button>
           </div>
         </div>
       `;
@@ -2897,18 +3051,18 @@ function renderPlanner() {
           <button class="icon-btn" id="pNextMonth">›</button>
         </div>
         <div class="mc-grid" id="pMonthlyGrid">
-          ${DOW_SHORT.map(d=>`<div style="text-align:center; font-size:12px; font-weight:bold; padding:10px 0;">${d}</div>`).join('')}
+          ${DOW_SHORT.map(d=>`<div style="text-align:center; font-size:12px; font-weight:bold; padding:10px 0; color:var(--muted);">${d}</div>`).join('')}
         </div>
       </div>
     `;
     container.innerHTML = html;
-    
+
     const grid = container.querySelector('#pMonthlyGrid');
     const y = calTabMonth.getFullYear(), m = calTabMonth.getMonth();
     const so = (new Date(y, m, 1).getDay() + 6) % 7;
     const dim = new Date(y, m + 1, 0).getDate();
     const today = todayDate();
-    
+
     for(let i=0; i<so; i++) {
       grid.innerHTML += `<div></div>`;
     }
@@ -2917,16 +3071,17 @@ function renderPlanner() {
       const key = iso(date);
       const dayData = data.planner.days[key] || { important: [], additional: [] };
       const total = (dayData.important||[]).length + (dayData.additional||[]).length;
+      const doneCnt = [...(dayData.important||[]), ...(dayData.additional||[])].filter(t=>t.done).length;
       const isToday = sameDay(date, today);
-      
+
       grid.innerHTML += `
         <div class="mc-day ${isToday?'today':''}" data-date="${key}">
           <span class="num">${d}</span>
-          ${total ? `<div class="mc-dots"><div class="mc-dot"></div></div>` : ''}
+          ${total ? `<div class="mc-dots">${doneCnt===total ? '<div class="mc-dot" style="background:var(--lms)"></div>' : '<div class="mc-dot"></div>'}</div>` : ''}
         </div>
       `;
     }
-    
+
     container.querySelector('#pPrevMonth').onclick = () => { calTabMonth.setMonth(calTabMonth.getMonth() - 1); renderPlanner(); };
     container.querySelector('#pNextMonth').onclick = () => { calTabMonth.setMonth(calTabMonth.getMonth() + 1); renderPlanner(); };
     grid.querySelectorAll('.mc-day').forEach(cell => {
@@ -2938,52 +3093,89 @@ function renderPlanner() {
     });
 
   } else if (currentPlannerTab === 'recurring') {
-    container.innerHTML = `
-      <div class="p-section">
-        <div class="p-section-head">Повторяющиеся задачи</div>
-        <div class="p-list" id="pRecList"></div>
-        <form class="p-add-form" id="pRecAddForm" style="margin-top:10px;">
-          <input type="text" placeholder="Задача..." required style="flex:2;">
-          <select style="flex:1; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:6px;">
-            <option value="daily">Каждый день</option>
-            <option value="weekly">Каждую неделю</option>
-            <option value="monthly">Каждый месяц</option>
-          </select>
-          <button type="submit">+</button>
-        </form>
-      </div>
-    `;
-    const list = container.querySelector('#pRecList');
-    const recs = data.planner.excel?.daily || [];
-    if(!recs.length) list.innerHTML = '<div style="color:var(--muted); font-size:12px;">Пока нет повторяющихся задач</div>';
-    recs.forEach((r, i) => {
-      const row = document.createElement('div');
-      row.className = 'p-item';
-      row.innerHTML = `
-        <input type="text" value="${esc(r.text)}" data-rec-idx="${i}">
-        <button class="p-del" data-rec-del="${i}">×</button>
+    const recs = data.planner.recurring || [];
+    const typeLabels = { daily: 'Ежедневно', weekly: 'Еженедельно', monthly: 'Ежемесячно', quarterly: 'Ежеквартально', halfYear: 'Раз в полгода' };
+    const grouped = { daily: [], weekly: [], monthly: [], quarterly: [], halfYear: [] };
+    recs.forEach(r => { if (grouped[r.type]) grouped[r.type].push(r); });
+
+    let html = `<div style="display:flex;flex-direction:column;gap:18px;">`;
+    Object.keys(grouped).forEach(type => {
+      const list = grouped[type];
+      html += `
+        <div class="p-section">
+          <div class="p-section-head">🔁 ${typeLabels[type]}</div>
+          <div class="p-list" id="pRecList_${type}"></div>
+          <form class="p-add-form" data-rec-type="${type}">
+            <input type="text" placeholder="Текст задачи..." required style="flex:2;">
+            ${type === 'weekly' ? `<select class="p-rec-dow" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px;font-family:inherit;font-size:12px;">${DOW_SHORT.map((d,i)=>`<option value="${i}">${d}</option>`).join('')}</select>` : ''}
+            ${type === 'monthly' ? `<input type="number" min="1" max="31" placeholder="День" class="p-rec-dom" style="width:70px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px;font-family:inherit;font-size:12px;">` : ''}
+            ${type === 'quarterly' ? `<select class="p-rec-q" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px;font-family:inherit;font-size:12px;"><option value="1">I</option><option value="2">II</option><option value="3">III</option><option value="4">IV</option></select><input type="number" min="1" max="31" placeholder="День" class="p-rec-dom" style="width:70px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px;font-family:inherit;font-size:12px;">` : ''}
+            ${type === 'halfYear' ? `<select class="p-rec-half" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px;font-family:inherit;font-size:12px;"><option value="1">I</option><option value="2">II</option></select><input type="number" min="1" max="31" placeholder="День" class="p-rec-dom" style="width:70px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:6px;font-family:inherit;font-size:12px;">` : ''}
+            <button type="submit">+</button>
+          </form>
+        </div>
       `;
-      list.appendChild(row);
     });
-    
-    container.querySelector('#pRecAddForm').onsubmit = (e) => {
-      e.preventDefault();
-      const text = e.target.querySelector('input[type="text"]').value.trim();
-      if(!text) return;
-      if(!data.planner.excel) data.planner.excel = { daily: [] };
-      data.planner.excel.daily.push({ id: uid(), text, checks: [] });
-      save(); renderPlanner();
-    };
-    list.addEventListener('click', e => {
-      if(e.target.dataset.recDel) {
-        data.planner.excel.daily.splice(parseInt(e.target.dataset.recDel), 1);
+    html += `</div>`;
+    container.innerHTML = html;
+
+    Object.keys(grouped).forEach(type => {
+      const listEl = container.querySelector(`#pRecList_${type}`);
+      if (!listEl) return;
+      if (!grouped[type].length) {
+        listEl.innerHTML = '<div style="color:var(--muted); font-size:12px; padding:5px;">Пока нет задач</div>';
+      } else {
+        grouped[type].forEach((r, idx) => {
+          const row = document.createElement('div');
+          row.className = 'p-item';
+          let meta = '';
+          if (type === 'weekly') meta = ' · ' + DOW_SHORT[r.dayOfWeek || 0];
+          if (type === 'monthly') meta = ' · ' + (r.dayOfMonth || 1) + '-е число';
+          if (type === 'quarterly') meta = ' · ' + (r.quarter || 1) + ' кв., ' + (r.dayOfMonth || 1) + '-е';
+          if (type === 'halfYear') meta = ' · ' + (r.half || 1) + ' пол., ' + (r.dayOfMonth || 1) + '-е';
+          row.innerHTML = `
+            <input type="text" value="${esc(r.text)}" data-rec-id="${r.id}">
+            <span style="font-size:11px; color:var(--muted); flex:0 0 auto;">${esc(meta)}</span>
+            <button class="p-del" data-rec-del="${r.id}">×</button>
+          `;
+          listEl.appendChild(row);
+        });
+      }
+
+      const form = container.querySelector(`form[data-rec-type="${type}"]`);
+      if (form) {
+        form.onsubmit = (e) => {
+          e.preventDefault();
+          const text = form.querySelector('input[type="text"]').value.trim();
+          if (!text) return;
+          const rec = { id: uid(), type, text, checks: {} };
+          if (type === 'weekly') {
+            rec.dayOfWeek = parseInt(form.querySelector('.p-rec-dow').value, 10) || 0;
+          } else if (type === 'monthly') {
+            rec.dayOfMonth = Math.max(1, Math.min(31, parseInt(form.querySelector('.p-rec-dom').value, 10) || 1));
+          } else if (type === 'quarterly') {
+            rec.quarter = parseInt(form.querySelector('.p-rec-q').value, 10) || 1;
+            rec.dayOfMonth = Math.max(1, Math.min(31, parseInt(form.querySelector('.p-rec-dom').value, 10) || 1));
+          } else if (type === 'halfYear') {
+            rec.half = parseInt(form.querySelector('.p-rec-half').value, 10) || 1;
+            rec.dayOfMonth = Math.max(1, Math.min(31, parseInt(form.querySelector('.p-rec-dom').value, 10) || 1));
+          }
+          data.planner.recurring.push(rec);
+          save(); renderPlanner();
+        };
+      }
+    });
+
+    container.querySelector('#plannerContent').addEventListener('click', e => {
+      if (e.target.dataset.recDel) {
+        data.planner.recurring = data.planner.recurring.filter(r => r.id !== e.target.dataset.recDel);
         save(); renderPlanner();
       }
     });
-    list.addEventListener('input', e => {
-      if(e.target.dataset.recIdx) {
-        data.planner.excel.daily[parseInt(e.target.dataset.recIdx)].text = e.target.value;
-        save();
+    container.querySelector('#plannerContent').addEventListener('input', e => {
+      if (e.target.dataset.recId) {
+        const rec = data.planner.recurring.find(r => r.id === e.target.dataset.recId);
+        if (rec) { rec.text = e.target.value; save(); }
       }
     });
 
@@ -2991,7 +3183,7 @@ function renderPlanner() {
     container.innerHTML = `
       <div class="p-section">
         <div class="p-section-head">Заметки / Проекты / Идеи</div>
-        <textarea id="pGlobalNotes" style="width:100%; min-height:300px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:var(--text); outline:none; resize:vertical;">${esc(data.planner.excel?.extra || '')}</textarea>
+        <textarea id="pGlobalNotes" style="width:100%; min-height:300px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:12px; color:var(--text); outline:none; resize:vertical; font-family:inherit;">${esc(data.planner.excel?.extra || '')}</textarea>
       </div>
     `;
     container.querySelector('#pGlobalNotes').addEventListener('input', e => {
@@ -3104,17 +3296,17 @@ function openProfileLinksModal(){
   });
 }
 
-profileBtn.addEventListener('click', e => { 
-  e.stopPropagation(); 
-  closeMenus(); 
-  openProfileMenu(); 
+profileBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  closeMenus();
+  openProfileMenu();
 });
 
 function openProfileMenu(){
   document.body.style.overflow = 'hidden';
   const menu = document.createElement('div');
   menu.className = 'menu profile-menu';
-  
+
   const rect = profileBtn.getBoundingClientRect();
   menu.style.top = `${rect.bottom + 8}px`;
   menu.style.right = `${window.innerWidth - rect.right}px`;
@@ -3140,8 +3332,6 @@ function openProfileMenu(){
   let extra;
   if(isAdmin){
     extra = `
-      <button data-act="openPlannerNewTab">↗️ Планер (новая вкладка)</button>
-      <hr>
       <button data-act="adminLogout">🚪 Выйти из админа</button>
       <button data-act="profileLinks">🔗 Ссылки профилей</button>
       <button data-act="actions">⚙️ Действия и экспорт</button>
@@ -3150,8 +3340,6 @@ function openProfileMenu(){
       <button data-act="newProfile">➕ Новый профиль</button>`;
   } else {
     extra = `
-      <button data-act="openPlannerNewTab">↗️ Планер (новая вкладка)</button>
-      <hr>
       <button data-act="adminLogin">🔑 Войти как админ</button>
       <button data-act="changeAvatar">🖼 Сменить аватарку</button>
       <button data-act="actionsUser">⚙️ Мои действия</button>`;
@@ -3213,7 +3401,6 @@ function openProfileMenu(){
     const act = ev.target.closest('[data-act]');
     if(!act) return;
     const a = act.dataset.act;
-    if(a === 'openPlannerNewTab'){ closeMenus(); window.open(window.location.pathname + '?planner=true', '_blank'); return; }
     if(a === 'adminLogin'){ closeMenus(); adminLogin(); return; }
     if(a === 'adminLogout'){ closeMenus(); adminLogout(); return; }
     if(a === 'profileLinks'){
@@ -3413,6 +3600,10 @@ function exportICS(){
   toast(`Экспортировано ${count} событий`);
 }
 
+function exportPDF(kind){
+  toast('PDF-экспорт не реализован в этой версии');
+}
+
 $('#searchInput').addEventListener('input', () => renderList());
 $('#searchClear').addEventListener('click', () => { $('#searchInput').value = ''; renderList(); });
 
@@ -3424,6 +3615,7 @@ function renderAll(){
   if(currentTab === 'homework') renderHomework();
   if(currentTab === 'clubs') renderClubs();
   if(currentTab === 'materials') renderMaterials();
+  if(currentTab === 'links') renderLinks();
 }
 
 async function initApp(){
@@ -3435,7 +3627,7 @@ async function initApp(){
     plannerBody.className = 'planner-modal-content';
     plannerBody.id = 'plannerStandaloneBody';
     standaloneContainer.appendChild(plannerBody);
-    
+
     try {
       await loadCloudData();
       if (!data || !data.planner) data = defaultData();
@@ -3444,7 +3636,7 @@ async function initApp(){
       console.error(e);
       plannerBody.innerHTML = '<div style="padding:20px; color:red;">Ошибка загрузки планера. Попробуйте обновить страницу.</div>';
     }
-    
+
     subscribeRealtime();
     return;
   }
@@ -3459,7 +3651,7 @@ async function initApp(){
 
   switchTab('home');
   await loadCloudData();
-  
+
   autoCrossOut();
   setInterval(autoCrossOut, 30000);
   checkReminders();
@@ -3492,6 +3684,11 @@ async function loadCloudData() {
   rebuildAndRender();
   setSyncStatus('synced');
   subscribeRealtime();
+}
+
+function renderPlannerContent(container) {
+  // Not used in main flow — standalone planner tab uses renderPlanner()
+  container.innerHTML = '<div style="padding:20px; color:var(--muted);">Планер доступен во вкладке «Планер».</div>';
 }
 
 initApp();
