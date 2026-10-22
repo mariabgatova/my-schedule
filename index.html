@@ -10,36 +10,55 @@
 <style>
   /* ===== ЦВЕТОВЫЕ ПАЛИТРЫ ===== */
   :root {
-    /* Темная (объединенная) */
-    --c-dark-bg: #0B0718;
-    --c-dark-card: #160150;
-    --c-dark-border: #400072;
-    --c-dark-accent: #692FFF;
-    --c-dark-pink: #C146FE;
-    --c-dark-cyan: #56D7FF;
-    --c-dark-yellow: #FFC846;
-    --c-dark-red: #A92B2B;
+    /* Темная тема (СТРОГО ПО ВАШИМ КОДАМ) */
+    --dark-bg: #080B26;
+    --dark-card: #1B1A2F;
+    --dark-card-alt: #160150;
+    --dark-border: #1E2786;
+    --dark-hover: #242E49;
+    --dark-muted: #37415C;
     
-    /* Светлая */
-    --c-light-bg: #F8F9FA;
-    --c-light-card: #FFFFFF;
-    --c-light-border: #E5E7EB;
-    --c-light-accent: #692FFF;
-    --c-light-text: #1A1A1A;
-    --c-light-muted: #6B7280;
+    --dark-accent: #C6515C;
+    --dark-btn: #b41b2d;
+    --dark-tab-active: #400072;
+    --dark-text: #FFFFFF;
+    
+    --dark-type-lec: #524F9D;
+    --dark-type-prac: #600095;
+    --dark-type-lab: #b41b2d;
+    --dark-extra: #8A5286;
+    --dark-maroon: #54162B;
+
+    /* Светлая тема (СТРОГО ПО ВАШИМ КОДАМ) */
+    --light-bg: #F8F9FA;
+    --light-card: #FFFFFF;
+    --light-text: #1A1A1A;
+    --light-muted: #6B7280;
+    --light-border: #E5E7EB;
+    
+    --light-accent: #692FFF;
+    --light-btn: #692FFF;
+    --light-tab-active: #0DD0E7;
+    --light-text-active: #000000;
+    
+    --light-type-lec: #56D7FF;
+    --light-type-prac: #FCF846;
+    --light-type-lab: #C146FE;
+    --light-miss: #A92B2B;
   }
 
+  /* ===== ТЕМЫ ===== */
   [data-theme="dark"] {
-    --bg: var(--c-dark-bg);
-    --card: var(--c-dark-card);
-    --text: #F0F0F5;
-    --muted: #A0A5BA;
-    --border: var(--c-dark-border);
-    --accent: var(--c-dark-accent);
+    --bg: var(--dark-bg);
+    --card: var(--dark-card);
+    --text: var(--dark-text);
+    --muted: var(--dark-muted);
+    --border: var(--dark-border);
+    --accent: var(--dark-accent);
     --on-accent: #FFFFFF;
-    --hover: #1E2786;
-    --lms: var(--c-dark-cyan);
-    --miss: var(--c-dark-red);
+    --hover: var(--dark-hover);
+    --lms: var(--dark-type-lec);
+    --miss: var(--dark-type-lab);
     --shadow: 0 8px 30px rgba(0,0,0,.6);
     
     --icon-bg: var(--card);
@@ -47,29 +66,29 @@
     --card-radius: 20px;
     --card-border: 1px solid var(--border);
     
-    --tab-active-bg: var(--c-dark-accent);
+    --tab-active-bg: var(--dark-tab-active);
     --on-tab-active: #FFFFFF;
     
-    --strike-color: var(--c-dark-pink);
-    --btn-accent: var(--c-dark-accent);
+    --strike-color: var(--dark-accent);
+    --btn-accent: var(--dark-btn);
     --on-btn-accent: #FFFFFF;
     
-    --type-lec: var(--c-dark-cyan);
-    --type-prac: var(--c-dark-yellow);
-    --type-lab: var(--c-dark-pink);
+    --type-lec: var(--dark-type-lec);
+    --type-prac: var(--dark-type-prac);
+    --type-lab: var(--dark-type-lab);
   }
 
   [data-theme="light"] {
-    --bg: var(--c-light-bg);
-    --card: var(--c-light-card);
-    --text: var(--c-light-text);
-    --muted: var(--c-light-muted);
-    --border: var(--c-light-border);
-    --accent: var(--c-light-accent);
+    --bg: var(--light-bg);
+    --card: var(--light-card);
+    --text: var(--light-text);
+    --muted: var(--light-muted);
+    --border: var(--light-border);
+    --accent: var(--light-accent);
     --on-accent: #FFFFFF;
     --hover: #F3F4F6;
-    --lms: var(--c-dark-cyan);
-    --miss: var(--c-dark-red);
+    --lms: var(--light-type-lec);
+    --miss: var(--light-miss);
     --shadow: 0 4px 20px rgba(0,0,0,.05);
     
     --icon-bg: var(--card);
@@ -77,60 +96,28 @@
     --card-radius: 14px;
     --card-border: none;
     
-    --tab-active-bg: var(--c-light-accent);
-    --on-tab-active: #FFFFFF;
+    --tab-active-bg: var(--light-tab-active);
+    --on-tab-active: var(--light-text-active);
     
     --strike-color: currentColor;
-    --btn-accent: var(--c-light-accent);
+    --btn-accent: var(--light-btn);
     --on-btn-accent: #FFFFFF;
     
-    --type-lec: var(--c-dark-accent);
-    --type-prac: var(--c-dark-cyan);
-    --type-lab: var(--c-dark-red);
+    --type-lec: var(--light-type-lec);
+    --type-prac: var(--light-type-prac);
+    --type-lab: var(--light-type-lab);
   }
 
-  [data-theme="pink"] {
-    --bg: #FFF0F5;
-    --card: #FFFFFF;
-    --text: #603A48;
-    --muted: #A88492;
-    --border: #FBCFE8;
-    --accent: #F06292;
-    --on-accent: #FFFFFF;
-    --hover: #FCE7F3;
-    --lms: #10B981;
-    --miss: #EF4444;
-    --shadow: 0 4px 20px rgba(240,98,146,.12);
-    
-    --icon-bg: var(--card);
-    --icon-border: var(--border);
-    --card-radius: 14px;
-    --card-border: none;
-    
-    --tab-active-bg: var(--accent);
-    --on-tab-active: #FFFFFF;
-    
-    --strike-color: currentColor;
-    --btn-accent: var(--accent);
-    --on-btn-accent: #FFFFFF;
-    
-    --type-lec: #10B981;
-    --type-prac: #3B82F6;
-    --type-lab: #EF4444;
-  }
-  
-  [data-theme="pink"] body {
-    background-image: radial-gradient(#FBCFE8 1.5px, transparent 1.5px);
-    background-size: 24px 24px;
-  }
-
+  /* ===== БАЗА ===== */
   * { box-sizing: border-box; }
-  
-  html { transition: background .5s ease; scroll-behavior: smooth; overflow-x: hidden; }
-  body { margin:0; padding:14px 14px 110px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif; background:var(--bg); color:var(--text); transition: background .5s ease, color .5s ease; -webkit-font-smoothing:antialiased; overflow-x: hidden; }
-  body * { transition: background-color .3s ease, border-color .3s ease, color .3s ease, box-shadow .3s ease; }
+  html { transition: background .3s ease; scroll-behavior: smooth; overflow-x: hidden; }
+  body { margin:0; padding:14px 14px 110px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif; background:var(--bg); color:var(--text); transition: background .3s ease, color .3s ease; -webkit-font-smoothing:antialiased; overflow-x: hidden; }
+  body * { transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
 
   input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+  
+  /* Фикс для всех кнопок, чтобы не было стандартных стилей */
+  button { font-family: inherit; cursor: pointer; border: none; background: transparent; color: inherit; padding: 0; }
 
   /* ===== СЛАЙДЕР ===== */
   .slider-container { position: relative; overflow: hidden; }
@@ -138,7 +125,7 @@
     position: absolute;
     background: var(--tab-active-bg);
     border-radius: 16px;
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), width 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 1;
     pointer-events: none;
     will-change: transform, width;
@@ -146,7 +133,7 @@
   .slider-container button, .slider-container .day {
     position: relative;
     z-index: 2;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
   }
 
   /* ===== СВАЙП-АНИМАЦИЯ ===== */
@@ -154,14 +141,8 @@
   .view { display: flex; flex-direction: column; width: 100%; will-change: transform, opacity; }
   .view[hidden] { display: none !important; }
   
-  @keyframes slideInRight {
-    from { transform: translate3d(40px, 0, 0); opacity: 0; }
-    to { transform: translate3d(0, 0, 0); opacity: 1; }
-  }
-  @keyframes slideInLeft {
-    from { transform: translate3d(-40px, 0, 0); opacity: 0; }
-    to { transform: translate3d(0, 0, 0); opacity: 1; }
-  }
+  @keyframes slideInRight { from { transform: translate3d(40px, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
+  @keyframes slideInLeft { from { transform: translate3d(-40px, 0, 0); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
   
   .view.slide-in-right { animation: slideInRight 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
   .view.slide-in-left { animation: slideInLeft 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
@@ -345,16 +326,18 @@
   .cal-dow span { font-size:10.5px; font-weight:700; color:var(--muted); text-align:center; letter-spacing:.4px; padding:2px 0; }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
   
-  /* Убрал огромный круг */
+  /* Убран огромный круг, сделан аккуратный кружок вокруг цифры */
   .cal-cell { aspect-ratio:1; border:1px solid transparent; background:transparent; border-radius:12px; cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px; font-family:inherit; overflow:hidden; }
   .cal-cell.empty { visibility:hidden; pointer-events:none; }
-  .cal-cell .num { font-size:15px; font-weight:700; color:var(--text); line-height:1; }
+  .cal-cell .num { 
+    font-size:15px; font-weight:700; color:var(--text); line-height:1; 
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
   
-  .cal-cell.today { border-color:var(--accent); border-width: 2px; }
-  .cal-cell.today .num { color:var(--accent); font-weight:800; }
+  .cal-cell.today .num { background:var(--accent); color:var(--on-accent); }
   
   .cal-cell.selected { background:var(--accent); border-color:var(--accent); }
-  .cal-cell.selected .num { color:var(--on-accent); }
+  .cal-cell.selected .num { color:var(--on-accent); background: transparent; }
   
   .cal2-dots { display:flex; gap:2px; justify-content:center; flex-wrap:wrap; max-width:100%; min-height:6px; margin-top:2px; }
   .cal2-dot { width:6px; height:6px; border-radius:50%; flex:0 0 auto; }
@@ -480,7 +463,7 @@
   
   .toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%); background:#f2f4fb; color:#0e0f14; padding:14px 24px; border-radius:16px; font-size:14px; box-shadow:0 8px 30px rgba(0,0,0,.5); z-index:200; max-width:88vw; text-align:center; font-weight:600; }
   [data-theme="light"] .toast { background:#1b1f2a; color:#fff; }
-  [data-theme="dark"] .toast { background:var(--c-dark-card); color:#fff; border:1px solid var(--border); }
+  [data-theme="dark"] .toast { background:var(--dark-card); color:#fff; border:1px solid var(--border); }
   
   /* ===== МАТЕРИАЛЫ ===== */
   .materials-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
@@ -523,7 +506,7 @@
     .tabbar { bottom:10px; width:calc(100% - 20px); }
     .tabbar button { font-size:8px; }
     .club-item { grid-template-columns:64px 1fr auto; }
-    .cal-cell .num { font-size:15px; }
+    .cal-cell .num { font-size:15px; width: 24px; height: 24px; }
     .cal2-dot { width:6px; height:6px; }
     .card-hw-add input { font-size:12px; }
   }
@@ -875,20 +858,10 @@ function relativeDayLabel(date){
 function isDark(){ return document.documentElement.dataset.theme === 'dark'; }
 
 function getTypeColor(type) {
-  const isD = isDark();
-  if (type === 'lec') return isD ? 'var(--c-dark-cyan)' : 'var(--c-light-accent)'; 
-  if (type === 'prac') return isD ? 'var(--c-dark-yellow)' : 'var(--c-dark-cyan)';
-  if (type === 'lab') return isD ? 'var(--c-dark-pink)' : 'var(--c-dark-red)';
+  if (type === 'lec') return 'var(--type-lec)';
+  if (type === 'prac') return 'var(--type-prac)';
+  if (type === 'lab') return 'var(--type-lab)';
   return NO_TYPE_COLOR;
-}
-
-function subjectColor(name) {
-  const s = String(name||'').trim().toLowerCase();
-  if(!s) return NO_TYPE_COLOR;
-  let hash = 0;
-  for (let i = 0; i < s.length; i++) hash = s.charCodeAt(i) + ((hash << 5) - hash);
-  const hue = Math.abs(hash) % 360;
-  return `hsl(${hue}, 65%, ${isDark() ? 60 : 45}%)`;
 }
 
 function classColor(item){
@@ -900,7 +873,7 @@ function applyCardColor(card, item){
   card.style.setProperty('--c', c);
 }
 function dotColorForClub(club){
-  return isDark() ? 'var(--c-dark-accent)' : 'var(--c-dark-cyan)';
+  return 'var(--accent)';
 }
 
 function classState(item, dateKey){
@@ -2133,7 +2106,7 @@ function renderCalendarHomework(){
     el.innerHTML = `
       <label class="cl-check"><input type="checkbox" ${h.done?'checked':''}><span class="hw-box"></span></label>
       <div class="hw-body">
-        <div class="hw-subj" style="color: ${subjectColor(h.subject)}">${esc(h.subject)}</div>
+        <div class="hw-subj">${esc(h.subject)}</div>
         <div class="hw-txt ${h.done ? 'strike' : ''}">${esc(h.text)}</div>
       </div>
     `;
@@ -2273,9 +2246,8 @@ function renderHomework(){
   function hwItemHtml(h, subj, doneGroup){
     const fromCardTag = h.fromCard ? '<span class="hw-from-card">с карточки</span>' : '';
     const check = h.done ? 'checked' : '';
-    const sColor = subjectColor(subj);
     return `<div class="hw-item${doneGroup ? ' done' : ''}" data-id="${h.id}" data-subject="${esc(subj)}">
-      <label class="cl-check"><input type="checkbox" ${check}><span class="hw-box" style="border-color:${sColor}"></span></label>
+      <label class="cl-check"><input type="checkbox" ${check}><span class="hw-box"></span></label>
       <span class="hw-text ${h.done ? 'strike' : ''}" contenteditable="true" data-hw-id="${h.id}" data-subject="${esc(subj)}">${esc(h.text)}</span>
       ${fromCardTag}
       <input type="date" class="hw-dl-input" value="${esc(h.deadline||'')}" data-hw-id="${h.id}" data-subject="${esc(subj)}">
@@ -2289,10 +2261,8 @@ function renderHomework(){
     const group = document.createElement('div');
     group.className = 'hw-group' + (collapsed ? ' collapsed' : '');
     group.dataset.subject = subject;
-    const sColor = subjectColor(subject);
-    group.style.borderLeftColor = sColor;
     const itemsHtml = items.map(h => hwItemHtml(h, subject, false)).join('');
-    group.innerHTML = `<div class="hw-group-head"><span class="hw-dot" style="background:${sColor}"></span><span class="hw-name">${esc(subject)}</span><span class="hw-counter">${items.length}</span><span class="hw-arrow">▾</span></div><div class="hw-group-body">${itemsHtml}</div>`;
+    group.innerHTML = `<div class="hw-group-head"><span class="hw-dot"></span><span class="hw-name">${esc(subject)}</span><span class="hw-counter">${items.length}</span><span class="hw-arrow">▾</span></div><div class="hw-group-body">${itemsHtml}</div>`;
     list.appendChild(group);
   });
 
@@ -2658,11 +2628,11 @@ $('#linksList').addEventListener('click', e => {
   save(); renderLinks();
 });
 
-const THEMES = ['light', 'dark', 'pink'];
+const THEMES = ['dark', 'light'];
 const themeBtn = $('#themeBtn');
 function applyTheme(t){
   document.documentElement.dataset.theme = t;
-  themeBtn.textContent = t === 'dark' ? '🌙' : t === 'pink' ? '🌸' : '☀️';
+  themeBtn.textContent = t === 'dark' ? '🌙' : '☀️';
   localStorage.setItem('theme', t);
   setTimeout(() => {
     moveSlider(document.getElementById('tabbar'));
@@ -2684,6 +2654,11 @@ function renderPlannerContent(container) {
   const weekStart = startOfWeek(today);
   const weekEnd = addDays(weekStart, 6);
   const weekRangeStr = formatWeekRange(weekStart, weekEnd);
+  
+  // Fallback safety
+  if (!data.planner) data.planner = defaultPlanner();
+  if (!data.planner.excel) data.planner.excel = defaultPlanner().excel;
+  if (!data.planner.excel.headers) data.planner.excel.headers = defaultPlanner().excel.headers;
   
   let html = `
     <div class="planner-header">
@@ -2791,7 +2766,7 @@ function renderPlannerContent(container) {
 
         <!-- Ежедневно -->
         <div class="excel-section">
-          <div class="excel-section-head" contenteditable="true">${data.planner.excel.headers.daily}</div>
+          <div class="excel-section-head" contenteditable="true" data-header="daily">${esc(data.planner.excel.headers.daily)}</div>
           <div class="excel-section-body">
             <table class="excel-table">
               <thead>
@@ -2822,7 +2797,7 @@ function renderPlannerContent(container) {
 
         <!-- Ежемесячно -->
         <div class="excel-section">
-          <div class="excel-section-head" contenteditable="true">${data.planner.excel.headers.monthly}</div>
+          <div class="excel-section-head" contenteditable="true" data-header="monthly">${esc(data.planner.excel.headers.monthly)}</div>
           <div class="excel-section-body">
             <table class="excel-table">
               <thead>
@@ -2857,7 +2832,7 @@ function renderPlannerContent(container) {
         <div class="excel-grid-2">
           <!-- Ежеквартально -->
           <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true">${data.planner.excel.headers.quarterly}</div>
+            <div class="excel-section-head" contenteditable="true" data-header="quarterly">${esc(data.planner.excel.headers.quarterly)}</div>
             <div class="excel-section-body">
               <table class="excel-table">
                 <thead><tr><th style="width: 40px;"></th><th contenteditable="true">Задача</th><th>I</th><th>II</th><th>III</th><th>IV</th></tr></thead>
@@ -2880,7 +2855,7 @@ function renderPlannerContent(container) {
 
           <!-- Раз в полгода -->
           <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true">${data.planner.excel.headers.halfYear}</div>
+            <div class="excel-section-head" contenteditable="true" data-header="halfYear">${esc(data.planner.excel.headers.halfYear)}</div>
             <div class="excel-section-body">
               <table class="excel-table">
                 <thead><tr><th style="width: 40px;"></th><th contenteditable="true">Задача</th><th>1</th><th>2</th></tr></thead>
@@ -2905,13 +2880,13 @@ function renderPlannerContent(container) {
         <!-- Дополнительно и Идеи -->
         <div class="excel-grid-2">
           <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true">${data.planner.excel.headers.extra}</div>
+            <div class="excel-section-head" contenteditable="true" data-header="extra">${esc(data.planner.excel.headers.extra)}</div>
             <div class="excel-section-body">
               <textarea class="excel-textarea" id="excelExtra" placeholder="Тестовый проект...">${esc(data.planner.excel && data.planner.excel.extra || '')}</textarea>
             </div>
           </div>
           <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true">${data.planner.excel.headers.ideas}</div>
+            <div class="excel-section-head" contenteditable="true" data-header="ideas">${esc(data.planner.excel.headers.ideas)}</div>
             <div class="excel-section-body">
               <textarea class="excel-textarea" id="excelIdeas" placeholder="Новая таблица / автоматизация...">${esc(data.planner.excel && data.planner.excel.ideas || '')}</textarea>
             </div>
@@ -2992,12 +2967,11 @@ function renderPlannerContent(container) {
     if (!data.planner.excel.days) data.planner.excel.days = {};
 
     // Headers editing
-    exContainer.querySelectorAll('.excel-section-head').forEach(head => {
+    exContainer.querySelectorAll('[data-header]').forEach(head => {
       head.addEventListener('input', (e) => {
-        const key = head.textContent.trim(); // This is a rough way to map it, better to use data attributes
-        // Since there's no data attribute, let's add one in the render. 
-        // Or just ignore saving headers for now as it's complex to map back. 
-        // Actually, I will just save the text content if I use a specific data-id
+        const key = head.dataset.header;
+        data.planner.excel.headers[key] = e.target.textContent;
+        save();
       });
     });
 
@@ -3535,10 +3509,16 @@ async function initApp(){
     plannerBody.className = 'planner-modal-content';
     plannerBody.id = 'plannerStandaloneBody';
     standaloneContainer.appendChild(plannerBody);
-    await loadCloudData();
-    renderPlannerContent(plannerBody);
     
-    // Handle realtime updates for standalone
+    try {
+      await loadCloudData();
+      if (!data || !data.planner) data = defaultData();
+      renderPlannerContent(plannerBody);
+    } catch(e) {
+      console.error(e);
+      plannerBody.innerHTML = '<div style="padding:20px; color:red;">Ошибка загрузки планера. Попробуйте обновить страницу.</div>';
+    }
+    
     subscribeRealtime();
     return;
   }
