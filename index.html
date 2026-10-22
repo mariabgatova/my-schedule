@@ -8,7 +8,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-  /* ===== БАЗОВЫЕ ПЕРЕМЕННЫЕ (СВЕТЛАЯ) ===== */
+  /* ===== ЦВЕТОВАЯ ПАЛИТРА (ИЗ СКРИНШОТА) ===== */
+  :root {
+    --c-dark-blue: #181A2F;
+    --c-grey-blue: #242E49;
+    --c-mid-blue: #37415C;
+    --c-peach: #FDA491;
+    --c-red: #E4102D;
+    --c-burgundy: #54162B;
+    --text-light: #F0F0F5;
+    --text-muted: #A0A5BA;
+  }
+
+  /* ===== БАЗОВЫЕ ПЕРЕМЕННЫЕ ===== */
   :root, [data-theme="light"] {
     --bg:#f5f7fb; --card:#ffffff; --text:#1b1f2a; --muted:#6b7280; --border:#e6e9f2; 
     --accent:#6c5ce7; --on-accent:#ffffff; --shadow:0 2px 12px rgba(20,30,60,.07); 
@@ -19,39 +31,31 @@
     --card-border: none;
   }
   
-  /* ===== ТЕМНАЯ ТЕМА (СТИЛЬ С КАРТИНКИ) ===== */
+  /* ТЕМНАЯ ТЕМА ПО ПАЛИТРЕ */
   [data-theme="dark"] {
-    --bg:#09090b; 
-    --card:#18181b; 
-    --text:#f8fafc; 
-    --muted:#a1a1aa; 
-    --border:#27272a; 
-    --accent:#8b5cf6; 
-    --on-accent:#ffffff; 
-    --shadow:0 8px 30px rgba(0,0,0,.6); 
-    --hover:#27272a; 
-    --lms:#10b981; 
-    --miss:#ef4444;
-    --icon-bg: #18181b;
-    --icon-border: #27272a;
+    --bg: var(--c-dark-blue);
+    --card: var(--c-grey-blue);
+    --text: var(--text-light);
+    --muted: var(--text-muted);
+    --border: var(--c-mid-blue);
+    --accent: var(--c-red);
+    --on-accent: #ffffff;
+    --shadow: 0 8px 30px rgba(0,0,0,.6);
+    --hover: var(--c-mid-blue);
+    --lms: #10b981;
+    --miss: var(--c-red);
+    --icon-bg: var(--c-grey-blue);
+    --icon-border: var(--c-mid-blue);
     --card-radius: 20px;
-    --card-border: 1px solid #27272a;
-    --accent-gradient: linear-gradient(135deg, #8b5cf6, #3b82f6);
+    --card-border: 1px solid var(--c-mid-blue);
+    --accent-gradient: linear-gradient(135deg, var(--c-red), var(--c-burgundy));
   }
   
-  /* ===== РОЗОВАЯ ТЕМА (ПИКМИ) ===== */
+  /* РОЗОВАЯ ТЕМА */
   [data-theme="pink"] {
-    --bg:#fff0f5; 
-    --card:#ffffff; 
-    --text:#603a48; 
-    --muted:#a88492; 
-    --border:#fbcfe8; 
-    --accent:#f06292; 
-    --on-accent:#ffffff; 
-    --shadow:0 4px 20px rgba(240,98,146,.12); 
-    --hover:#fce7f3; 
-    --lms:#10b981; 
-    --miss:#ef4444;
+    --bg:#fff0f5; --card:#ffffff; --text:#603a48; --muted:#a88492; --border:#fbcfe8; 
+    --accent:#f06292; --on-accent:#ffffff; --shadow:0 4px 20px rgba(240,98,146,.12); 
+    --hover:#fce7f3; --lms:#10b981; --miss:#ef4444;
     --icon-bg: var(--card);
     --icon-border: var(--border);
     --card-radius: 14px;
@@ -65,21 +69,30 @@
 
   * { box-sizing: border-box; }
   
-  /* Плавные переходы */
   html { transition: background .5s ease; scroll-behavior: smooth; }
   body { margin:0; padding:14px 14px 110px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif; background:var(--bg); color:var(--text); transition: background .5s ease, color .5s ease; -webkit-font-smoothing:antialiased; }
-  body * { transition: background-color .4s ease, border-color .4s ease, color .4s ease, box-shadow .4s ease, transform .3s cubic-bezier(0.4, 0, 0.2, 1); }
+  body * { transition: background-color .4s ease, border-color .4s ease, color .4s ease, box-shadow .4s ease; }
 
   /* Скрываем стандартные чекбоксы */
   input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
 
-  .menu, .menu *, .toast, .modal, .modal *, .modal-backdrop, .card.dragging,
-  .cal-event:hover, .link-item:hover, .day:hover, .week-nav .arrow:hover,
-  .icon-btn:active, .profile-btn:active, .tabbar button { transition-property: none; }
+  /* ===== СВАЙП-АНИМАЦИЯ ВКЛАДОК ===== */
+  .view {
+    display: flex; flex-direction: column;
+    width: 100%;
+    animation: swipeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .view[hidden] { display: none !important; }
   
-  .menu { animation: pop .13s ease-out !important; }
-  .modal { animation: pop .2s ease-out !important; }
-
+  @keyframes swipeIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes swipeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-40px); }
+  }
+  
   .app { max-width:900px; margin:0 auto; }
   
   /* ===== ШАПКА ===== */
@@ -91,7 +104,6 @@
   
   .actions { display:flex; gap:8px; align-items:center; }
   
-  /* Круглые кнопки-иконки */
   .icon-btn { background:var(--icon-bg); border:var(--icon-border); width:40px; height:40px; border-radius:50%; font-size:16px; cursor:pointer; box-shadow:var(--shadow); color:var(--text); display:flex; align-items:center; justify-content:center; position:relative; flex:0 0 auto; }
   .icon-btn:active { transform:scale(.9); }
   .icon-btn .bell-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--lms); border:2px solid var(--icon-bg); display:none; }
@@ -102,15 +114,7 @@
   .profile-btn .profile-emoji img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
   .profile-btn .profile-name { max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-  /* ===== ЭФФЕКТ ПРОЛИСТЫВАНИЯ ПРИ СМЕНЕ ВКЛАДОК ===== */
-  .view { display: block; animation: swipeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-  .view[hidden] { display: none !important; }
-  
-  @keyframes swipeIn {
-    from { opacity: 0; transform: translateX(30px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  
+  /* ===== ОСНОВНОЙ КОНТЕНТ ===== */
   .search-wrap { position:relative; margin-bottom:10px; }
   .search { width:100%; padding:12px 42px 12px 40px; border-radius:16px; background:var(--card); border:var(--card-border); box-shadow:var(--shadow); font:inherit; font-size:14px; color:var(--text); outline:none; }
   .search::placeholder { color:var(--muted); opacity:.8; }
@@ -126,7 +130,6 @@
   .today-btn { border:none; background:var(--accent); color:var(--on-accent); font:inherit; font-size:13px; font-weight:600; padding:9px 15px; border-radius:12px; cursor:pointer; flex:0 0 auto; }
   .today-btn[hidden] { display:none; }
 
-  /* Дни недели */
   .days { display:flex; gap:6px; padding-bottom:4px; margin-bottom:10px; }
   .day { flex:1 1 0; min-width:42px; border:none; background:var(--card); color:var(--muted); padding:8px 3px; border-radius:16px; font-weight:600; cursor:pointer; box-shadow:var(--shadow); position:relative; font-family:inherit; display:flex; flex-direction:column; align-items:center; gap:2px; border:var(--card-border); }
   .day .rel { font-size:8px; font-weight:600; line-height:11px; height:11px; white-space:nowrap; color:var(--muted); opacity:.7; width:100%; text-align:center; overflow:hidden; text-overflow:ellipsis; padding:0 2px; }
@@ -138,9 +141,8 @@
   .day .mini-dot { width:5px; height:5px; border-radius:50%; flex:0 0 auto; }
   .day .mini-more { font-size:8px; color:var(--muted); line-height:1; margin-left:1px; }
   
-  /* Активный день */
   .day.active { background:var(--accent); color:var(--on-accent); border-color:transparent; }
-  [data-theme="dark"] .day.active { background:var(--accent-gradient); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
+  [data-theme="dark"] .day.active { background:var(--accent-gradient); box-shadow: 0 4px 15px rgba(228, 16, 45, 0.4); }
   .day.active .num { color:var(--on-accent); }
   .day.today:not(.active) .num { color:var(--accent); }
   .day.today:not(.active) { border-color:var(--accent); }
@@ -171,7 +173,6 @@
   .grip { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:grab; font-size:20px; padding:2px 3px; line-height:1; opacity:.45; font-family:inherit; }
   .search-mode .grip { display:none; }
   
-  /* Круглые чекбоксы */
   .check { display:flex; padding-top:2px; cursor:pointer; flex:0 0 auto; }
   .box { width:22px; height:22px; border-radius:50%; border:2px solid var(--c,#999); display:block; position:relative; }
   .check input:checked + .box { background:var(--c,#999); }
@@ -208,12 +209,9 @@
   .card-hw-list { display:flex; flex-direction:column; gap:1px; }
   .card-hw-item { display:flex; gap:8px; align-items:flex-start; padding:6px 4px; border-radius:7px; font-size:13.5px; }
   .card-hw-item .chw-check { position:relative; display:flex; align-items:center; cursor:pointer; flex:0 0 auto; }
-  
-  /* Круглые чекбоксы (ДЗ) */
   .chw-box { width:16px; height:16px; border-radius:50%; border:1.5px solid var(--c,#999); display:block; position:relative; background:transparent; margin-top:2px; }
   .chw-check input:checked + .chw-box { background:var(--c,#999); }
   .chw-check input:checked + .chw-box::after { content:''; position:absolute; left:4px; top:1px; width:4px; height:8px; border:solid var(--on-accent); border-width:0 2px 2px 0; transform:rotate(45deg); }
-  
   .card-hw-item .chw-text { flex:1 1 auto; color:var(--text); min-width:0; word-break:break-word; overflow-wrap:anywhere; line-height:1.4; padding:2px 0; }
   .card-hw-item .chw-del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:14px; padding:1px 5px; border-radius:5px; opacity:.4; font-family:inherit; }
   .card-hw-empty { font-size:12px; color:var(--muted); padding:2px 4px 4px; opacity:.7; }
@@ -231,7 +229,7 @@
   .search-mode .lms-block { display:none; }
   
   .more { flex:0 0 auto; align-self:flex-start; background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:20px; padding:3px 7px; border-radius:50%; opacity:.6; line-height:1; font-family:inherit; }
-  
+
   /* ===== МЕНЮ ===== */
   .menu { position:absolute; right:6px; top:calc(100% - 4px); z-index:60; background:var(--card); border:var(--card-border); border-radius:16px; box-shadow:0 10px 40px rgba(0,0,0,.5); padding:7px; min-width:210px; }
   .menu.up { top:auto; bottom:calc(100% - 4px); }
@@ -270,12 +268,9 @@
   .checklist-empty { color:var(--muted); font-size:13px; text-align:center; padding:8px 0 6px; opacity:.75; }
   .checklist-item { display:flex; gap:10px; align-items:center; padding:8px 6px; border-radius:10px; }
   .checklist-item .cl-check { position:relative; display:flex; align-items:center; cursor:pointer; flex:0 0 auto; }
-  
-  /* Круглые чекбоксы (Главная / Планер) */
   .cl-box { width:22px; height:22px; border-radius:50%; border:2px solid var(--accent); display:block; position:relative; background:transparent; }
   .cl-check input:checked + .cl-box { background:var(--accent); }
   .cl-check input:checked + .cl-box::after { content:''; position:absolute; left:7px; top:3px; width:5px; height:10px; border:solid var(--on-accent); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
-  
   .checklist-item .text { flex:1 1 auto; font-size:14px; color:var(--text); padding:2px 0; min-width:0; outline:none; }
   .checklist-item.done .text { text-decoration:line-through; color:var(--muted); opacity:.7; }
   .checklist-item .del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 7px; border-radius:50%; opacity:.5; font-family:inherit; }
@@ -322,12 +317,9 @@
   .cal-hw-list { display:flex; flex-direction:column; gap:6px; }
   .cal-hw-card { display:flex; align-items:flex-start; gap:10px; background:var(--card); border-radius:16px; padding:12px 14px; border-left:4px solid var(--accent); box-shadow:var(--shadow); border-top:var(--card-border); border-right:var(--card-border); border-bottom:var(--card-border); }
   .cal-hw-card .cl-check { position:relative; display:flex; align-items:center; cursor:pointer; flex:0 0 auto; }
-  
-  /* Круглые чекбоксы (Календарь ДЗ) */
   .cal-hw-card .hw-box { width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:block; position:relative; background:transparent; margin-top:2px; }
   .cal-hw-card .cl-check input:checked + .hw-box { background:var(--accent); }
   .cal-hw-card .cl-check input:checked + .hw-box::after { content:''; position:absolute; left:6px; top:2px; width:5px; height:10px; border:solid var(--on-accent); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
-  
   .cal-hw-card .hw-body { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
   .cal-hw-card .hw-subj { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; color:var(--accent); margin-bottom:2px; }
   .cal-hw-card .hw-txt { font-size:14px; font-weight:600; color:var(--text); word-break:break-word; overflow-wrap:anywhere; line-height:1.4; }
@@ -358,12 +350,9 @@
   
   .hw-item { display:flex; gap:10px; align-items:center; padding:8px 6px; border-radius:10px; flex-wrap:wrap; }
   .hw-item .cl-check { position:relative; display:flex; align-items:center; cursor:pointer; flex:0 0 auto; }
-  
-  /* Круглые чекбоксы (ДЗ вкладка) */
   .hw-box { width:20px; height:20px; border-radius:50%; border:2px solid var(--accent); display:block; position:relative; background:transparent; }
   .hw-item .cl-check input:checked + .hw-box { background:var(--accent); }
   .hw-item .cl-check input:checked + .hw-box::after { content:''; position:absolute; left:6px; top:2px; width:5px; height:10px; border:solid var(--on-accent); border-width:0 2.5px 2.5px 0; transform:rotate(45deg); }
-  
   .hw-text { flex:1 1 auto; font-size:14px; color:var(--text); padding:2px 0; min-width:0; word-break:break-word; outline:none; border-radius:6px; }
   .hw-text:focus { background:var(--hover); padding:2px 6px; }
   .hw-item.done .hw-text { text-decoration:line-through; color:var(--muted); opacity:.7; }
@@ -406,7 +395,7 @@
   .tabbar button { border:none; background:transparent; color:var(--muted); padding:8px 2px; border-radius:16px; cursor:pointer; font-family:inherit; font-size:10px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:4px; line-height:1; }
   .tabbar button .tb-icon { font-size:20px; line-height:1; }
   .tabbar button.active { background:var(--accent); color:var(--on-accent); }
-  [data-theme="dark"] .tabbar button.active { background: var(--accent-gradient); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
+  [data-theme="dark"] .tabbar button.active { background: var(--accent-gradient); box-shadow: 0 4px 15px rgba(228, 16, 45, 0.4); }
   
   /* ===== МОДАЛКИ ===== */
   .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:300; padding:16px; animation:fadeIn .2s ease; }
@@ -434,7 +423,7 @@
   .toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%); background:#f2f4fb; color:#0e0f14; padding:14px 24px; border-radius:16px; font-size:14px; box-shadow:0 8px 30px rgba(0,0,0,.5); z-index:200; animation:pop .3s; max-width:88vw; text-align:center; font-weight:600; }
   [data-theme="light"] .toast { background:#1b1f2a; color:#fff; }
   [data-theme="pink"] .toast { background:#f06292; color:#fff; }
-  [data-theme="dark"] .toast { background:#18181b; color:#fff; border:1px solid #27272a; }
+  [data-theme="dark"] .toast { background:var(--c-mid-blue); color:#fff; border:1px solid var(--c-peach); }
   
   /* ===== МАТЕРИАЛЫ ===== */
   .materials-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
@@ -483,82 +472,100 @@
     .card-hw-add input { font-size:12px; }
   }
 
-  /* ===== ПЛАНЕР (СТИЛЬ КАК НА КАРТИНКЕ) ===== */
-  .planner-backdrop { background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 1000; }
-  .planner-modal {
-    background-color: #fffbfc;
-    background-image: linear-gradient(rgba(240, 98, 146, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(240, 98, 146, 0.08) 1px, transparent 1px);
-    background-size: 20px 20px;
-    border: 3px solid #f8bbd0;
-    border-radius: 28px;
-    padding: 20px;
-    max-width: 800px;
-    width: 100%;
-    box-shadow: 0 20px 60px rgba(236, 72, 153, 0.25);
-    font-family: 'Nunito', 'Comic Sans MS', 'Segoe UI', sans-serif;
-    color: #603a48 !important;
-    max-height: 95vh;
-    overflow-y: auto;
+  /* ===== НЕДЕЛЬНЫЙ ПЛАНЕР (СТИЛЬ GOOGLE ТАБЛИЦ) ===== */
+  .planner-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(5px);
+    z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 10px;
   }
-  .planner-modal * { color: #603a48 !important; }
+  .planner-modal-content {
+    background: var(--bg); width: 100%; max-width: 1200px; height: 90vh; border-radius: 20px;
+    display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.8);
+    border: 1px solid var(--border);
+  }
   .planner-header {
-    display: flex; justify-content: space-between; margin-bottom: 20px;
-    background: #f48fb1; border-radius: 16px; padding: 12px 24px;
-    font-weight: 800; font-size: 20px; letter-spacing: 1px; text-transform: uppercase;
-    box-shadow: 0 4px 10px rgba(244, 143, 177, 0.3);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; background: var(--card); border-bottom: 1px solid var(--border);
   }
-  .planner-header * { color: #fff !important; }
-  .planner-body { display: flex; gap: 16px; align-items: stretch; }
-  .pl-col { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-  @media (max-width: 650px) { .planner-body { flex-direction: column; } }
+  .planner-header h2 { margin: 0; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .planner-header .close-btn {
+    background: transparent; border: none; color: var(--text); font-size: 24px; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+  .planner-header .close-btn:hover { background: var(--hover); }
   
-  .pl-block {
-    border-radius: 12px; padding: 8px 14px; font-weight: 800; font-size: 14px;
-    display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    background: #f8bbd0;
+  .planner-scroll-area {
+    flex: 1; overflow-x: auto; overflow-y: hidden; display: flex; padding: 16px; gap: 12px;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
   }
-  .pl-title-input {
-    background: transparent !important; border: none !important; font-family: inherit;
-    font-weight: 800; font-size: 14px; width: 100%; outline: none; padding: 0; margin: 0;
-    color: #880e4f !important;
+  .planner-scroll-area::-webkit-scrollbar { height: 8px; }
+  .planner-scroll-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  
+  /* Сайдбар с мини-календарем */
+  .planner-sidebar {
+    flex: 0 0 200px; display: flex; flex-direction: column; gap: 16px;
+    background: var(--card); padding: 16px; border-radius: 16px; border: 1px solid var(--border);
+    scroll-snap-align: start;
+  }
+  .planner-sidebar .month-mini { text-align: center; }
+  .planner-sidebar .month-mini h4 { margin: 0 0 10px; font-size: 14px; font-weight: 700; color: var(--text); }
+  .planner-sidebar .mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 10px; text-align: center; }
+  .planner-sidebar .mini-grid span { padding: 4px 0; color: var(--muted); }
+  .planner-sidebar .mini-grid .today { background: var(--accent); color: #fff; border-radius: 50%; font-weight: 700; }
+  
+  /* Колонки дней */
+  .planner-day-col {
+    flex: 1 0 280px; min-width: 280px; display: flex; flex-direction: column;
+    background: var(--card); border-radius: 16px; border: 1px solid var(--border);
+    scroll-snap-align: start; overflow: hidden;
+  }
+  .planner-day-col .day-header {
+    padding: 12px; text-align: center; border-bottom: 1px solid var(--border);
+  }
+  .planner-day-col .day-header h4 { margin: 0; font-size: 15px; font-weight: 700; }
+  .planner-day-col .day-header span { font-size: 11px; color: var(--muted); }
+  
+  /* Круговая диаграмма */
+  .planner-progress-circle {
+    width: 80px; height: 80px; border-radius: 50%; margin: 16px auto 8px;
+    display: flex; align-items: center; justify-content: center; position: relative;
+    background: var(--bg);
+  }
+  .planner-progress-circle::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--border) 0);
+  }
+  .planner-progress-circle .inner-circle {
+    width: 64px; height: 64px; border-radius: 50%; background: var(--card);
+    display: flex; align-items: center; justify-content: center; z-index: 1;
+    font-size: 14px; font-weight: 800; color: var(--text);
   }
   
-  .pl-textarea {
-    background: #fff; border: 2px solid #f8bbd0; border-radius: 12px; padding: 12px;
-    width: 100%; resize: vertical; font-family: inherit; font-size: 14px; outline: none;
-    min-height: 100px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); line-height: 1.5;
+  /* Статистика дня */
+  .planner-stats-row {
+    display: flex; justify-content: space-around; font-size: 11px; color: var(--muted);
+    padding: 8px 0; border-bottom: 1px solid var(--border); text-align: center;
   }
-  .pl-textarea:focus { border-color: #ec4899; }
+  .planner-stats-row div span { display: block; font-size: 14px; font-weight: 700; color: var(--text); }
   
-  .water-drops { display: flex; gap: 8px; flex-wrap: wrap; padding: 5px 0; }
-  .water-drop {
-    width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fbcfe8;
-    background: #fff; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Список задач */
+  .planner-tasks-list { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .planner-task-item {
+    display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+    background: var(--bg); border-radius: 8px; font-size: 13px;
   }
-  .water-drop.filled { background: #81d4fa; border-color: #4fc3f7; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.1); transform: scale(1.05); }
+  .planner-task-item.done .task-text { text-decoration: line-through; color: var(--muted); }
+  .planner-task-item input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-size: 13px; }
+  .planner-task-item .task-check {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--accent);
+    background: transparent; cursor: pointer; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+  }
+  .planner-task-item .task-check.checked { background: var(--accent); }
+  .planner-task-item .task-check.checked::after { content: '✓'; color: #fff; font-size: 10px; font-weight: 900; }
+  .planner-task-item .task-del { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 14px; opacity: 0.5; }
   
-  .pl-todo-list {
-    background: #fff; border: 2px solid #f8bbd0; border-radius: 12px; padding: 10px;
-    flex: 1; min-height: 200px; display: flex; flex-direction: column; gap: 6px;
-    overflow-y: auto; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-  }
-  .pl-todo-item {
-    display: flex; align-items: center; gap: 8px; background: #fce4ec; padding: 8px 12px;
-    border-radius: 8px; transition: background 0.2s;
-  }
-  .pl-todo-item:hover { background: #f8bbd0; }
-  .pl-todo-item .text { background: transparent; border: none; flex: 1; outline: none; font-family: inherit; font-size: 14px; font-weight: 600; }
-  .pl-todo-item.done .text { text-decoration: line-through; opacity: 0.5; }
-  .pl-todo-item .del { border: none; background: transparent; cursor: pointer; font-size: 18px; opacity: 0.6; transition: opacity 0.2s; }
-  .pl-todo-item .del:hover { opacity: 1; }
-  
-  /* Встроенная форма добавления в To Do */
-  .planner-add {
-    display: flex; gap: 6px; margin-top: auto; padding: 4px; border-radius: 8px;
-    background: #fff; border: 2px solid #f8bbd0; flex: 0 0 auto;
-  }
-  .planner-add input { flex: 1; padding: 8px; border: none; outline: none; font-family: inherit; font-size: 14px; background: transparent; }
-  .planner-add button { background: #f06292; border-radius: 8px; height: 32px; width: 32px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff !important; border: none; cursor: pointer; }
+  .planner-add-task-form { padding: 8px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
+  .planner-add-task-form input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 13px; color: var(--text); outline: none; }
+  .planner-add-task-form button { background: var(--accent); color: #fff; border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; }
 </style>
 </head>
 <body>
@@ -674,7 +681,6 @@
   <main class="view" data-view="materials" id="viewMaterials" hidden>
     <h2 class="page-title">📂 Учебные материалы</h2>
     <div class="materials-grid">
-      
       <section class="materials-col">
         <h3>📝 Конспекты</h3>
         <div class="materials-list" id="materialsNotesList"></div>
@@ -708,7 +714,6 @@
           <button type="submit">+</button>
         </form>
       </section>
-
     </div>
   </main>
 
@@ -881,7 +886,7 @@ function isSameData(a, b){
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function defaultPlanner(){
-  return { water: 0, breakfast: '', lunch: '', dinner: '', shopping: '', extra: '', title_shopping: '🐷 Shopping List', title_extra: '🎀 Extra Notes', title_water: '💧 Water', title_breakfast: '🍳 Breakfast', title_lunch: '🥗 Lunch', title_dinner: '🍲 Dinner', title_todo: '📝 To Do' };
+  return { tasks: {}, habits: {} };
 }
 function defaultPersonal(){
   return { checklists:{}, clubs:[], links:[], planner:{}, itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
@@ -1166,7 +1171,6 @@ function isCurrentDay(){ return sameDay(viewDate, todayDate()); }
 function itemsFor(key){ if(!data.days[key]) data.days[key] = []; return data.days[key]; }
 function findItem(key, id){ const arr = data.days[key] || []; return arr.find(i => i.id === id); }
 function currentChecklist(){ const k = currentKey(); if(!data.checklists[k]) data.checklists[k] = []; return data.checklists[k]; }
-function currentPlanner(){ const k = currentKey(); if(!data.planner) data.planner = {}; if(!data.planner[k]) data.planner[k] = defaultPlanner(); return data.planner[k]; }
 function findHWById(hwId){
   for(const subj of Object.keys(data.homework)){
     const it = (data.homework[subj]||[]).find(h => h.id === hwId);
@@ -2631,180 +2635,167 @@ themeBtn.onclick = () => {
 
 /* ============ ДЕЙСТВИЯ ============ */
 function openPlannerModal() {
-  const backdrop = document.createElement('div');
-  backdrop.className = 'modal-backdrop planner-backdrop';
-  const plannerData = currentPlanner();
+  const overlay = document.createElement('div');
+  overlay.className = 'planner-modal-overlay';
   
-  backdrop.innerHTML = `
-    <div class="planner-modal">
+  const today = new Date();
+  const weekStart = startOfWeek(today);
+  const weekEnd = addDays(weekStart, 6);
+  const weekRangeStr = formatWeekRange(weekStart, weekEnd);
+  
+  let html = `
+    <div class="planner-modal-content">
       <div class="planner-header">
-        <div class="planner-title-left">Date</div>
-        <div class="planner-title-right">To Do</div>
+        <h2>🗓 Недельный планер <span style="font-size:12px; color:var(--muted); font-weight:400; margin-left:8px;">${weekRangeStr}</span></h2>
+        <button class="close-btn" id="plannerCloseBtn">×</button>
       </div>
-      <div class="planner-body">
-         <div class="pl-col" style="flex: 1.2;">
-            <div class="pl-block" style="background:#ffcdd2;">
-               <input type="text" class="pl-title-input" data-field="title_shopping" value="${esc(plannerData.title_shopping || '🐷 Shopping List')}">
-            </div>
-            <textarea class="pl-textarea" data-field="shopping" placeholder="Что нужно купить...">${esc(plannerData.shopping || '')}</textarea>
-            
-            <div class="pl-block" style="margin-top:10px; background:#f8bbd0;">
-               <input type="text" class="pl-title-input" data-field="title_extra" value="${esc(plannerData.title_extra || '🎀 Extra Notes')}">
-            </div>
-            <textarea class="pl-textarea" data-field="extra" placeholder="Заметки на день...">${esc(plannerData.extra || '')}</textarea>
-         </div>
-         <div class="pl-col">
-            <div class="pl-block" style="background:#e1bee7;">
-               <input type="text" class="pl-title-input" data-field="title_water" value="${esc(plannerData.title_water || '💧 Water')}">
-            </div>
-            <div class="water-drops" id="waterDrops"></div>
-            
-            <div class="pl-block" style="background:#ffcdd2; margin-top:5px;">
-               <input type="text" class="pl-title-input" data-field="title_breakfast" value="${esc(plannerData.title_breakfast || '🍳 Breakfast')}">
-            </div>
-            <textarea class="pl-textarea" data-field="breakfast" style="min-height:60px;" placeholder="...">${esc(plannerData.breakfast || '')}</textarea>
-            
-            <div class="pl-block" style="margin-top:10px; background:#ffcdd2;">
-               <input type="text" class="pl-title-input" data-field="title_lunch" value="${esc(plannerData.title_lunch || '🥗 Lunch')}">
-            </div>
-            <textarea class="pl-textarea" data-field="lunch" style="min-height:60px;" placeholder="...">${esc(plannerData.lunch || '')}</textarea>
-            
-            <div class="pl-block" style="margin-top:10px; background:#ffcdd2;">
-               <input type="text" class="pl-title-input" data-field="title_dinner" value="${esc(plannerData.title_dinner || '🍲 Dinner')}">
-            </div>
-            <textarea class="pl-textarea" data-field="dinner" style="min-height:60px;" placeholder="...">${esc(plannerData.dinner || '')}</textarea>
-         </div>
-         <div class="pl-col" style="flex: 1.1;">
-            <div class="pl-block" style="background:#f8bbd0;">
-               <input type="text" class="pl-title-input" data-field="title_todo" value="${esc(plannerData.title_todo || '📝 To Do')}">
-            </div>
-            <div class="pl-todo-list" id="modalChecklist">
-              <form class="planner-add" id="modalChecklistAdd" autocomplete="off">
-                 <input id="modalChecklistInput" placeholder="Добавить...">
-                 <button type="submit">+</button>
-              </form>
-            </div>
-            <div style="text-align:right; font-size:48px; margin-top: auto; opacity: 0.8;">🐱</div>
-         </div>
-      </div>
-      <div class="modal-actions" style="margin-top: 20px;">
-        <button type="button" class="primary" id="plannerClose" style="background: #f06292; border-radius: 20px; padding: 10px 24px; font-size:16px;">Готово ✓</button>
-      </div>
-    </div>`;
-  document.body.appendChild(backdrop);
-
-  const textareas = backdrop.querySelectorAll('.pl-textarea');
-  textareas.forEach(ta => {
-     const field = ta.dataset.field;
-     ta.addEventListener('input', (e) => {
-        plannerData[field] = e.target.value;
-        save();
-     });
-  });
-
-  const titleInputs = backdrop.querySelectorAll('.pl-title-input');
-  titleInputs.forEach(input => {
-     const field = input.dataset.field;
-     input.addEventListener('input', (e) => {
-        plannerData[field] = e.target.value;
-        save();
-     });
-  });
-
-  const waterDrops = backdrop.querySelector('#waterDrops');
-  function renderWater() {
-     waterDrops.innerHTML = '';
-     for (let i = 0; i < 8; i++) {
-        const drop = document.createElement('span');
-        drop.className = 'water-drop' + (i < (plannerData.water || 0) ? ' filled' : '');
-        drop.onclick = () => {
-           if (plannerData.water === i + 1) plannerData.water = i; 
-           else plannerData.water = i + 1;
-           save();
-           renderWater();
-        };
-        waterDrops.appendChild(drop);
-     }
-  }
-  renderWater();
-
-  const list = backdrop.querySelector('#modalChecklist');
-  const addForm = backdrop.querySelector('#modalChecklistAdd');
-  const input = backdrop.querySelector('#modalChecklistInput');
+      <div class="planner-scroll-area">
+        <!-- Сайдбар -->
+        <div class="planner-sidebar">
+          <div class="month-mini">
+            <h4>${MONTHS_NOM[today.getMonth()]} ${today.getFullYear()}</h4>
+            <div class="mini-grid">
+              <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+  `;
   
-  function renderModalList() {
-    Array.from(list.children).forEach(child => {
-      if (child !== addForm) child.remove();
-    });
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+  const startOffset = (firstDay.getDay() + 6) % 7;
+  for (let i = 0; i < startOffset; i++) html += `<span></span>`;
+  
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today.getDate();
+    html += `<span class="${isToday ? 'today' : ''}">${d}</span>`;
+  }
+  
+  html += `</div></div>
+          <div style="margin-top: auto; font-size: 12px; color: var(--muted); text-align: center;">
+            <div style="margin-bottom: 8px;">Прогресс недели</div>
+            <div style="font-size: 24px; font-weight: 800; color: var(--text);">—</div>
+          </div>
+        </div>`;
+
+  // Колонки дней
+  for (let i = 0; i < 7; i++) {
+    const date = addDays(weekStart, i);
+    const dateKey = iso(date);
+    const dowName = DOW_SHORT[i];
     
-    const arr = currentChecklist();
+    // Получаем задачи из планера или создаем пустые
+    const dayTasks = (data.planner && data.planner.tasks && data.planner.tasks[dateKey]) || [];
+    const totalTasks = dayTasks.length;
+    const doneTasks = dayTasks.filter(t => t.done).length;
+    const progress = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
     
-    if (!arr.length) {
-      const empty = document.createElement('div');
-      empty.style.cssText = 'color:#a88492; font-size:13px; text-align:center; margin-top:20px;';
-      empty.textContent = 'Пусто...';
-      list.insertBefore(empty, addForm);
+    // Цвета для дней (как на скриншоте)
+    const dayColors = ['#f472b6', '#34d399', '#60a5fa', '#fbbf24', '#f87171', '#a78bfa', '#f472b6'];
+    const accentColor = dayColors[i];
+
+    html += `
+      <div class="planner-day-col" style="border-top: 4px solid ${accentColor};">
+        <div class="day-header">
+          <h4>${dowName}</h4>
+          <span>${date.getDate()} ${MONTHS_GEN[date.getMonth()]}</span>
+        </div>
+        
+        <div class="planner-progress-circle" style="--p: ${progress}; --accent: ${accentColor};">
+          <div class="inner-circle">${progress}%</div>
+        </div>
+        
+        <div class="planner-stats-row">
+          <div>Готово<span>${doneTasks}</span></div>
+          <div>Осталось<span>${totalTasks - doneTasks}</span></div>
+          <div>Итого<span>${totalTasks}</span></div>
+        </div>
+        
+        <div class="planner-tasks-list" id="plannerTasks-${dateKey}">
+    `;
+    
+    if (totalTasks === 0) {
+      html += `<div style="text-align:center; color:var(--muted); font-size:12px; margin-top:20px;">Нет задач</div>`;
     } else {
-      arr.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'pl-todo-item' + (item.done ? ' done' : '');
-        row.dataset.id = item.id;
-        row.innerHTML = `
-          <label class="cl-check"><input type="checkbox" ${item.done ? 'checked' : ''}><span class="cl-box" style="border-color:#ec4899; width:18px; height:18px;"></span></label>
-          <input class="text" value="${esc(item.text)}" placeholder="Что нужно сделать…">
-          <button class="del" type="button">×</button>
+      dayTasks.forEach((task, idx) => {
+        html += `
+          <div class="planner-task-item ${task.done ? 'done' : ''}" data-date="${dateKey}" data-idx="${idx}">
+            <div class="task-check ${task.done ? 'checked' : ''}" data-action="toggle"></div>
+            <input type="text" class="task-text" value="${esc(task.text)}" data-action="edit">
+            <button class="task-del" data-action="del">×</button>
+          </div>
         `;
-        list.insertBefore(row, addForm);
       });
     }
+    
+    html += `
+        </div>
+        
+        <form class="planner-add-task-form" data-date="${dateKey}">
+          <input type="text" placeholder="Новая задача..." required>
+          <button type="submit">+</button>
+        </form>
+      </div>
+    `;
   }
   
-  renderModalList();
-  
-  list.addEventListener('change', e => {
-    if (e.target.type !== 'checkbox') return;
-    const row = e.target.closest('.pl-todo-item');
-    const item = currentChecklist().find(i => i.id === row.dataset.id);
-    if (!item) return;
-    item.done = e.target.checked;
-    row.classList.toggle('done', item.done);
-    save();
-  });
-  
-  list.addEventListener('input', e => {
-    if (!e.target.classList.contains('text')) return;
-    const row = e.target.closest('.pl-todo-item');
-    const item = currentChecklist().find(i => i.id === row.dataset.id);
-    if (!item) return;
-    item.text = e.target.value;
-    save();
-  });
-  
-  list.addEventListener('click', e => {
-    if (!e.target.classList.contains('del')) return;
-    const row = e.target.closest('.pl-todo-item');
-    const key = currentKey();
-    data.checklists[key] = currentChecklist().filter(i => i.id !== row.dataset.id);
-    if (!data.checklists[key].length) delete data.checklists[key];
-    save(); renderModalList();
-  });
-  
-  addForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const text = input.value.trim(); if (!text) return;
-    currentChecklist().push({ id: uid(), text, done: false });
-    input.value = '';
-    save(); renderModalList(); input.focus();
+  html += `</div></div>`;
+  overlay.innerHTML = html;
+  document.body.appendChild(overlay);
+
+  // Обработчики событий планера
+  const closePlanner = () => overlay.remove();
+  overlay.querySelector('#plannerCloseBtn').onclick = closePlanner;
+  overlay.addEventListener('click', e => { if (e.target === overlay) closePlanner(); });
+
+  // Добавление задачи
+  overlay.querySelectorAll('.planner-add-task-form').forEach(form => {
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const dateKey = form.dataset.date;
+      const input = form.querySelector('input');
+      const text = input.value.trim();
+      if (!text) return;
+      
+      if (!data.planner.tasks) data.planner.tasks = {};
+      if (!data.planner.tasks[dateKey]) data.planner.tasks[dateKey] = [];
+      data.planner.tasks[dateKey].push({ text, done: false });
+      
+      save();
+      input.value = '';
+      openPlannerModal(); // Перерисовываем
+    };
   });
 
-  const close = (e) => {
-    if(e) { e.preventDefault(); e.stopPropagation(); }
-    backdrop.remove();
-  };
-  backdrop.addEventListener('click', e => { if(e.target === backdrop) close(); });
-  
-  const closeBtn = backdrop.querySelector('#plannerClose');
-  closeBtn.onclick = close;
+  // Обработка чекбоксов, редактирования и удаления
+  overlay.querySelector('.planner-scroll-area').addEventListener('click', e => {
+    const item = e.target.closest('.planner-task-item');
+    if (!item) return;
+    const dateKey = item.dataset.date;
+    const idx = parseInt(item.dataset.idx);
+    const tasks = data.planner.tasks[dateKey];
+    if (!tasks || !tasks[idx]) return;
+
+    if (e.target.dataset.action === 'toggle') {
+      tasks[idx].done = !tasks[idx].done;
+      save();
+      openPlannerModal();
+    } else if (e.target.dataset.action === 'del') {
+      tasks.splice(idx, 1);
+      save();
+      openPlannerModal();
+    }
+  });
+
+  overlay.querySelector('.planner-scroll-area').addEventListener('change', e => {
+    if (e.target.dataset.action === 'edit') {
+      const item = e.target.closest('.planner-task-item');
+      const dateKey = item.dataset.date;
+      const idx = parseInt(item.dataset.idx);
+      const tasks = data.planner.tasks[dateKey];
+      if (tasks && tasks[idx]) {
+        tasks[idx].text = e.target.value;
+        save();
+      }
+    }
+  });
 }
 
 function openActionsModal(adminMode){
@@ -2950,7 +2941,7 @@ function openProfileMenu(){
   let extra;
   if(isAdmin){
     extra = `
-      <button data-act="openPlanner">🗓 Планер</button>
+      <button data-act="openPlanner">🗓 Недельный планер</button>
       <hr>
       <button data-act="adminLogout">🚪 Выйти из админа</button>
       <button data-act="profileLinks">🔗 Ссылки профилей</button>
@@ -2960,7 +2951,7 @@ function openProfileMenu(){
       <button data-act="newProfile">➕ Новый профиль</button>`;
   } else {
     extra = `
-      <button data-act="openPlanner">🗓 Планер</button>
+      <button data-act="openPlanner">🗓 Недельный планер</button>
       <hr>
       <button data-act="adminLogin">🔑 Войти как админ</button>
       <button data-act="changeAvatar">🖼 Сменить аватарку</button>
