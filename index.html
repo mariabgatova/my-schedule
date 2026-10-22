@@ -4,91 +4,71 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Моё расписание</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23692FFF'/%3E%3Crect x='16' y='24' width='68' height='62' rx='10' fill='white'/%3E%3Crect x='16' y='24' width='68' height='16' rx='10' fill='%23524F9D'/%3E%3Crect x='24' y='16' width='8' height='20' rx='4' fill='white'/%3E%3Crect x='68' y='16' width='8' height='20' rx='4' fill='white'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d32f2f'/%3E%3Crect x='16' y='24' width='68' height='62' rx='10' fill='white'/%3E%3Crect x='16' y='24' width='68' height='16' rx='10' fill='%23e8d5b7'/%3E%3Crect x='24' y='16' width='8' height='20' rx='4' fill='white'/%3E%3Crect x='68' y='16' width='8' height='20' rx='4' fill='white'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-  /* ===== ЦВЕТОВЫЕ ПАЛИТРЫ ===== */
+  /* ===== ЦВЕТОВАЯ ПАЛИТРА (ТЕМНАЯ, КРАСНАЯ, БЕЖЕВАЯ) ===== */
   :root {
-    /* Темная тема (СТРОГО ПО ВАШИМ КОДАМ) */
-    --dark-bg: #080B26;
-    --dark-card: #1B1A2F;
-    --dark-card-alt: #160150;
-    --dark-border: #1E2786;
-    --dark-hover: #242E49;
-    --dark-muted: #37415C;
+    /* Темная красно-бежевая тема */
+    --c-dark-bg: #110b0b;
+    --c-dark-card: #1c1414;
+    --c-dark-border: #332222;
+    --c-dark-accent: #d32f2f;
+    --c-dark-beige: #e8d5b7;
+    --c-dark-beige-dark: #c4a882;
+    --c-dark-text: #fdfbf7;
+    --c-dark-muted: #a89a92;
     
-    --dark-accent: #C6515C;
-    --dark-btn: #b41b2d;
-    --dark-tab-active: #400072;
-    --dark-text: #FFFFFF;
-    
-    --dark-type-lec: #524F9D;
-    --dark-type-prac: #600095;
-    --dark-type-lab: #b41b2d;
-    --dark-extra: #8A5286;
-    --dark-maroon: #54162B;
-
-    /* Светлая тема (СТРОГО ПО ВАШИМ КОДАМ) */
-    --light-bg: #F8F9FA;
-    --light-card: #FFFFFF;
-    --light-text: #1A1A1A;
-    --light-muted: #6B7280;
-    --light-border: #E5E7EB;
-    
-    --light-accent: #692FFF;
-    --light-btn: #692FFF;
-    --light-tab-active: #0DD0E7;
-    --light-text-active: #000000;
-    
-    --light-type-lec: #56D7FF;
-    --light-type-prac: #FCF846;
-    --light-type-lab: #C146FE;
-    --light-miss: #A92B2B;
+    --c-light-bg: #f8f9fa;
+    --c-light-card: #ffffff;
+    --c-light-border: #e5e7eb;
+    --c-light-accent: #d32f2f;
+    --c-light-text: #1a1a1a;
+    --c-light-muted: #6b7280;
   }
 
-  /* ===== ТЕМЫ ===== */
   [data-theme="dark"] {
-    --bg: var(--dark-bg);
-    --card: var(--dark-card);
-    --text: var(--dark-text);
-    --muted: var(--dark-muted);
-    --border: var(--dark-border);
-    --accent: var(--dark-accent);
-    --on-accent: #FFFFFF;
-    --hover: var(--dark-hover);
-    --lms: var(--dark-type-lec);
-    --miss: var(--dark-type-lab);
+    --bg: var(--c-dark-bg);
+    --card: var(--c-dark-card);
+    --text: var(--c-dark-text);
+    --muted: var(--c-dark-muted);
+    --border: var(--c-dark-border);
+    --accent: var(--c-dark-accent);
+    --on-accent: #ffffff;
+    --hover: #2a1e1e;
+    --lms: #c4a882;
+    --miss: var(--c-dark-accent);
     --shadow: 0 8px 30px rgba(0,0,0,.6);
     
     --icon-bg: var(--card);
     --icon-border: var(--border);
-    --card-radius: 20px;
+    --card-radius: 16px;
     --card-border: 1px solid var(--border);
     
-    --tab-active-bg: var(--dark-tab-active);
-    --on-tab-active: #FFFFFF;
+    --tab-active-bg: var(--c-dark-beige);
+    --on-tab-active: var(--c-dark-bg);
     
-    --strike-color: var(--dark-accent);
-    --btn-accent: var(--dark-btn);
-    --on-btn-accent: #FFFFFF;
+    --strike-color: var(--c-dark-accent);
+    --btn-accent: var(--c-dark-accent);
+    --on-btn-accent: #ffffff;
     
-    --type-lec: var(--dark-type-lec);
-    --type-prac: var(--dark-type-prac);
-    --type-lab: var(--dark-type-lab);
+    --type-lec: var(--c-dark-beige);
+    --type-prac: var(--c-dark-beige-dark);
+    --type-lab: var(--c-dark-accent);
   }
 
   [data-theme="light"] {
-    --bg: var(--light-bg);
-    --card: var(--light-card);
-    --text: var(--light-text);
-    --muted: var(--light-muted);
-    --border: var(--light-border);
-    --accent: var(--light-accent);
-    --on-accent: #FFFFFF;
-    --hover: #F3F4F6;
-    --lms: var(--light-type-lec);
-    --miss: var(--light-miss);
+    --bg: var(--c-light-bg);
+    --card: var(--c-light-card);
+    --text: var(--c-light-text);
+    --muted: var(--c-light-muted);
+    --border: var(--c-light-border);
+    --accent: var(--c-light-accent);
+    --on-accent: #ffffff;
+    --hover: #f3f4f6;
+    --lms: #10b981;
+    --miss: var(--c-light-accent);
     --shadow: 0 4px 20px rgba(0,0,0,.05);
     
     --icon-bg: var(--card);
@@ -96,30 +76,27 @@
     --card-radius: 14px;
     --card-border: none;
     
-    --tab-active-bg: var(--light-tab-active);
-    --on-tab-active: var(--light-text-active);
+    --tab-active-bg: var(--c-light-accent);
+    --on-tab-active: #ffffff;
     
     --strike-color: currentColor;
-    --btn-accent: var(--light-btn);
-    --on-btn-accent: #FFFFFF;
+    --btn-accent: var(--c-light-accent);
+    --on-btn-accent: #ffffff;
     
-    --type-lec: var(--light-type-lec);
-    --type-prac: var(--light-type-prac);
-    --type-lab: var(--light-type-lab);
+    --type-lec: #3b82f6;
+    --type-prac: #10b981;
+    --type-lab: #ef4444;
   }
 
-  /* ===== БАЗА ===== */
   * { box-sizing: border-box; }
   html { transition: background .3s ease; scroll-behavior: smooth; overflow-x: hidden; }
   body { margin:0; padding:14px 14px 110px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif; background:var(--bg); color:var(--text); transition: background .3s ease, color .3s ease; -webkit-font-smoothing:antialiased; overflow-x: hidden; }
   body * { transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
 
   input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
-  
-  /* Фикс для всех кнопок, чтобы не было стандартных стилей */
   button { font-family: inherit; cursor: pointer; border: none; background: transparent; color: inherit; padding: 0; }
 
-  /* ===== СЛАЙДЕР ===== */
+  /* СЛАЙДЕР */
   .slider-container { position: relative; overflow: hidden; }
   .slider-bg {
     position: absolute;
@@ -136,7 +113,7 @@
     transition: color 0.2s ease;
   }
 
-  /* ===== СВАЙП-АНИМАЦИЯ ===== */
+  /* СВАЙП-АНИМАЦИЯ */
   .view-wrapper { position: relative; width: 100%; overflow: hidden; }
   .view { display: flex; flex-direction: column; width: 100%; will-change: transform, opacity; }
   .view[hidden] { display: none !important; }
@@ -149,7 +126,7 @@
   
   .app { max-width:900px; margin:0 auto; }
   
-  /* ===== ШАПКА ===== */
+  /* ШАПКА */
   header.topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; position:relative; }
   header.topbar h1 { font-size:20px; margin:0; letter-spacing:-.3px; }
   .sync-status { display:flex; align-items:center; justify-content:center; font-size:18px; width:40px; height:40px; border-radius:50%; background:var(--icon-bg); border:var(--icon-border); box-shadow:var(--shadow); flex:0 0 auto; }
@@ -157,7 +134,6 @@
   @keyframes syncSpin { 0%{transform:rotate(0)} 50%{transform:rotate(180deg)} 100%{transform:rotate(360deg)} }
   
   .actions { display:flex; gap:8px; align-items:center; }
-  
   .icon-btn { background:var(--icon-bg); border:var(--icon-border); width:40px; height:40px; border-radius:50%; font-size:16px; cursor:pointer; box-shadow:var(--shadow); color:var(--text); display:flex; align-items:center; justify-content:center; position:relative; flex:0 0 auto; }
   .icon-btn:active { transform:scale(.9); }
   .icon-btn .bell-dot { position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:var(--lms); border:2px solid var(--icon-bg); display:none; }
@@ -171,7 +147,7 @@
   .strike { position: relative; text-decoration: none !important; opacity: 0.6; }
   .strike::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 1.5px; background-color: var(--strike-color); pointer-events: none; }
 
-  /* ===== КОНТЕНТ ===== */
+  /* ОСНОВНОЙ КОНТЕНТ */
   .search-wrap { position:relative; margin-bottom:10px; }
   .search { width:100%; padding:12px 42px 12px 40px; border-radius:16px; background:var(--card); border:var(--card-border); box-shadow:var(--shadow); font:inherit; font-size:14px; color:var(--text); outline:none; }
   .search::placeholder { color:var(--muted); opacity:.8; }
@@ -207,7 +183,7 @@
   .empty { text-align:center; color:var(--muted); padding:28px 12px 16px; font-size:14px; }
   .empty .big { font-size:30px; margin-bottom:6px; opacity:.7; }
 
-  /* ===== КАРТОЧКИ ===== */
+  /* КАРТОЧКИ */
   .card { display:flex; gap:10px; align-items:flex-start; position:relative; background:var(--card); border-radius:var(--card-radius); padding:14px 14px 14px 12px; border-left:6px solid var(--c,#999); box-shadow:var(--shadow); margin-bottom:10px; border-top: var(--card-border); border-right: var(--card-border); border-bottom: var(--card-border); }
   
   [data-theme="dark"] .card { border: 1px solid var(--border); border-left: none; }
@@ -253,23 +229,10 @@
   
   .more { flex:0 0 auto; align-self:flex-start; background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:20px; padding:3px 7px; border-radius:50%; opacity:.6; line-height:1; font-family:inherit; }
 
-  /* ===== МЕНЮ ===== */
-  .menu { 
-    position: fixed; 
-    z-index: 2000; 
-    background: var(--card); 
-    border: var(--card-border); 
-    border-radius: 16px; 
-    box-shadow: 0 10px 40px rgba(0,0,0,.5); 
-    padding: 7px; 
-    min-width: 210px; 
-    max-height: 80vh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
+  /* МЕНЮ */
+  .menu { position: fixed; z-index: 2000; background: var(--card); border: var(--card-border); border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.5); padding: 7px; min-width: 210px; max-height: 80vh; overflow-y: auto; overscroll-behavior: contain; }
   .menu::-webkit-scrollbar { width: 6px; }
   .menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  
   .menu .label { font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); padding:7px 10px 5px; font-weight:700; }
   .menu button { display:block; width:100%; text-align:left; border:none; background:transparent; color:var(--text); padding:9px 11px; border-radius:10px; font:inherit; font-size:14px; cursor:pointer; font-family:inherit; }
   .menu button:hover { background:var(--hover); }
@@ -291,12 +254,29 @@
   
   .modal-input { width:100%; background:var(--hover); border:1px solid var(--border); border-radius:12px; padding:10px 12px; font-size:14px; color:var(--text); outline:none; font-family:inherit; margin-bottom:4px; }
   
-  /* ===== ЧЕК-ЛИСТ НА ГЛАВНОЙ ===== */
+  /* ЧЕК-ЛИСТ НА ГЛАВНОЙ */
   .home-checklist-sec { margin-top: 14px; background: var(--card); border: var(--card-border); border-radius: var(--card-radius); padding: 16px; box-shadow: var(--shadow); }
   .home-checklist-sec h3 { margin: 0 0 12px; font-size: 15px; display: flex; align-items: center; gap: 6px; }
   .home-checklist-add { display: flex; gap: 8px; align-items: center; }
   .home-checklist-add input { flex: 1; background: var(--hover); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: var(--text); outline: none; font-size: 14px; }
-  .home-checklist-add button { background: var(--btn-accent); color: var(--on-btn-accent); border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  
+  /* КРУГЛАЯ КНОПКА ПЛЮС */
+  .home-checklist-add button { 
+    background: var(--btn-accent); 
+    color: var(--on-btn-accent); 
+    border: none; 
+    border-radius: 50%; 
+    width: 36px; 
+    height: 36px; 
+    cursor: pointer; 
+    font-size: 24px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    flex: 0 0 auto; 
+    padding: 0; 
+    line-height: 1;
+  }
   
   .checklist { display:flex; flex-direction:column; gap:1px; margin-bottom:6px; }
   .checklist-empty { color:var(--muted); font-size:13px; text-align:center; padding:8px 0 6px; opacity:.75; }
@@ -308,7 +288,7 @@
   .checklist-item .text { flex:1 1 auto; font-size:14px; color:var(--text); padding:2px 0; min-width:0; outline:none; }
   .checklist-item .del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:2px 7px; border-radius:50%; opacity:.5; font-family:inherit; }
   
-  /* ===== ФОРМА ДОБАВЛЕНИЯ ===== */
+  /* ФОРМА ДОБАВЛЕНИЯ */
   .bottom { display:grid; grid-template-columns:1fr; gap:16px; margin-top:16px; align-items:start; }
   .add { display:flex; gap:8px; flex-wrap:wrap; padding:14px; border-radius:var(--card-radius); border:2px dashed var(--border); }
   .add input { flex:1 1 120px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:14px; color:var(--text); }
@@ -317,7 +297,7 @@
   .add-note { width:100%; font-size:12px; color:var(--muted); margin-top:2px; padding-left:4px; }
   .add-note b { color:var(--text); font-weight:600; }
 
-  /* ===== КАЛЕНДАРЬ ===== */
+  /* КАЛЕНДАРЬ */
   .cal-box { background:var(--card); border-radius:var(--card-radius); padding:16px; box-shadow:var(--shadow); border:var(--card-border); margin-bottom:14px; }
   .cal-head { display:flex; align-items:center; justify-content:space-between; gap:6px; margin-bottom:12px; }
   .cal-head .cal-month { font-size:15px; font-weight:700; text-align:center; flex:1 1 auto; }
@@ -326,12 +306,12 @@
   .cal-dow span { font-size:10.5px; font-weight:700; color:var(--muted); text-align:center; letter-spacing:.4px; padding:2px 0; }
   .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
   
-  /* Убран огромный круг, сделан аккуратный кружок вокруг цифры */
+  /* МАЛЕНЬКИЙ КРУЖОК ДЛЯ СЕГОДНЯШНЕГО ДНЯ */
   .cal-cell { aspect-ratio:1; border:1px solid transparent; background:transparent; border-radius:12px; cursor:pointer; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px; font-family:inherit; overflow:hidden; }
   .cal-cell.empty { visibility:hidden; pointer-events:none; }
   .cal-cell .num { 
-    font-size:15px; font-weight:700; color:var(--text); line-height:1; 
-    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size:14px; font-weight:700; color:var(--text); line-height:1; 
+    width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   }
   
   .cal-cell.today .num { background:var(--accent); color:var(--on-accent); }
@@ -372,7 +352,7 @@
   
   .dup-from-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 16px; margin-top:14px; border:2px dashed var(--border); border-radius:16px; background:transparent; color:var(--muted); font-family:inherit; font-size:14px; font-weight:600; cursor:pointer; }
   
-  /* ===== ДЗ ===== */
+  /* ДЗ */
   .page-title { font-size:18px; margin:0 0 14px; letter-spacing:-.3px; display:flex; align-items:center; gap:8px; }
   .page-title .badge { font-size:11px; font-weight:700; color:var(--muted); background:var(--card); padding:3px 9px; border-radius:8px; box-shadow:var(--shadow); }
   
@@ -408,7 +388,7 @@
   .hw-group.hw-done-group .hw-arrow { color:var(--lms); }
   .hw-item .hw-subj-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.3px; color:var(--muted); opacity:.8; margin-right:6px; }
   
-  /* ===== КРУЖКИ ===== */
+  /* КРУЖКИ */
   .club-day { background:var(--card); border-radius:var(--card-radius); box-shadow:var(--shadow); border:var(--card-border); margin-bottom:12px; overflow:hidden; border-left:6px solid var(--accent); }
   .club-day-head { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; }
   .club-day-name { flex:1 1 auto; font-weight:700; font-size:15px; }
@@ -422,7 +402,7 @@
   .club-item input.club-name { font-weight:600; }
   .club-item input.club-place { font-size:13px; color:var(--muted); }
   
-  /* ===== ССЫЛКИ ===== */
+  /* ССЫЛКИ */
   .links-add { display:grid; grid-template-columns:1fr 2fr auto; gap:8px; margin-bottom:16px; }
   .links-add input { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:14px; color:var(--text); outline:none; }
   .links-add button { background:var(--btn-accent); color:var(--on-btn-accent); border:none; padding:10px 18px; border-radius:12px; font-weight:700; cursor:pointer; font-size:14px; font-family:inherit; white-space:nowrap; }
@@ -433,13 +413,13 @@
   .link-url { font-size:12px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:1px; }
   .link-del { flex:0 0 auto; border:none; background:transparent; color:var(--muted); cursor:pointer; font-size:16px; padding:4px 8px; border-radius:50%; opacity:.5; font-family:inherit; }
   
-  /* ===== НИЖНЕЕ МЕНЮ ===== */
+  /* НИЖНЕЕ МЕНЮ */
   .tabbar { position:fixed; left:50%; transform:translateX(-50%); bottom:14px; width:calc(100% - 28px); max-width:900px; background:var(--card); border:var(--card-border); border-radius:24px; box-shadow:0 8px 30px rgba(0,0,0,.4); display:grid; grid-template-columns:repeat(6,1fr); padding:8px; gap:4px; z-index:100; }
   .tabbar button { border:none; background:transparent; color:var(--muted); padding:8px 2px; border-radius:16px; cursor:pointer; font-family:inherit; font-size:10px; font-weight:600; display:flex; flex-direction:column; align-items:center; gap:4px; line-height:1; }
   .tabbar button .tb-icon { font-size:20px; line-height:1; }
   .tabbar button.active { color:var(--on-tab-active); }
   
-  /* ===== МОДАЛКИ ===== */
+  /* МОДАЛКИ */
   .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:300; padding:16px; }
   .modal { background:var(--card); border-radius:24px; padding:24px; max-width:440px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.6); border:var(--card-border); max-height:90vh; overflow-y:auto; }
   .modal h3 { margin:0 0 16px; font-size:18px; }
@@ -463,9 +443,9 @@
   
   .toast { position:fixed; left:50%; bottom:110px; transform:translateX(-50%); background:#f2f4fb; color:#0e0f14; padding:14px 24px; border-radius:16px; font-size:14px; box-shadow:0 8px 30px rgba(0,0,0,.5); z-index:200; max-width:88vw; text-align:center; font-weight:600; }
   [data-theme="light"] .toast { background:#1b1f2a; color:#fff; }
-  [data-theme="dark"] .toast { background:var(--dark-card); color:#fff; border:1px solid var(--border); }
+  [data-theme="dark"] .toast { background:var(--c-dark-card); color:#fff; border:1px solid var(--border); }
   
-  /* ===== МАТЕРИАЛЫ ===== */
+  /* МАТЕРИАЛЫ */
   .materials-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
   @media (max-width:720px) { .materials-grid { grid-template-columns:1fr; } }
   .materials-col { background:var(--card); border-radius:var(--card-radius); box-shadow:var(--shadow); border:var(--card-border); padding:16px; min-height:200px; display:flex; flex-direction:column; }
@@ -529,67 +509,53 @@
   
   .planner-body { flex: 1; overflow: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
 
-  /* --- Google Sheets Style --- */
-  .gs-planner { display: flex; gap: 16px; }
-  .gs-sidebar { flex: 0 0 240px; display: flex; flex-direction: column; gap: 16px; }
-  .gs-card { background: var(--card); border-radius: 16px; padding: 16px; border: 1px solid var(--border); }
-  .gs-card h4 { margin: 0 0 12px; font-size: 14px; outline: none; }
-  .gs-days-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; flex: 1; }
-  .gs-day-col { flex: 0 0 280px; background: var(--card); border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
-  .gs-day-head { padding: 12px; text-align: center; border-bottom: 1px solid var(--border); }
-  .gs-day-head h4 { margin: 0; outline: none; }
-  .gs-progress { width: 70px; height: 70px; border-radius: 50%; margin: 16px auto 8px; position: relative; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-  .gs-progress::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--border) 0); }
-  .gs-progress span { width: 56px; height: 56px; background: var(--card); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; z-index: 1; }
-  .gs-stats { display: flex; justify-content: space-around; padding: 8px 0; font-size: 11px; border-bottom: 1px solid var(--border); color: var(--muted); text-align: center; }
-  .gs-stats b { display: block; font-size: 14px; color: var(--text); }
-  .gs-tasks { flex: 1; padding: 10px; overflow-y: auto; min-height: 200px; }
-  .gs-task { display: flex; gap: 8px; align-items: center; padding: 6px; background: var(--bg); border-radius: 8px; margin-bottom: 4px; font-size: 13px; }
-  .gs-task.done .task-txt { text-decoration: line-through; color: var(--muted); }
-  .gs-task input { flex: 1; background: transparent; border: none; color: var(--text); outline: none; }
-  .gs-task .tsk-check { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--btn-accent); cursor: pointer; }
-  .gs-task .tsk-check.checked { background: var(--btn-accent); }
-  .gs-add-form { padding: 8px; border-top: 1px solid var(--border); display: flex; gap: 6px; }
-  .gs-add-form input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px; color: var(--text); font-size: 13px; }
-  .gs-add-form button { background: var(--btn-accent); color: var(--on-btn-accent); border: none; border-radius: 8px; width: 32px; cursor: pointer; }
-
-  /* --- Excel Style --- */
-  .excel-planner { background: var(--card); color: var(--text); padding: 20px; border-radius: 16px; border: 1px solid var(--border); min-width: 900px; }
+  /* --- Ежедневный планер --- */
+  .daily-planner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .daily-planner-grid { grid-template-columns: 1fr; } }
   
-  .excel-header-title { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; outline: none; }
+  .p-section { background: var(--card); border-radius: var(--card-radius); border: 1px solid var(--border); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .p-section-head { font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; outline: none; color: var(--text); }
+  .p-list { display: flex; flex-direction: column; gap: 4px; }
+  .p-item { display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--bg); border-radius: 8px; }
+  .p-item.done .p-text { text-decoration: line-through; color: var(--muted); }
+  .p-item input[type="text"] { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-size: 14px; }
+  .p-item .tsk-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--btn-accent); cursor: pointer; flex: 0 0 auto; }
+  .p-item .tsk-check.checked { background: var(--btn-accent); }
+  .p-item .p-del { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; }
   
-  .excel-week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 20px; }
-  .excel-day-col { border: 1px solid var(--border); background: var(--bg); padding: 8px; border-radius: 6px; }
-  .excel-day-title { font-weight: bold; text-align: center; margin-bottom: 8px; font-size: 14px; padding-bottom: 4px; border-bottom: 1px solid var(--border); outline: none; }
-  .excel-task-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-  .excel-task-row input[type="text"] { flex: 1; border: none; border-bottom: 1px solid var(--border); background: transparent; font-size: 12px; padding: 2px; color: inherit; outline: none; }
-  .excel-task-row input[type="checkbox"] { width: 14px; height: 14px; cursor: pointer; }
-  .excel-task-row button.del-w-task { background: none; border: none; color: var(--miss); cursor: pointer; font-size: 14px; padding: 0 4px; }
+  .p-add-form { display: flex; gap: 6px; margin-top: 4px; }
+  .p-add-form input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; color: var(--text); font-size: 13px; outline: none; }
+  .p-add-form button { background: var(--btn-accent); color: var(--on-btn-accent); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: 0 0 auto; }
 
-  .excel-section { margin-bottom: 20px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
-  .excel-section-head { background: var(--border); padding: 8px 12px; font-weight: bold; font-size: 14px; color: #fff; outline: none; }
-  .excel-section-body { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-  
-  .excel-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .excel-table th, .excel-table td { border: 1px solid var(--border); padding: 4px; text-align: center; }
-  .excel-table th { background: var(--bg); font-weight: normal; }
-  .excel-table td:nth-child(2) { text-align: left; }
-  .excel-table input[type="text"] { width: 100%; border: none; background: transparent; color: inherit; outline: none; font-size: 12px; }
-  .excel-table button.del-tbl-row { background: none; border: none; color: var(--miss); cursor: pointer; font-size: 14px; }
-  .excel-add-row { display: flex; gap: 6px; margin-top: 6px; align-items: center; }
-  .excel-add-row input { flex: 1; border: 1px solid var(--border); padding: 4px; border-radius: 4px; font-size: 12px; background: transparent; color: inherit; }
-  .excel-add-row button { padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 12px; color: var(--text); }
+  .progress-bar-wrap { background: var(--bg); border-radius: 10px; height: 20px; overflow: hidden; position: relative; margin-bottom: 10px; border: 1px solid var(--border); }
+  .progress-bar-fill { background: var(--accent); height: 100%; transition: width 0.3s ease; }
+  .progress-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; mix-blend-mode: difference; }
 
-  .excel-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .excel-textarea { width: 100%; height: 80px; border: 1px solid var(--border); border-radius: 4px; padding: 8px; font-size: 12px; background: transparent; color: inherit; resize: vertical; outline: none; }
+  /* --- Недельный планер --- */
+  .weekly-planner { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; }
+  .weekly-day { flex: 0 0 280px; background: var(--card); border-radius: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+  .weekly-day-head { padding: 12px; text-align: center; border-bottom: 1px solid var(--border); font-weight: bold; }
+  .weekly-tasks { padding: 10px; flex: 1; overflow-y: auto; min-height: 200px; }
 
-  @media (max-width: 900px) {
-    .gs-planner { flex-direction: column; }
-    .gs-sidebar { flex: 1 1 auto; }
-    .excel-planner { min-width: unset; padding: 10px; }
-    .excel-week-grid { grid-template-columns: 1fr; }
-    .excel-grid-2 { grid-template-columns: 1fr; }
-  }
+  /* --- Месячный календарь --- */
+  .monthly-calendar { background: var(--card); border-radius: var(--card-radius); padding: 20px; border: 1px solid var(--border); }
+  .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .mc-head h3 { margin: 0; font-size: 20px; }
+  .mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .mc-day { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; }
+  .mc-day:hover { background: var(--hover); }
+  .mc-day.today { border-color: var(--accent); }
+  .mc-day .num { font-size: 16px; font-weight: bold; }
+  .mc-day.today .num { color: var(--accent); }
+  .mc-dots { display: flex; gap: 2px; margin-top: 4px; }
+  .mc-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+  /* --- Трекер привычек --- */
+  .habits-grid { display: grid; grid-template-columns: 150px repeat(7, 1fr); gap: 4px; align-items: center; }
+  .habit-name { font-size: 12px; font-weight: 600; text-align: right; padding-right: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .habit-cell { aspect-ratio: 1; border-radius: 6px; background: var(--border); cursor: pointer; transition: background 0.2s; }
+  .habit-cell.active { background: var(--btn-accent); }
+
 </style>
 </head>
 <body>
@@ -742,28 +708,28 @@
       </div>
     </main>
 
-    <main class="view" data-view="links" id="viewLinks" hidden>
-      <h2 class="page-title">🔗 Полезные ссылки</h2>
-      <form class="links-add" id="linksAddForm" autocomplete="off">
-        <input name="title" placeholder="Название" required>
-        <input name="url" placeholder="https://example.com" required>
-        <button type="submit">+ Добавить</button>
-      </form>
-      <div id="linksList"></div>
+    <main class="view" data-view="planner" id="viewPlanner" hidden>
+      <h2 class="page-title">🗓 Мой планер</h2>
+      <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+        <button class="btn-planner active" data-ptab="daily" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">День</button>
+        <button class="btn-planner" data-ptab="weekly" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Неделя</button>
+        <button class="btn-planner" data-ptab="monthly" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Месяц</button>
+        <button class="btn-planner" data-ptab="recurring" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Повторяющиеся</button>
+        <button class="btn-planner" data-ptab="extra" style="padding:10px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); font-weight:bold;">Заметки</button>
+      </div>
+      <div id="plannerContent"></div>
     </main>
   </div>
 
   <nav class="tabbar slider-container" id="tabbar">
     <button data-tab="home" class="active"><span class="tb-icon">🏠</span><span>Главная</span></button>
     <button data-tab="calendar"><span class="tb-icon">📅</span><span>Календарь</span></button>
+    <button data-tab="planner"><span class="tb-icon">🗓</span><span>Планер</span></button>
     <button data-tab="homework"><span class="tb-icon">📝</span><span>ДЗ</span></button>
     <button data-tab="clubs"><span class="tb-icon">🎨</span><span>Кружки</span></button>
     <button data-tab="materials"><span class="tb-icon">📂</span><span>Материалы</span></button>
-    <button data-tab="links"><span class="tb-icon">🔗</span><span>Ссылки</span></button>
   </nav>
 </div>
-
-<div id="planner-standalone"></div>
 
 <input type="file" id="fileInput" accept=".json,application/json" hidden>
 
@@ -912,7 +878,20 @@ function isSameData(a, b){
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function defaultPlanner(){
-  return { tasks: {}, habits: {}, excel: { days: {}, daily: [], monthly: [], quarterly: [], halfYear: [], extra: '', ideas: '', headers: { daily: 'Ежедневно', monthly: 'Ежемесячно', quarterly: 'Ежеквартально', halfYear: 'Раз в полгода', extra: 'Дополнительно', ideas: 'Идеи и мысли' } } };
+  return { 
+    tasks: {}, habits: {}, 
+    excel: { days: {}, daily: [], monthly: [], quarterly: [], halfYear: [], extra: '', ideas: '', headers: { daily: 'Ежедневно', monthly: 'Ежемесячно', quarterly: 'Ежеквартально', halfYear: 'Раз в полгода', extra: 'Дополнительно', ideas: 'Идеи и мысли' } },
+    headers: {
+      important: 'Важные дела',
+      additional: 'Дополнительные задачи',
+      schedule: 'Расписание дня',
+      habits: 'Трекер привычек',
+      dontForget: 'Не забыть',
+      notes: 'Заметки'
+    },
+    days: {},
+    habitList: []
+  };
 }
 function defaultPersonal(){
   return { checklists:{}, clubs:[], links:[], planner: defaultPlanner(), itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
@@ -1306,7 +1285,7 @@ document.addEventListener('focusout', () => {
 });
 
 let prevTabIdx = 0;
-const TABS_ORDER = ['home','calendar','homework','clubs','materials','links'];
+const TABS_ORDER = ['home','calendar','planner','homework','clubs','materials'];
 
 function switchTab(tab){
   const newIdx = TABS_ORDER.indexOf(tab);
@@ -1328,10 +1307,10 @@ function switchTab(tab){
   
   if(tab === 'home') renderHome();
   if(tab === 'calendar') renderCalendar();
+  if(tab === 'planner') renderPlanner();
   if(tab === 'homework') renderHomework();
   if(tab === 'clubs') renderClubs();
   if(tab === 'materials') renderMaterials();
-  if(tab === 'links') renderLinks();
   
   setTimeout(() => moveSlider(document.getElementById('tabbar')), 10);
 }
@@ -2593,41 +2572,6 @@ $('#viewMaterials').addEventListener('click', e => {
   save(); renderMaterials();
 });
 
-function renderLinks(){
-  const list = $('#linksList');
-  list.innerHTML = '';
-  if(!data.links.length){ list.innerHTML = '<p class="empty"><div class="big">🔗</div>Ссылок пока нет.</p>'; return; }
-  data.links.forEach(l => {
-    let host = '';
-    try{ host = new URL(l.url).hostname.replace(/^www\./,''); }catch(e){ host = l.url; }
-    const letter = (l.title || host || '?').trim().charAt(0).toUpperCase() || '?';
-    const a = document.createElement('a');
-    a.className = 'link-item';
-    a.href = l.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
-    a.dataset.id = l.id;
-    a.innerHTML = `<span class="link-fav">${esc(letter)}</span><span class="link-info"><span class="link-title">${esc(l.title)}</span><span class="link-url">${esc(host)}</span></span><button class="link-del" type="button">×</button>`;
-    list.appendChild(a);
-  });
-}
-$('#linksAddForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const title = String(fd.get('title')||'').trim();
-  let url = String(fd.get('url')||'').trim();
-  if(!title || !url) return;
-  if(!/^https?:\/\//i.test(url)) url = 'https://' + url;
-  data.links.push({ id: uid(), title, url });
-  save(); renderLinks(); e.target.reset(); toast('Ссылка добавлена');
-});
-$('#linksList').addEventListener('click', e => {
-  const del = e.target.closest('.link-del');
-  if(!del) return;
-  e.preventDefault(); e.stopPropagation();
-  const item = del.closest('.link-item');
-  data.links = data.links.filter(l => l.id !== item.dataset.id);
-  save(); renderLinks();
-});
-
 const THEMES = ['dark', 'light'];
 const themeBtn = $('#themeBtn');
 function applyTheme(t){
@@ -2648,419 +2592,422 @@ themeBtn.onclick = () => {
   renderAll();
 };
 
-/* ============ ПЛАНЕР ============ */
-function renderPlannerContent(container) {
-  const today = new Date();
-  const weekStart = startOfWeek(today);
-  const weekEnd = addDays(weekStart, 6);
-  const weekRangeStr = formatWeekRange(weekStart, weekEnd);
-  
-  // Fallback safety
+/* ============ ПЛАНЕР (НОВЫЙ) ============ */
+let currentPlannerTab = 'daily';
+
+function renderPlanner() {
+  const container = document.getElementById('plannerContent');
+  if (!container) return;
+
   if (!data.planner) data.planner = defaultPlanner();
-  if (!data.planner.excel) data.planner.excel = defaultPlanner().excel;
-  if (!data.planner.excel.headers) data.planner.excel.headers = defaultPlanner().excel.headers;
-  
-  let html = `
-    <div class="planner-header">
-      <h2 contenteditable="true">🗓 Планер <span style="font-size:12px; color:var(--muted); font-weight:400; margin-left:8px;">${weekRangeStr}</span></h2>
-      ${container.id === 'plannerModalBody' ? '<button class="close-btn" id="plannerCloseBtn">×</button>' : ''}
-    </div>
-    
-    <div class="planner-body">
-      <!-- Google Sheets Style -->
-      <div class="gs-planner">
-        <div class="gs-sidebar">
-          <div class="gs-card">
-            <h4 contenteditable="true">${MONTHS_NOM[today.getMonth()]} ${today.getFullYear()}</h4>
-            <div class="mini-grid" style="display:grid; grid-template-columns:repeat(7,1fr); gap:2px; font-size:10px; text-align:center;">
-              <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
-              ${Array((new Date(today.getFullYear(), today.getMonth(), 1).getDay() + 6) % 7).fill('<span></span>').join('')}
-              ${Array.from({length: new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()}, (_, i) => `<span class="${i+1 === today.getDate() ? 'today' : ''}" style="${i+1 === today.getDate() ? 'border:1px solid var(--accent); color:var(--accent); border-radius:50%;' : 'color:var(--muted); padding:4px 0;'}">${i+1}</span>`).join('')}
-            </div>
+  if (!data.planner.days) data.planner.days = {};
+  if (!data.planner.habitList) data.planner.habitList = [];
+  if (!data.planner.headers) data.planner.headers = defaultPlanner().headers;
+
+  const key = iso(viewDate);
+
+  const pTabBtns = document.querySelectorAll('.btn-planner');
+  pTabBtns.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.ptab === currentPlannerTab);
+    btn.style.color = btn.dataset.ptab === currentPlannerTab ? 'var(--on-tab-active)' : 'var(--text)';
+    btn.style.background = btn.dataset.ptab === currentPlannerTab ? 'var(--tab-active-bg)' : 'var(--card)';
+  });
+
+  if (currentPlannerTab === 'daily') {
+    const dayData = data.planner.days[key] || { important: [], additional: [], schedule: [], dontForget: [], notes: '' };
+    const important = dayData.important || [];
+    const additional = dayData.additional || [];
+    const schedule = dayData.schedule || [];
+    const dontForget = dayData.dontForget || [];
+    const notes = dayData.notes || '';
+
+    const totalTasks = important.length + additional.length;
+    const doneTasks = important.filter(t=>t.done).length + additional.filter(t=>t.done).length;
+    const progress = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
+
+    container.innerHTML = `
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+        <button class="icon-btn" id="pPrevDay">‹</button>
+        <h3 style="margin:0; flex:1; text-align:center;" contenteditable="true" data-phead="title">${formatDateFull(viewDate)}</h3>
+        <button class="icon-btn" id="pNextDay">›</button>
+        <button class="btn-planner" style="background:var(--btn-accent); color:var(--on-btn-accent); padding:8px 12px; border-radius:8px;" id="pToday">Сегодня</button>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:${progress}%"></div>
+        <div class="progress-text">${doneTasks} / ${totalTasks} (${progress}%)</div>
+      </div>
+
+      <div class="daily-planner-grid">
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          
+          <div class="p-section">
+            <div class="p-section-head" contenteditable="true" data-phead="important">${esc(data.planner.headers.important)}</div>
+            <div class="p-list" id="pListImportant"></div>
+            <form class="p-add-form" data-list="important">
+              <input type="text" placeholder="Добавить..." required>
+              <button type="submit">+</button>
+            </form>
           </div>
-          <div class="gs-card">
-            <h4 contenteditable="true">Трекер привычек</h4>
-            <div style="display:grid; grid-template-columns: 1fr repeat(7, 1fr); gap:2px; align-items:center;">
-              <div></div>
-              ${DOW_SHORT.map(d => `<div style="font-size:9px; color:var(--muted); text-align:center;">${d}</div>`).join('')}
-              ${['Спорт', 'Чтение', 'Вода'].map(habit => `
-                <div style="font-size:10px; color:var(--muted); text-align:right; padding-right:4px;" contenteditable="true">${habit}</div>
-                ${Array.from({length: 7}, (_, i) => {
-                  const date = addDays(weekStart, i);
-                  const dateKey = iso(date);
-                  const isDone = data.planner && data.planner.habits && data.planner.habits[dateKey] && data.planner.habits[dateKey][habit];
-                  return `<div class="habit-cell ${isDone ? 'active' : ''}" data-date="${dateKey}" data-habit="${habit}" style="width:100%; aspect-ratio:1; background:${isDone ? 'var(--btn-accent)' : 'var(--border)'}; border-radius:4px; cursor:pointer;"></div>`;
-                }).join('')}
-              `).join('')}
-            </div>
+
+          <div class="p-section">
+            <div class="p-section-head" contenteditable="true" data-phead="additional">${esc(data.planner.headers.additional)}</div>
+            <div class="p-list" id="pListAdditional"></div>
+            <form class="p-add-form" data-list="additional">
+              <input type="text" placeholder="Добавить..." required>
+              <button type="submit">+</button>
+            </form>
           </div>
+
+          <div class="p-section">
+            <div class="p-section-head" contenteditable="true" data-phead="schedule">${esc(data.planner.headers.schedule)}</div>
+            <div class="p-list" id="pListSchedule"></div>
+            <form class="p-add-form" data-list="schedule">
+              <input type="text" placeholder="Время" style="flex:0 0 60px;" class="p-time-input">
+              <input type="text" placeholder="Дело..." required style="flex:1;">
+              <button type="submit">+</button>
+            </form>
+          </div>
+
         </div>
         
-        <div class="gs-days-scroll">
-          ${Array.from({length: 7}).map((_, i) => {
-            const date = addDays(weekStart, i);
-            const dateKey = iso(date);
-            const dayTasks = (data.planner && data.planner.tasks && data.planner.tasks[dateKey]) || [];
-            const totalTasks = dayTasks.length;
-            const doneTasks = dayTasks.filter(t => t.done).length;
-            const progress = totalTasks === 0 ? 0 : Math.round((doneTasks / totalTasks) * 100);
-            
-            return `
-              <div class="gs-day-col" style="border-top: 4px solid var(--btn-accent);">
-                <div class="gs-day-head">
-                  <h4 contenteditable="true">${DOW_SHORT[i]}</h4>
-                  <span contenteditable="true">${date.getDate()} ${MONTHS_GEN[date.getMonth()]}</span>
-                </div>
-                <div class="gs-progress" style="--p: ${progress}; --accent: var(--btn-accent);">
-                  <span>${progress}%</span>
-                </div>
-                <div class="gs-stats">
-                  <div>Готово<b>${doneTasks}</b></div>
-                  <div>Осталось<b>${totalTasks - doneTasks}</b></div>
-                  <div>Итого<b>${totalTasks}</b></div>
-                </div>
-                <div class="gs-tasks">
-                  ${totalTasks === 0 ? '<div style="text-align:center; color:var(--muted); font-size:12px; margin-top:20px;">Нет задач</div>' : ''}
-                  ${dayTasks.map((task, idx) => `
-                    <div class="gs-task ${task.done ? 'done' : ''}" data-date="${dateKey}" data-idx="${idx}">
-                      <div class="tsk-check ${task.done ? 'checked' : ''}" data-action="toggle"></div>
-                      <input type="text" class="task-txt" value="${esc(task.text)}" data-action="edit">
-                      <button class="del" data-action="del" style="background:none; border:none; color:var(--muted); cursor:pointer; padding:0 4px;">×</button>
-                    </div>
-                  `).join('')}
-                </div>
-                <form class="gs-add-form" data-date="${dateKey}">
-                  <input type="text" placeholder="Новая задача..." required>
-                  <button type="submit">+</button>
-                </form>
-              </div>
-            `;
-          }).join('')}
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          
+          <div class="p-section">
+            <div class="p-section-head" contenteditable="true" data-phead="habits">${esc(data.planner.headers.habits)}</div>
+            <div class="habits-grid" id="pHabitGrid" style="grid-template-columns: 1fr repeat(7, 1fr);">
+              <div style="font-size:10px; text-align:right; padding-right:8px; color:var(--muted);">Привычка</div>
+              ${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(d=>`<div style="font-size:10px; text-align:center; color:var(--muted);">${d}</div>`).join('')}
+              <!-- habits injected here -->
+            </div>
+            <form class="p-add-form" id="pAddHabitForm">
+              <input type="text" placeholder="Новая привычка..." required>
+              <button type="submit">+</button>
+            </form>
+          </div>
+
+          <div class="p-section">
+            <div class="p-section-head" contenteditable="true" data-phead="dontForget">${esc(data.planner.headers.dontForget)}</div>
+            <div class="p-list" id="pListDontForget"></div>
+            <form class="p-add-form" data-list="dontForget">
+              <input type="text" placeholder="Добавить..." required>
+              <button type="submit">+</button>
+            </form>
+          </div>
+
+          <div class="p-section">
+            <div class="p-section-head" contenteditable="true" data-phead="notes">${esc(data.planner.headers.notes)}</div>
+            <textarea id="pNotesArea" style="width:100%; min-height:100px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:var(--text); outline:none; resize:vertical;">${esc(notes)}</textarea>
+          </div>
+
         </div>
       </div>
-      
-      <!-- Excel Style -->
-      <div class="excel-planner">
-        <div class="excel-header-title" contenteditable="true">Планировщик задач</div>
-        
-        <div class="excel-week-grid">
-          ${Array.from({length: 7}).map((_, i) => {
-            const date = addDays(weekStart, i);
-            const dateKey = iso(date);
-            const dayTitle = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'][i];
-            const weekTasks = (data.planner.excel && data.planner.excel.days && data.planner.excel.days[dateKey]) || [];
-            return `
-              <div class="excel-day-col">
-                <div class="excel-day-title" style="background:var(--border); color:#fff;" contenteditable="true">${dayTitle}</div>
-                ${Array.from({length: 5}).map((_, j) => `
-                  <div class="excel-task-row">
-                    <input type="checkbox" ${weekTasks[j] && weekTasks[j].done ? 'checked' : ''} data-date="${dateKey}" data-idx="${j}" data-type="week-task-done">
-                    <input type="text" value="${weekTasks[j] ? esc(weekTasks[j].text) : ''}" placeholder="Задача..." data-date="${dateKey}" data-idx="${j}" data-type="week-task-text" style="${weekTasks[j] && weekTasks[j].done ? 'text-decoration: line-through; color: var(--muted);' : ''}">
-                    <button class="del-w-task" data-date="${dateKey}" data-idx="${j}">×</button>
-                  </div>
-                `).join('')}
-              </div>
-            `;
-          }).join('')}
-        </div>
+    `;
 
-        <!-- Ежедневно -->
-        <div class="excel-section">
-          <div class="excel-section-head" contenteditable="true" data-header="daily">${esc(data.planner.excel.headers.daily)}</div>
-          <div class="excel-section-body">
-            <table class="excel-table">
-              <thead>
-                <tr>
-                  <th style="width: 40px;"></th>
-                  <th contenteditable="true">Задача</th>
-                  ${DOW_SHORT.map(d => `<th>${d}</th>`).join('')}
-                </tr>
-              </thead>
-              <tbody id="excelDailyTasks">
-                ${(data.planner.excel && data.planner.excel.daily || []).map((task, i) => `
-                  <tr>
-                    <td><button class="del-tbl-row" data-type="daily-del" data-idx="${i}">×</button></td>
-                    <td><input type="text" value="${esc(task.text)}" data-idx="${i}" data-type="daily-text"></td>
-                    ${Array.from({length: 7}).map((_, j) => `
-                      <td><input type="checkbox" ${task.checks && task.checks[j] ? 'checked' : ''} data-idx="${i}" data-check="${j}" data-type="daily-check"></td>
-                    `).join('')}
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-            <div class="excel-add-row">
-              <input type="text" placeholder="Добавить задачу..." id="newDailyText">
-              <button id="addDailyBtn">Добавить</button>
-            </div>
-          </div>
-        </div>
+    function renderPList(listId, arr, listName) {
+      const listEl = container.querySelector(`#${listId}`);
+      if(!listEl) return;
+      listEl.innerHTML = '';
+      if (!arr.length) {
+        listEl.innerHTML = '<div style="color:var(--muted); font-size:12px; padding:5px;">Нет задач</div>';
+      } else {
+        arr.forEach((task, idx) => {
+          const row = document.createElement('div');
+          row.className = 'p-item' + (task.done ? ' done' : '');
+          row.innerHTML = `
+            <div class="tsk-check ${task.done ? 'checked' : ''}" data-action="toggle" data-list="${listName}" data-idx="${idx}"></div>
+            ${listName === 'schedule' ? `<span style="font-size:12px; color:var(--muted); flex:0 0 60px;">${esc(task.time||'')}</span>` : ''}
+            <input type="text" value="${esc(task.text)}" data-action="edit" data-list="${listName}" data-idx="${idx}">
+            <button class="p-del" data-action="del" data-list="${listName}" data-idx="${idx}">×</button>
+          `;
+          listEl.appendChild(row);
+        });
+      }
+    }
+    renderPList('pListImportant', important, 'important');
+    renderPList('pListAdditional', additional, 'additional');
+    renderPList('pListSchedule', schedule, 'schedule');
+    renderPList('pListDontForget', dontForget, 'dontForget');
 
-        <!-- Ежемесячно -->
-        <div class="excel-section">
-          <div class="excel-section-head" contenteditable="true" data-header="monthly">${esc(data.planner.excel.headers.monthly)}</div>
-          <div class="excel-section-body">
-            <table class="excel-table">
-              <thead>
-                <tr>
-                  <th style="width: 40px;"></th>
-                  <th contenteditable="true">Задача</th>
-                  <th colspan="12">Месяцы</th>
-                </tr>
-              </thead>
-              <tbody id="excelMonthlyTasks">
-                ${(data.planner.excel && data.planner.excel.monthly || []).map((task, i) => `
-                  <tr>
-                    <td><button class="del-tbl-row" data-type="monthly-del" data-idx="${i}">×</button></td>
-                    <td><input type="text" value="${esc(task.text)}" data-idx="${i}" data-type="monthly-text"></td>
-                    <td colspan="12" style="display:flex; gap:4px; justify-content:space-around;">
-                      ${Array.from({length: 12}).map((_, j) => `
-                        <input type="checkbox" ${task.checks && task.checks[j] ? 'checked' : ''} data-idx="${i}" data-check="${j}" data-type="monthly-check">
-                      `).join('')}
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-            <div class="excel-add-row">
-              <input type="text" placeholder="Добавить задачу..." id="newMonthlyText">
-              <button id="addMonthlyBtn">Добавить</button>
-            </div>
-          </div>
-        </div>
+    const weekStart = startOfWeek(viewDate);
+    const habitGrid = container.querySelector('#pHabitGrid');
+    data.planner.habitList.forEach((habit, hIdx) => {
+      const nameCell = document.createElement('div');
+      nameCell.className = 'habit-name';
+      nameCell.innerHTML = `<span contenteditable="true" data-habit-id="${habit.id}">${esc(habit.name)}</span> <button class="p-del" style="font-size:12px;" data-del-habit="${habit.id}">×</button>`;
+      habitGrid.appendChild(nameCell);
 
-        <!-- Нижние блоки -->
-        <div class="excel-grid-2">
-          <!-- Ежеквартально -->
-          <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true" data-header="quarterly">${esc(data.planner.excel.headers.quarterly)}</div>
-            <div class="excel-section-body">
-              <table class="excel-table">
-                <thead><tr><th style="width: 40px;"></th><th contenteditable="true">Задача</th><th>I</th><th>II</th><th>III</th><th>IV</th></tr></thead>
-                <tbody id="excelQuarterlyTasks">
-                  ${(data.planner.excel && data.planner.excel.quarterly || []).map((task, i) => `
-                    <tr>
-                      <td><button class="del-tbl-row" data-type="quarterly-del" data-idx="${i}">×</button></td>
-                      <td><input type="text" value="${esc(task.text)}" data-idx="${i}" data-type="quarterly-text"></td>
-                      ${Array.from({length: 4}).map((_, j) => `<td><input type="checkbox" ${task.checks && task.checks[j] ? 'checked' : ''} data-idx="${i}" data-check="${j}" data-type="quarterly-check"></td>`).join('')}
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-              <div class="excel-add-row">
-                <input type="text" placeholder="Добавить..." id="newQuarterlyText">
-                <button id="addQuarterlyBtn">+</button>
-              </div>
-            </div>
-          </div>
+      for(let i=0;i<7;i++){
+        const d = addDays(weekStart, i);
+        const dKey = iso(d);
+        const isDone = habit.history && habit.history[dKey];
+        const cell = document.createElement('div');
+        cell.className = 'habit-cell' + (isDone ? ' active' : '');
+        cell.dataset.habitId = habit.id;
+        cell.dataset.dateKey = dKey;
+        habitGrid.appendChild(cell);
+      }
+    });
 
-          <!-- Раз в полгода -->
-          <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true" data-header="halfYear">${esc(data.planner.excel.headers.halfYear)}</div>
-            <div class="excel-section-body">
-              <table class="excel-table">
-                <thead><tr><th style="width: 40px;"></th><th contenteditable="true">Задача</th><th>1</th><th>2</th></tr></thead>
-                <tbody id="excelHalfTasks">
-                  ${(data.planner.excel && data.planner.excel.halfYear || []).map((task, i) => `
-                    <tr>
-                      <td><button class="del-tbl-row" data-type="half-del" data-idx="${i}">×</button></td>
-                      <td><input type="text" value="${esc(task.text)}" data-idx="${i}" data-type="half-text"></td>
-                      ${Array.from({length: 2}).map((_, j) => `<td><input type="checkbox" ${task.checks && task.checks[j] ? 'checked' : ''} data-idx="${i}" data-check="${j}" data-type="half-check"></td>`).join('')}
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-              <div class="excel-add-row">
-                <input type="text" placeholder="Добавить..." id="newHalfText">
-                <button id="addHalfBtn">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
+    container.querySelector('#pPrevDay').onclick = () => { viewDate = addDays(viewDate, -1); renderPlanner(); };
+    container.querySelector('#pNextDay').onclick = () => { viewDate = addDays(viewDate, 1); renderPlanner(); };
+    container.querySelector('#pToday').onclick = () => { viewDate = todayDate(); renderPlanner(); };
 
-        <!-- Дополнительно и Идеи -->
-        <div class="excel-grid-2">
-          <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true" data-header="extra">${esc(data.planner.excel.headers.extra)}</div>
-            <div class="excel-section-body">
-              <textarea class="excel-textarea" id="excelExtra" placeholder="Тестовый проект...">${esc(data.planner.excel && data.planner.excel.extra || '')}</textarea>
-            </div>
-          </div>
-          <div class="excel-section">
-            <div class="excel-section-head" contenteditable="true" data-header="ideas">${esc(data.planner.excel.headers.ideas)}</div>
-            <div class="excel-section-body">
-              <textarea class="excel-textarea" id="excelIdeas" placeholder="Новая таблица / автоматизация...">${esc(data.planner.excel && data.planner.excel.ideas || '')}</textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  container.innerHTML = html;
-  
-  if (container.id === 'plannerModalBody') {
-    container.querySelector('#plannerCloseBtn').onclick = () => document.querySelector('.planner-modal-overlay').remove();
-  }
-
-  // --- Google Sheets Logic ---
-  const gsContainer = container.querySelector('.gs-planner');
-  if (gsContainer) {
-    gsContainer.querySelectorAll('.gs-add-form').forEach(form => {
+    container.querySelectorAll('.p-add-form[data-list]').forEach(form => {
       form.onsubmit = (e) => {
         e.preventDefault();
-        const dateKey = form.dataset.date;
-        const input = form.querySelector('input');
-        if (!data.planner.tasks) data.planner.tasks = {};
-        if (!data.planner.tasks[dateKey]) data.planner.tasks[dateKey] = [];
-        data.planner.tasks[dateKey].push({ text: input.value.trim(), done: false });
+        const listName = form.dataset.list;
+        if (!data.planner.days[key]) data.planner.days[key] = {};
+        if (!data.planner.days[key][listName]) data.planner.days[key][listName] = [];
+        let text = form.querySelector('input[type="text"]:last-of-type').value.trim();
+        let time = '';
+        if (listName === 'schedule') {
+          time = form.querySelector('.p-time-input').value.trim();
+        }
+        if (!text) return;
+        data.planner.days[key][listName].push({ id: uid(), text, time, done: false });
         save();
-        renderPlannerContent(container); // Re-render
+        form.reset();
+        renderPlanner();
       };
     });
 
-    gsContainer.addEventListener('click', e => {
-      const item = e.target.closest('.gs-task');
-      if (item) {
-        const dateKey = item.dataset.date;
-        const idx = parseInt(item.dataset.idx);
-        const tasks = data.planner.tasks[dateKey];
-        if (!tasks || !tasks[idx]) return;
-
-        if (e.target.dataset.action === 'toggle') {
-          tasks[idx].done = !tasks[idx].done;
-          save(); renderPlannerContent(container);
-        } else if (e.target.dataset.action === 'del') {
-          tasks.splice(idx, 1);
-          save(); renderPlannerContent(container);
-        }
-      }
-      
-      const habitCell = e.target.closest('.habit-cell');
-      if (habitCell) {
-        const dateKey = habitCell.dataset.date;
-        const habit = habitCell.dataset.habit;
-        if (!data.planner.habits) data.planner.habits = {};
-        if (!data.planner.habits[dateKey]) data.planner.habits[dateKey] = {};
-        data.planner.habits[dateKey][habit] = !data.planner.habits[dateKey][habit];
-        save();
-        habitCell.classList.toggle('active');
-        habitCell.style.background = data.planner.habits[dateKey][habit] ? 'var(--btn-accent)' : 'var(--border)';
-      }
-    });
-
-    gsContainer.addEventListener('input', e => {
-      if (e.target.dataset.action === 'edit') {
-        const item = e.target.closest('.gs-task');
-        const dateKey = item.dataset.date;
-        const idx = parseInt(item.dataset.idx);
-        if (data.planner.tasks[dateKey] && data.planner.tasks[dateKey][idx]) {
-          data.planner.tasks[dateKey][idx].text = e.target.value;
-          save();
-        }
-      }
-    });
-  }
-
-  // --- Excel Logic ---
-  const exContainer = container.querySelector('.excel-planner');
-  if (exContainer) {
-    if (!data.planner.excel) data.planner.excel = { days: {}, daily: [], monthly: [], quarterly: [], halfYear: [], extra: '', ideas: '', headers: { daily: 'Ежедневно', monthly: 'Ежемесячно', quarterly: 'Ежеквартально', halfYear: 'Раз в полгода', extra: 'Дополнительно', ideas: 'Идеи и мысли' } };
-    if (!data.planner.excel.days) data.planner.excel.days = {};
-
-    // Headers editing
-    exContainer.querySelectorAll('[data-header]').forEach(head => {
-      head.addEventListener('input', (e) => {
-        const key = head.dataset.header;
-        data.planner.excel.headers[key] = e.target.textContent;
-        save();
-      });
-    });
-
-    // Week grid
-    exContainer.querySelectorAll('input[data-type="week-task-done"]').forEach(chk => {
-      chk.onchange = (e) => {
-        const dateKey = e.target.dataset.date;
-        const idx = parseInt(e.target.dataset.idx);
-        if (!data.planner.excel.days[dateKey]) data.planner.excel.days[dateKey] = [];
-        if (!data.planner.excel.days[dateKey][idx]) data.planner.excel.days[dateKey][idx] = { text: '', done: false };
-        data.planner.excel.days[dateKey][idx].done = e.target.checked;
-        save();
-        const textInput = e.target.nextElementSibling;
-        if (textInput) textInput.style.textDecoration = e.target.checked ? 'line-through' : 'none';
-      };
-    });
-    exContainer.querySelectorAll('input[data-type="week-task-text"]').forEach(txt => {
-      txt.addEventListener('input', (e) => {
-        const dateKey = e.target.dataset.date;
-        const idx = parseInt(e.target.dataset.idx);
-        if (!data.planner.excel.days[dateKey]) data.planner.excel.days[dateKey] = [];
-        if (!data.planner.excel.days[dateKey][idx]) data.planner.excel.days[dateKey][idx] = { text: '', done: false };
-        data.planner.excel.days[dateKey][idx].text = e.target.value;
-        save();
-      });
-    });
-    exContainer.querySelectorAll('.del-w-task').forEach(btn => {
-      btn.onclick = (e) => {
-        const dateKey = e.target.dataset.date;
-        const idx = parseInt(e.target.dataset.idx);
-        if (data.planner.excel.days[dateKey] && data.planner.excel.days[dateKey][idx]) {
-          data.planner.excel.days[dateKey].splice(idx, 1);
-          save(); renderPlannerContent(container);
-        }
-      }
-    });
-
-    // Helper function for table logic
-    const setupTableLogic = (listName, containerId, addBtnId, addInputId, colCount) => {
-      const list = data.planner.excel[listName];
-      const exContainerNode = exContainer.querySelector(`#${containerId}`);
-      const addBtn = exContainer.querySelector(`#${addBtnId}`);
-      const addInput = exContainer.querySelector(`#${addInputId}`);
-
-      if (addBtn) {
-        addBtn.onclick = () => {
-          if (addInput.value.trim()) {
-            list.push({ text: addInput.value.trim(), checks: Array(colCount).fill(false) });
-            save(); renderPlannerContent(container);
-          }
-        };
-      }
-
-      exContainerNode.querySelectorAll(`input[data-type="${listName}-check"]`).forEach(chk => {
-        chk.onchange = (e) => {
-          const idx = parseInt(e.target.dataset.idx);
-          const cIdx = parseInt(e.target.dataset.check);
-          list[idx].checks[cIdx] = e.target.checked;
-          save();
-        };
-      });
-      exContainerNode.querySelectorAll(`input[data-type="${listName}-text"]`).forEach(txt => {
-        txt.addEventListener('input', (e) => {
-          const idx = parseInt(e.target.dataset.idx);
-          list[idx].text = e.target.value;
-          save();
-        });
-      });
-      exContainerNode.querySelectorAll(`button[data-type="${listName}-del"]`).forEach(btn => {
-        btn.onclick = (e) => {
-          const idx = parseInt(e.target.dataset.idx);
-          list.splice(idx, 1);
-          save(); renderPlannerContent(container);
-        };
-      });
+    container.querySelector('#pAddHabitForm').onsubmit = (e) => {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      if (!input.value.trim()) return;
+      data.planner.habitList.push({ id: uid(), name: input.value.trim(), history: {} });
+      save(); renderPlanner();
     };
 
-    setupTableLogic('daily', 'excelDailyTasks', 'addDailyBtn', 'newDailyText', 7);
-    setupTableLogic('monthly', 'excelMonthlyTasks', 'addMonthlyBtn', 'newMonthlyText', 12);
-    setupTableLogic('quarterly', 'excelQuarterlyTasks', 'addQuarterlyBtn', 'newQuarterlyText', 4);
-    setupTableLogic('halfYear', 'excelHalfTasks', 'addHalfBtn', 'newHalfText', 2);
+    container.querySelector('#plannerContent').addEventListener('click', e => {
+      if (e.target.classList.contains('tsk-check')) {
+        const listName = e.target.dataset.list;
+        const idx = parseInt(e.target.dataset.idx);
+        const list = data.planner.days[key][listName];
+        if (list && list[idx]) {
+          list[idx].done = !list[idx].done;
+          save(); renderPlanner();
+        }
+      }
+      if (e.target.classList.contains('p-del') && e.target.dataset.list) {
+        const listName = e.target.dataset.list;
+        const idx = parseInt(e.target.dataset.idx);
+        const list = data.planner.days[key][listName];
+        if (list) {
+          list.splice(idx, 1);
+          save(); renderPlanner();
+        }
+      }
+      if (e.target.classList.contains('habit-cell')) {
+        const habitId = e.target.dataset.habitId;
+        const dKey = e.target.dataset.dateKey;
+        const habit = data.planner.habitList.find(h => h.id === habitId);
+        if (habit) {
+          if (!habit.history) habit.history = {};
+          habit.history[dKey] = !habit.history[dKey];
+          save(); renderPlanner();
+        }
+      }
+      if (e.target.dataset.delHabit) {
+        if (!confirm('Удалить привычку?')) return;
+        data.planner.habitList = data.planner.habitList.filter(h => h.id !== e.target.dataset.delHabit);
+        save(); renderPlanner();
+      }
+    });
 
-    // Textareas
-    const exExtra = exContainer.querySelector('#excelExtra');
-    const exIdeas = exContainer.querySelector('#excelIdeas');
-    if (exExtra) exExtra.oninput = (e) => { data.planner.excel.extra = e.target.value; save(); };
-    if (exIdeas) exIdeas.oninput = (e) => { data.planner.excel.ideas = e.target.value; save(); };
+    container.querySelector('#plannerContent').addEventListener('input', e => {
+      if (e.target.dataset.action === 'edit') {
+        const listName = e.target.dataset.list;
+        const idx = parseInt(e.target.dataset.idx);
+        const list = data.planner.days[key][listName];
+        if (list && list[idx]) {
+          list[idx].text = e.target.value;
+          save();
+        }
+      }
+      if (e.target.dataset.habitId && e.target.tagName === 'SPAN') {
+        const habit = data.planner.habitList.find(h => h.id === e.target.dataset.habitId);
+        if (habit) {
+          habit.name = e.target.textContent;
+          save();
+        }
+      }
+      if (e.target.dataset.phead) {
+        data.planner.headers[e.target.dataset.phead] = e.target.textContent;
+        save();
+      }
+      if (e.target.id === 'pNotesArea') {
+        if (!data.planner.days[key]) data.planner.days[key] = {};
+        data.planner.days[key].notes = e.target.value;
+        save();
+      }
+    });
+
+  } else if (currentPlannerTab === 'weekly') {
+    const weekStart = startOfWeek(viewDate);
+    let html = `<div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+      <button class="icon-btn" id="pPrevWeek">‹</button>
+      <h3 style="margin:0; flex:1; text-align:center;">Неделя: ${formatWeekRange(weekStart, addDays(weekStart, 6))}</h3>
+      <button class="icon-btn" id="pNextWeek">›</button>
+    </div>
+    <div class="weekly-planner">`;
+    
+    for (let i=0; i<7; i++) {
+      const d = addDays(weekStart, i);
+      const dKey = iso(d);
+      const dayData = data.planner.days[dKey] || { important: [], additional: [] };
+      const allTasks = [...(dayData.important||[]), ...(dayData.additional||[])];
+      
+      html += `
+        <div class="weekly-day">
+          <div class="weekly-day-head">
+            <div>${formatDateHuman(d)}</div>
+            <div style="font-size:10px; color:var(--muted); margin-top:4px;">${allTasks.length} задач</div>
+          </div>
+          <div class="weekly-tasks">
+            ${allTasks.map(t => `<div style="font-size:12px; text-decoration:${t.done?'line-through':'none'}; opacity:${t.done?0.5:1}; margin-bottom:4px;">• ${esc(t.text)}</div>`).join('')}
+            ${!allTasks.length ? '<div style="font-size:12px; color:var(--muted); text-align:center;">Пусто</div>' : ''}
+          </div>
+          <div style="padding:10px; border-top:1px solid var(--border);">
+            <button class="btn-goto-day" data-date="${dKey}" style="width:100%; padding:6px; border-radius:6px; background:var(--btn-accent); color:var(--on-btn-accent); font-weight:bold;">Открыть день</button>
+          </div>
+        </div>
+      `;
+    }
+    html += `</div>`;
+    container.innerHTML = html;
+
+    container.querySelector('#pPrevWeek').onclick = () => { viewDate = addDays(viewDate, -7); renderPlanner(); };
+    container.querySelector('#pNextWeek').onclick = () => { viewDate = addDays(viewDate, 7); renderPlanner(); };
+    container.querySelectorAll('.btn-goto-day').forEach(btn => {
+      btn.onclick = () => {
+        viewDate = new Date(btn.dataset.date + 'T00:00:00');
+        currentPlannerTab = 'daily';
+        renderPlanner();
+      };
+    });
+
+  } else if (currentPlannerTab === 'monthly') {
+    let html = `
+      <div class="monthly-calendar">
+        <div class="mc-head">
+          <button class="icon-btn" id="pPrevMonth">‹</button>
+          <h3>${MONTHS_NOM[calTabMonth.getMonth()]} ${calTabMonth.getFullYear()}</h3>
+          <button class="icon-btn" id="pNextMonth">›</button>
+        </div>
+        <div class="mc-grid" id="pMonthlyGrid">
+          ${DOW_SHORT.map(d=>`<div style="text-align:center; font-size:12px; font-weight:bold; padding:10px 0;">${d}</div>`).join('')}
+        </div>
+      </div>
+    `;
+    container.innerHTML = html;
+    
+    const grid = container.querySelector('#pMonthlyGrid');
+    const y = calTabMonth.getFullYear(), m = calTabMonth.getMonth();
+    const so = (new Date(y, m, 1).getDay() + 6) % 7;
+    const dim = new Date(y, m + 1, 0).getDate();
+    const today = todayDate();
+    
+    for(let i=0; i<so; i++) {
+      grid.innerHTML += `<div></div>`;
+    }
+    for(let d=1; d<=dim; d++) {
+      const date = new Date(y, m, d);
+      const key = iso(date);
+      const dayData = data.planner.days[key] || { important: [], additional: [] };
+      const total = (dayData.important||[]).length + (dayData.additional||[]).length;
+      const isToday = sameDay(date, today);
+      
+      grid.innerHTML += `
+        <div class="mc-day ${isToday?'today':''}" data-date="${key}">
+          <span class="num">${d}</span>
+          ${total ? `<div class="mc-dots"><div class="mc-dot"></div></div>` : ''}
+        </div>
+      `;
+    }
+    
+    container.querySelector('#pPrevMonth').onclick = () => { calTabMonth.setMonth(calTabMonth.getMonth() - 1); renderPlanner(); };
+    container.querySelector('#pNextMonth').onclick = () => { calTabMonth.setMonth(calTabMonth.getMonth() + 1); renderPlanner(); };
+    grid.querySelectorAll('.mc-day').forEach(cell => {
+      cell.onclick = () => {
+        viewDate = new Date(cell.dataset.date + 'T00:00:00');
+        currentPlannerTab = 'daily';
+        renderPlanner();
+      };
+    });
+
+  } else if (currentPlannerTab === 'recurring') {
+    container.innerHTML = `
+      <div class="p-section">
+        <div class="p-section-head">Повторяющиеся задачи</div>
+        <div class="p-list" id="pRecList"></div>
+        <form class="p-add-form" id="pRecAddForm" style="margin-top:10px;">
+          <input type="text" placeholder="Задача..." required style="flex:2;">
+          <select style="flex:1; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); padding:6px;">
+            <option value="daily">Каждый день</option>
+            <option value="weekly">Каждую неделю</option>
+            <option value="monthly">Каждый месяц</option>
+          </select>
+          <button type="submit">+</button>
+        </form>
+      </div>
+    `;
+    const list = container.querySelector('#pRecList');
+    const recs = data.planner.excel?.daily || [];
+    if(!recs.length) list.innerHTML = '<div style="color:var(--muted); font-size:12px;">Пока нет повторяющихся задач</div>';
+    recs.forEach((r, i) => {
+      const row = document.createElement('div');
+      row.className = 'p-item';
+      row.innerHTML = `
+        <input type="text" value="${esc(r.text)}" data-rec-idx="${i}">
+        <button class="p-del" data-rec-del="${i}">×</button>
+      `;
+      list.appendChild(row);
+    });
+    
+    container.querySelector('#pRecAddForm').onsubmit = (e) => {
+      e.preventDefault();
+      const text = e.target.querySelector('input[type="text"]').value.trim();
+      if(!text) return;
+      if(!data.planner.excel) data.planner.excel = { daily: [] };
+      data.planner.excel.daily.push({ id: uid(), text, checks: [] });
+      save(); renderPlanner();
+    };
+    list.addEventListener('click', e => {
+      if(e.target.dataset.recDel) {
+        data.planner.excel.daily.splice(parseInt(e.target.dataset.recDel), 1);
+        save(); renderPlanner();
+      }
+    });
+    list.addEventListener('input', e => {
+      if(e.target.dataset.recIdx) {
+        data.planner.excel.daily[parseInt(e.target.dataset.recIdx)].text = e.target.value;
+        save();
+      }
+    });
+
+  } else if (currentPlannerTab === 'extra') {
+    container.innerHTML = `
+      <div class="p-section">
+        <div class="p-section-head">Заметки / Проекты / Идеи</div>
+        <textarea id="pGlobalNotes" style="width:100%; min-height:300px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px; color:var(--text); outline:none; resize:vertical;">${esc(data.planner.excel?.extra || '')}</textarea>
+      </div>
+    `;
+    container.querySelector('#pGlobalNotes').addEventListener('input', e => {
+      if(!data.planner.excel) data.planner.excel = {};
+      data.planner.excel.extra = e.target.value;
+      save();
+    });
   }
 }
+
+document.querySelectorAll('.btn-planner').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentPlannerTab = btn.dataset.ptab;
+    renderPlanner();
+  });
+});
 
 function openActionsModal(adminMode){
   const backdrop = document.createElement('div');
@@ -3069,12 +3016,10 @@ function openActionsModal(adminMode){
 
   let buttons = '';
   buttons += `<button style="${btnStyle}" data-act="reminders">🔔 Напоминания о парах</button>`;
-  if(adminMode) buttons += `<button style="${btnStyle}" data-act="copyWeek">📋 Скопировать неделю на следующую</button>`;
   buttons += `<button style="${btnStyle}" data-act="pdfWeek">📄 Скачать неделю в PDF</button>`;
   buttons += `<button style="${btnStyle}" data-act="pdfMonth">📄 Скачать месяц в PDF</button>`;
   buttons += `<button style="${btnStyle}" data-act="ics">📆 Экспорт в календарь (.ics)</button>`;
   buttons += `<button style="${btnStyle}" data-act="jsonOut">💾 Скачать бэкап (.json)</button>`;
-  if(adminMode) buttons += `<button style="${btnStyle}" data-act="jsonIn">📂 Загрузить бэкап (.json)</button>`;
   buttons += `<button style="${btnStyle};color:#e03131" data-act="wipePersonal">🗑 Очистить личные данные</button>`;
 
   backdrop.innerHTML = `
@@ -3093,7 +3038,6 @@ function openActionsModal(adminMode){
     const a = btn.dataset.act;
     close();
     if(a === 'reminders') openRemindersModal();
-    if(a === 'copyWeek') copyWeekForward();
     if(a === 'pdfWeek') exportPDF('week');
     if(a === 'pdfMonth') exportPDF('month');
     if(a === 'ics') exportICS();
@@ -3101,30 +3045,13 @@ function openActionsModal(adminMode){
     if(a === 'jsonIn') $('#fileInput').click();
     if(a === 'wipePersonal'){
       if(confirm('Очистить только твои личные данные?')){
-        data.checklists = {}; data.clubs = []; data.links = []; data.planner = defaultPlanner();
+        data.checklists = {}; data.clubs = []; data.planner = defaultPlanner();
         data.itemStates = {}; data.hwStates = {}; data.materialStates = {};
         data.settings = { notifyEnabled: true, notifyMinutes: 15 };
         save(); renderAll(); toast('Личные данные очищены');
       }
     }
   });
-}
-
-function copyWeekForward(){
-  const src = currentWeekStart();
-  let copied = 0;
-  for(let i=0;i<7;i++){
-    const fromKey = iso(addDays(src, i));
-    const toKey = iso(addDays(src, i+7));
-    const fromArr = data.days[fromKey] || [];
-    if(!fromArr.length) continue;
-    fromArr.forEach(item => {
-      itemsFor(toKey).push({...item, id: uid(), done:false, autoDone:undefined, lmsStatus:'', hwIds:[]});
-      copied++;
-    });
-  }
-  if(!copied){ toast('Нет пар на этой неделе'); return; }
-  save(); renderAll(); toast(`Скопировано ${copied} пар`);
 }
 
 function adminLogin(){
@@ -3213,7 +3140,7 @@ function openProfileMenu(){
   let extra;
   if(isAdmin){
     extra = `
-      <button data-act="openPlannerNewTab">🗓 Планер (новая вкладка)</button>
+      <button data-act="openPlannerNewTab">↗️ Планер (новая вкладка)</button>
       <hr>
       <button data-act="adminLogout">🚪 Выйти из админа</button>
       <button data-act="profileLinks">🔗 Ссылки профилей</button>
@@ -3223,7 +3150,7 @@ function openProfileMenu(){
       <button data-act="newProfile">➕ Новый профиль</button>`;
   } else {
     extra = `
-      <button data-act="openPlannerNewTab">🗓 Планер (новая вкладка)</button>
+      <button data-act="openPlannerNewTab">↗️ Планер (новая вкладка)</button>
       <hr>
       <button data-act="adminLogin">🔑 Войти как админ</button>
       <button data-act="changeAvatar">🖼 Сменить аватарку</button>
@@ -3493,14 +3420,13 @@ function renderAll(){
   renderProfileBadge();
   renderHome();
   if(currentTab === 'calendar') renderCalendar();
+  if(currentTab === 'planner') renderPlanner();
   if(currentTab === 'homework') renderHomework();
   if(currentTab === 'clubs') renderClubs();
   if(currentTab === 'materials') renderMaterials();
-  if(currentTab === 'links') renderLinks();
 }
 
 async function initApp(){
-  // Check for standalone planner mode
   const urlParams = new URLSearchParams(location.search);
   if (urlParams.get('planner') === 'true') {
     document.body.classList.add('planner-page');
