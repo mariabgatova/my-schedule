@@ -16,6 +16,8 @@
     --c-light-accent:#b41b2d; --c-light-text:#1f1a2f; --c-light-muted:#6a6478;
     --c-warm-bg:#2a1e1a; --c-warm-card:#3d2c25; --c-warm-border:#5a3e32;
     --c-warm-accent:#d4473a; --c-warm-text:#f8ede0; --c-warm-muted:#b89a85;
+    --c-pink-bg:#fdf2f8; --c-pink-card:#ffffff; --c-pink-border:#fbcfe8;
+    --c-pink-accent:#db2777; --c-pink-text:#1f2937; --c-pink-muted:#6b7280;
   }
   [data-theme="dark"]{
     --bg:var(--c-dark-bg); --card:var(--c-dark-card); --text:var(--c-dark-text);
@@ -25,8 +27,8 @@
     --icon-border:1px solid var(--border); --card-radius:16px; --card-border:1px solid var(--border);
     --tab-active-bg:var(--accent); --on-tab-active:#fff;
     --strike-color:var(--c-dark-accent); --btn-accent:var(--c-dark-accent); --on-btn-accent:#fff;
-    /* Практика тёмная, лаба яркая */
-    --type-lec:#7b9ad4; --type-prac:#8c2742; --type-lab:#ff4757;
+    /* Практика зеленая, лаба красная, лекция синяя */
+    --type-lec:#5d8bf4; --type-prac:#2a9d8f; --type-lab:#e63946;
     --peach-accent:var(--c-dark-peach);
   }
   [data-theme="light"]{
@@ -37,7 +39,7 @@
     --icon-border:1px solid var(--border); --card-radius:14px; --card-border:1px solid var(--border);
     --tab-active-bg:var(--accent); --on-tab-active:#fff;
     --strike-color:currentColor; --btn-accent:var(--c-light-accent); --on-btn-accent:#fff;
-    --type-lec:#2d3b6b; --type-prac:#8c2742; --type-lab:#ff4757;
+    --type-lec:#3a6bc9; --type-prac:#1f7a70; --type-lab:#d62828;
     --peach-accent:#c4a882;
   }
   [data-theme="warm"]{
@@ -48,8 +50,20 @@
     --icon-border:1px solid var(--border); --card-radius:16px; --card-border:1px solid var(--border);
     --tab-active-bg:var(--accent); --on-tab-active:#fff;
     --strike-color:var(--c-warm-accent); --btn-accent:var(--c-warm-accent); --on-btn-accent:#fff;
-    --type-lec:#6b8ecf; --type-prac:#8c2742; --type-lab:#ff4757;
+    --type-lec:#3d5a80; --type-prac:#2a9d8f; --type-lab:#e63946;
     --peach-accent:#c4a882;
+  }
+  /* ВОЗВРАЩЕННАЯ РОЗОВАЯ ТЕМА */
+  [data-theme="pink"]{
+    --bg:var(--c-pink-bg); --card:var(--c-pink-card); --text:var(--c-pink-text);
+    --muted:var(--c-pink-muted); --border:var(--c-pink-border); --accent:var(--c-pink-accent);
+    --on-accent:#fff; --hover:#fce7f3; --lms:#059669; --miss:#e11d48;
+    --shadow:0 4px 20px rgba(219,39,119,.08); --icon-bg:var(--card);
+    --icon-border:1px solid var(--border); --card-radius:14px; --card-border:1px solid var(--border);
+    --tab-active-bg:var(--accent); --on-tab-active:#fff;
+    --strike-color:var(--c-pink-accent); --btn-accent:var(--c-pink-accent); --on-btn-accent:#fff;
+    --type-lec:#5d8bf4; --type-prac:#2a9d8f; --type-lab:#e63946;
+    --peach-accent:#db2777;
   }
 
   *{box-sizing:border-box;}
@@ -2628,8 +2642,8 @@ $('#linksList').addEventListener('click', e => {
   }
 });
 
-const THEMES = ['dark', 'light', 'warm'];
-const THEME_ICONS = { dark:'☀️', light:'🌙', warm:'🌗' };
+const THEMES = ['dark', 'light', 'warm', 'pink'];
+const THEME_ICONS = { dark:'☀️', light:'🌙', warm:'🌗', pink:'🌸' };
 const themeBtn = $('#themeBtn');
 function applyTheme(t){
   document.documentElement.dataset.theme = t;
