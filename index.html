@@ -30,7 +30,6 @@
     --icon-border:1px solid var(--border); --card-radius:16px; --card-border:1px solid var(--border);
     --tab-active-bg:var(--accent); --on-tab-active:#fff;
     --strike-color:var(--c-dark-accent); --btn-accent:var(--c-dark-accent); --on-btn-accent:#fff;
-    /* Синий, Золотой, Красный (БЕЗ ЗЕЛЕНОГО) */
     --type-lec:#5d8bf4; --type-prac:#e09f3e; --type-lab:#b41b2d;
     --peach-accent:var(--c-dark-peach);
   }
@@ -56,7 +55,6 @@
     --type-lec:#6b8ecf; --type-prac:#e09f3e; --type-lab:#d4473a;
     --peach-accent:#c4a882;
   }
-  /* РОЗОВАЯ ТЕМА */
   [data-theme="pink"]{
     --bg:var(--c-pink-bg); --card:var(--c-pink-card); --text:var(--c-pink-text);
     --muted:var(--c-pink-muted); --border:var(--c-pink-border); --accent:var(--c-pink-accent);
@@ -104,7 +102,6 @@
   .view{display:flex;flex-direction:column;width:100%;}
   .view[hidden]{display:none !important;}
   
-  /* Плавный и быстрый переход (без тяжелых сдвигов) */
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .view.active-view { animation: fadeIn .2s ease forwards; }
 
@@ -318,6 +315,15 @@
   .checklist-item .text{flex:1 1 auto;font-size:14px;color:var(--text);padding:2px 0;min-width:0;outline:none;}
   .checklist-item .del{flex:0 0 auto;border:none;background:transparent;color:var(--muted);cursor:pointer;
     font-size:16px;padding:2px 7px;border-radius:50%;opacity:.5;font-family:inherit;}
+
+  /* ФОРМА ДОБАВЛЕНИЯ ПАРЫ */
+  .add-pair-section { margin-top: 24px; background: var(--card); border-radius: var(--card-radius); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .add-pair-section .section-title { margin: 0 0 16px; font-size: 16px; display: flex; align-items: center; gap: 8px; color: var(--text); }
+  .add-pair-section .add { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border: none; padding: 0; background: transparent; }
+  .add-pair-section .add .full-width { grid-column: 1 / -1; }
+  .add-pair-section input, .add-pair-section select { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); font-size: 15px; color: var(--text); }
+  .add-pair-section button[type="submit"] { grid-column: 1 / -1; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; background: var(--accent); color: #fff; cursor: pointer; border: none; margin-top: 8px; }
+  @media (max-width: 600px) { .add-pair-section .add { grid-template-columns: 1fr; } }
 
   /* КАЛЕНДАРЬ */
   .cal-box{background:var(--card);border-radius:var(--card-radius);padding:16px;box-shadow:var(--shadow);
@@ -778,17 +784,25 @@
           <button type="submit">+</button>
         </form>
       </div>
-      <div class="bottom">
+      
+      <!-- Новая форма добавления пары -->
+      <div class="add-pair-section">
+        <h3 class="section-title">➕ Добавить пару на <span id="addDateTitle"></span></h3>
         <form class="add" id="addForm" autocomplete="off">
+          <input name="subject" placeholder="Название пары" required class="full-width">
           <input name="time" placeholder="09:00-10:30">
-          <input name="subject" placeholder="Название пары" required>
-          <select name="type"><option value="">Тип</option><option value="lec">Лекция</option><option value="prac">Практика</option><option value="lab">Лаба</option></select>
+          <select name="type">
+            <option value="">Тип пары</option>
+            <option value="lec">Лекция</option>
+            <option value="prac">Практика</option>
+            <option value="lab">Лаба</option>
+          </select>
           <input name="teacher" placeholder="Преподаватель">
-          <input name="room" placeholder="ауд.">
+          <input name="room" placeholder="Аудитория">
           <button type="submit">+ Добавить</button>
-          <div class="add-note" id="addNote"></div>
         </form>
       </div>
+
     </main>
 
     <main class="view" data-view="calendar" id="viewCalendar" hidden>
@@ -1048,12 +1062,21 @@ function defaultPlanner(){
   };
 }
 function defaultPersonal(){
-  return { checklists:{}, clubs:[], links:[], planner: defaultPlanner(), itemStates:{}, hwStates:{}, materialStates:{}, settings:{ notifyEnabled:true, notifyMinutes:15 } };
+  return { 
+    checklists:{}, clubs:[], links:[], planner: defaultPlanner(), itemStates:{}, hwStates:{}, materialStates:{}, 
+    settings:{ 
+      notifyEnabled:true, notifyMinutes:15,
+      colors: { lec: '#5d8bf4', prac: '#e09f3e', lab: '#b41b2d', subjects: {} }
+    } 
+  };
 }
 function defaultData(){
   return { days:{}, checklists:{}, homework:{}, clubs:[], links:[], planner: defaultPlanner(),
     materials:{ notes:[], autos:[], methodichki:[] }, itemStates:{}, hwStates:{}, materialStates:{},
-    settings:{ notifyEnabled:true, notifyMinutes:15 } };
+    settings:{ 
+      notifyEnabled:true, notifyMinutes:15,
+      colors: { lec: '#5d8bf4', prac: '#e09f3e', lab: '#b41b2d', subjects: {} }
+    } };
 }
 function normClub(c){ return { id: c.id || uid(), date: String(c.date||''), repeat: c.repeat === 'weekly' ? 'weekly' : 'once', time: String(c.time||''), name: String(c.name||''), place: String(c.place||'') }; }
 function normLink(l){
@@ -1215,9 +1238,10 @@ async function trySharedSave(){
   const { shared } = splitData(data);
   if(isSameData(shared, lastShared)) return;
   setSyncStatus('saving');
+  lastShared = shared; // Оптимистичное обновление
   sharedWriteInFlight = true;
   const ok = await pushShared(shared);
-  if(ok){ lastShared = shared; setSyncStatus('synced'); }
+  if(ok){ setSyncStatus('synced'); }
   sharedWriteInFlight = false;
   if(sharedSaveQueued){ sharedSaveQueued = false; scheduleSharedSave(); }
 }
@@ -1226,9 +1250,10 @@ async function tryPersonalSave(){
   const { personal } = splitData(data);
   if(isSameData(personal, lastPersonal)) return;
   setSyncStatus('saving');
+  lastPersonal = personal; // Оптимистичное обновление (фикс потери задач в планере)
   personalWriteInFlight = true;
   const ok = await pushPersonal(profiles.current, personal);
-  if(ok){ lastPersonal = personal; setSyncStatus('synced'); }
+  if(ok){ setSyncStatus('synced'); }
   personalWriteInFlight = false;
   if(personalSaveQueued){ personalSaveQueued = false; schedulePersonalSave(); }
 }
@@ -1448,6 +1473,7 @@ function copyDayTo(fromKey, toKey, replace){
 function rebuildAndRender(){
   data = mergeData(lastShared || { days:{}, homework:{}, materials:{} }, lastPersonal || defaultPersonal());
   persistLocal();
+  applyCustomColors();
   scheduleRender();
 }
 let pendingRender = false;
@@ -1644,7 +1670,10 @@ function renderMiniDots(items, clubs){
 }
 function renderAddNote(){
   const d = viewDate;
-  $('#addNote').innerHTML = `Добавится на <b>${DOW_SHORT[currentDayIdx()]}, ${d.getDate()} ${MONTHS_GEN[d.getMonth()]}</b>${isCurrentDay() ? ' (сегодня)' : ''}`;
+  const titleEl = document.getElementById('addDateTitle');
+  if (titleEl) {
+    titleEl.innerHTML = `<b>${DOW_SHORT[currentDayIdx()]}, ${d.getDate()} ${MONTHS_GEN[d.getMonth()]}</b>${isCurrentDay() ? ' (сегодня)' : ''}`;
+  }
 }
 function autoGrow(el){ el.style.height='auto'; el.style.height = el.scrollHeight + 'px'; }
 
@@ -2282,7 +2311,11 @@ function openDupFromModal(targetKey){
 
 const SUBJECT_PALETTE = ['#7b9ad4','#b85570','#e05555','#8a9a5b','#c4a882','#a06bc4','#5ba3a0','#d4875a','#8e7bb5','#c47a9e'];
 function subjectColor(name){
-  const s = String(name||'');
+  if (!name) return 'var(--accent)';
+  if (data.settings?.colors?.subjects && data.settings.colors.subjects[name]) {
+    return data.settings.colors.subjects[name];
+  }
+  const s = String(name);
   let h = 0;
   for(let i=0;i<s.length;i++) h = ((h<<5) - h + s.charCodeAt(i)) | 0;
   return SUBJECT_PALETTE[Math.abs(h) % SUBJECT_PALETTE.length];
@@ -2707,6 +2740,7 @@ function applyTheme(t){
   document.documentElement.dataset.theme = t;
   themeBtn.textContent = THEME_ICONS[t] || '☀️';
   localStorage.setItem('theme', t);
+  applyCustomColors();
   requestAnimationFrame(() => {
     moveSlider(document.getElementById('tabbar'));
     moveSlider(document.getElementById('days'));
@@ -2720,6 +2754,73 @@ themeBtn.onclick = () => {
   applyTheme(next);
   renderAll();
 };
+
+function applyCustomColors() {
+  if (data.settings && data.settings.colors) {
+    const c = data.settings.colors;
+    if (c.lec) document.documentElement.style.setProperty('--type-lec', c.lec);
+    if (c.prac) document.documentElement.style.setProperty('--type-prac', c.prac);
+    if (c.lab) document.documentElement.style.setProperty('--type-lab', c.lab);
+  }
+}
+
+function openColorSettingsModal() {
+  const colors = data.settings.colors || {};
+  const subjColors = colors.subjects || {};
+  const allSubjects = new Set(Object.keys(data.homework || {}));
+  Object.values(data.days || {}).forEach(arr => arr.forEach(i => { if(i.subject) allSubjects.add(i.subject); }));
+  if(data.materials) {
+    (data.materials.notes||[]).forEach(n => { if(n.subject) allSubjects.add(n.subject); });
+    (data.materials.autos||[]).forEach(a => { if(a.subject) allSubjects.add(a.subject); });
+    (data.materials.methodichki||[]).forEach(m => { if(m.subject) allSubjects.add(m.subject); });
+  }
+  const subjList = Array.from(allSubjects).sort();
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.innerHTML = `
+    <div class="modal" style="max-width: 500px;">
+      <h3>🎨 Настройка цветов</h3>
+      <div style="max-height: 50vh; overflow-y: auto; padding-right: 10px; margin-bottom: 20px;">
+        <div class="label" style="font-weight: bold; margin: 10px 0 6px;">Типы пар</div>
+        <div class="modal-row"><label>Лекция</label><input type="color" id="col-lec" value="${colors.lec || '#5d8bf4'}"></div>
+        <div class="modal-row"><label>Практика</label><input type="color" id="col-prac" value="${colors.prac || '#e09f3e'}"></div>
+        <div class="modal-row"><label>Лаба</label><input type="color" id="col-lab" value="${colors.lab || '#b41b2d'}"></div>
+        
+        <div class="label" style="font-weight: bold; margin: 20px 0 6px;">Цвета предметов</div>
+        ${subjList.length ? subjList.map(s => `
+          <div class="modal-row">
+            <label style="word-break: break-word; max-width: 60%;">${esc(s)}</label>
+            <input type="color" class="subj-color-input" data-subj="${esc(s)}" value="${subjColors[s] || subjectColor(s)}">
+          </div>
+        `).join('') : '<div style="color:var(--muted); font-size:13px;">Нет предметов для настройки</div>'}
+      </div>
+      <div class="modal-actions">
+        <button class="secondary" id="colCancel" type="button">Отмена</button>
+        <button class="primary" id="colSave" type="button">Сохранить</button>
+      </div>
+    </div>`;
+  document.body.appendChild(backdrop);
+  
+  const close = () => backdrop.remove();
+  backdrop.addEventListener('click', e => { if(e.target === backdrop) close(); });
+  backdrop.querySelector('#colCancel').onclick = close;
+  backdrop.querySelector('#colSave').onclick = () => {
+    if(!data.settings.colors) data.settings.colors = { subjects: {} };
+    data.settings.colors.lec = backdrop.querySelector('#col-lec').value;
+    data.settings.colors.prac = backdrop.querySelector('#col-prac').value;
+    data.settings.colors.lab = backdrop.querySelector('#col-lab').value;
+    data.settings.colors.subjects = {};
+    backdrop.querySelectorAll('.subj-color-input').forEach(inp => {
+      data.settings.colors.subjects[inp.dataset.subj] = inp.value;
+    });
+    save();
+    applyCustomColors();
+    renderAll();
+    close();
+    toast('Цвета сохранены');
+  };
+}
 
 /* ===== ПЛАНЕР ===== */
 let currentPlannerTab = 'daily';
@@ -2846,10 +2947,13 @@ function handlePlannerInput(e){
 function handlePlannerSubmit(e){
   if (!e.target.closest('#plannerContent')) return;
   e.preventDefault();
+  e.stopPropagation();
   const key = iso(viewDate);
   if (e.target.matches('.p-add-form[data-list]')) {
     const form = e.target;
     const listName = form.dataset.list;
+    if (!data.planner) data.planner = defaultPlanner();
+    if (!data.planner.days) data.planner.days = {};
     if (!data.planner.days[key]) data.planner.days[key] = {};
     if (!data.planner.days[key][listName]) data.planner.days[key][listName] = [];
     let text = form.querySelector('input[type="text"]:last-of-type').value.trim();
@@ -3165,6 +3269,9 @@ function openActionsModal(adminMode){
   buttons += `<button style="${btnStyle}" data-act="ics">📆 Экспорт в календарь (.ics)</button>`;
   buttons += `<button style="${btnStyle}" data-act="jsonOut">💾 Скачать бэкап (.json)</button>`;
   buttons += `<button style="${btnStyle}" data-act="jsonIn">📥 Загрузить расписание (.json)</button>`;
+  if (adminMode) {
+    buttons += `<button style="${btnStyle}" data-act="colors">🎨 Настроить цвета</button>`;
+  }
   buttons += `<button style="${btnStyle};color:#e03131" data-act="wipePersonal">🗑 Очистить личные данные</button>`;
   backdrop.innerHTML = `
     <div class="modal">
@@ -3185,6 +3292,7 @@ function openActionsModal(adminMode){
     if(a === 'ics') exportICS();
     if(a === 'jsonOut') exportJSON();
     if(a === 'jsonIn') $('#fileInput').click();
+    if(a === 'colors') openColorSettingsModal();
     if(a === 'wipePersonal'){
       if(confirm('Очистить только твои личные данные?')){
         data.checklists = {}; data.clubs = []; data.planner = defaultPlanner();
@@ -3268,6 +3376,7 @@ function openProfileMenu(){
   if(isAdmin){
     extra = `
       <button data-act="openPlannerNewTab">🗓 Открыть планер в новой вкладке</button>
+      <button data-act="colors">🎨 Настроить цвета</button>
       <hr>
       <button data-act="adminLogout">🚪 Выйти из админа</button>
       <button data-act="profileLinks">🔗 Ссылки профилей</button>
@@ -3331,6 +3440,7 @@ function openProfileMenu(){
     if(!act) return;
     const a = act.dataset.act;
     if(a === 'openPlannerNewTab'){ closeMenus(); window.open(window.location.pathname + '?planner=true', '_blank'); return; }
+    if(a === 'colors'){ closeMenus(); openColorSettingsModal(); return; }
     if(a === 'adminLogin'){ closeMenus(); adminLogin(); return; }
     if(a === 'adminLogout'){ closeMenus(); adminLogout(); return; }
     if(a === 'profileLinks'){
@@ -3451,7 +3561,7 @@ $('#fileInput').addEventListener('change', e => {
       if(!parsed || typeof parsed !== 'object') throw new Error('bad');
       const sp = splitData(parsed);
       data = mergeData(sp.shared, sp.personal);
-      save(); renderAll();
+      save(); applyCustomColors(); renderAll();
       toast('Расписание загружено ✓');
     }catch(err){ toast('Не удалось прочитать файл'); }
   };
@@ -3535,6 +3645,7 @@ function renderAll(){
 
 async function initApp(){
   const urlParams = new URLSearchParams(location.search);
+  applyCustomColors();
 
   if (urlParams.get('planner') === 'true') {
     document.body.classList.add('planner-page');
@@ -3629,11 +3740,18 @@ async function loadCloudData() {
   const cloudShared = await fetchShared();
   const cloudPersonal = await fetchPersonal(profiles.current);
 
-  if(cloudShared){ lastShared = cloudShared; }
+  if(cloudShared){ 
+    lastShared = cloudShared; 
+  }
   else if(localSharedCache){ lastShared = localSharedCache; await pushShared(lastShared); }
   else { lastShared = { days:{}, homework:{}, materials:{} }; await pushShared(lastShared); }
 
-  if(cloudPersonal){ lastPersonal = cloudPersonal; }
+  if(cloudPersonal){ 
+    lastPersonal = { ...defaultPersonal(), ...cloudPersonal };
+    if(!lastPersonal.planner) lastPersonal.planner = defaultPlanner();
+    if(!lastPersonal.settings) lastPersonal.settings = defaultPersonal().settings;
+    if(!lastPersonal.settings.colors) lastPersonal.settings.colors = defaultPersonal().settings.colors;
+  }
   else if(localPersonalCache){ lastPersonal = localPersonalCache; await pushPersonal(profiles.current, lastPersonal); }
   else { lastPersonal = defaultPersonal(); await pushPersonal(profiles.current, lastPersonal); }
 
