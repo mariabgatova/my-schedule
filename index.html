@@ -469,20 +469,18 @@
   .link-del{flex:0 0 auto;border:none;background:transparent;color:var(--muted);cursor:pointer;
     font-size:16px;padding:4px 8px;border-radius:50%;opacity:.5;font-family:inherit;}
 
-  /* НИЖНЕЕ МЕНЮ (СКРОЛЛ) */
+  /* НИЖНЕЕ МЕНЮ (ФИКС) */
   .tabbar {
     position: fixed; left: 50%; transform: translateX(-50%); bottom: 14px;
     width: calc(100% - 28px); max-width: 900px; background: var(--card);
     border: var(--card-border); border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,.4);
-    display: flex; overflow-x: auto; padding: 8px; gap: 4px; z-index: 100;
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    display: grid; grid-template-columns: repeat(6, 1fr); padding: 8px; gap: 4px; z-index: 100;
   }
-  .tabbar::-webkit-scrollbar { display: none; }
   .tabbar button {
     border: none; background: transparent; color: var(--muted);
-    padding: 8px 12px; border-radius: 16px; cursor: pointer; font-family: inherit;
+    padding: 8px 2px; border-radius: 16px; cursor: pointer; font-family: inherit;
     font-size: 10px; font-weight: 600; display: flex; flex-direction: column;
-    align-items: center; gap: 4px; line-height: 1; flex: 1 0 auto; min-width: 56px;
+    align-items: center; gap: 4px; line-height: 1;
   }
   .tabbar button .tb-icon { font-size: 20px; line-height: 1; }
   .tabbar button.active { color: var(--on-tab-active); }
@@ -678,7 +676,7 @@
   .mc-donut::after{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--card);}
 
   @media (max-width:720px){
-    .bottom{grid-template-columns:1fr;gap:16px;}
+    .add-pair-section .add{grid-template-columns:1fr;}
     .hw-add{grid-template-columns:1fr;}
     .links-add{grid-template-columns:1fr;}
     .hero-banner{padding:16px;}
@@ -785,7 +783,6 @@
         </form>
       </div>
       
-      <!-- Новая форма добавления пары -->
       <div class="add-pair-section">
         <h3 class="section-title">➕ Добавить пару на <span id="addDateTitle"></span></h3>
         <form class="add" id="addForm" autocomplete="off">
@@ -1238,7 +1235,7 @@ async function trySharedSave(){
   const { shared } = splitData(data);
   if(isSameData(shared, lastShared)) return;
   setSyncStatus('saving');
-  lastShared = shared; // Оптимистичное обновление
+  lastShared = shared;
   sharedWriteInFlight = true;
   const ok = await pushShared(shared);
   if(ok){ setSyncStatus('synced'); }
@@ -1250,7 +1247,7 @@ async function tryPersonalSave(){
   const { personal } = splitData(data);
   if(isSameData(personal, lastPersonal)) return;
   setSyncStatus('saving');
-  lastPersonal = personal; // Оптимистичное обновление (фикс потери задач в планере)
+  lastPersonal = personal;
   personalWriteInFlight = true;
   const ok = await pushPersonal(profiles.current, personal);
   if(ok){ setSyncStatus('synced'); }
@@ -2756,7 +2753,7 @@ themeBtn.onclick = () => {
 };
 
 function applyCustomColors() {
-  if (data.settings && data.settings.colors) {
+  if (data && data.settings && data.settings.colors) {
     const c = data.settings.colors;
     if (c.lec) document.documentElement.style.setProperty('--type-lec', c.lec);
     if (c.prac) document.documentElement.style.setProperty('--type-prac', c.prac);
@@ -2765,7 +2762,7 @@ function applyCustomColors() {
 }
 
 function openColorSettingsModal() {
-  const colors = data.settings.colors || {};
+  const colors = (data.settings && data.settings.colors) || {};
   const subjColors = colors.subjects || {};
   const allSubjects = new Set(Object.keys(data.homework || {}));
   Object.values(data.days || {}).forEach(arr => arr.forEach(i => { if(i.subject) allSubjects.add(i.subject); }));
@@ -3662,6 +3659,7 @@ async function initApp(){
             </svg>
             Мой планер
           </h2>
+          <button class="icon-btn" id="pSaveNow" title="Сохранить сейчас" style="margin-right:8px;font-size:14px;">💾</button>
           <button class="icon-btn" id="pCloseWindow" title="Закрыть">✕</button>
         </div>
         <div class="planner-body">
@@ -3693,6 +3691,15 @@ async function initApp(){
         </div>
       </div>`;
     document.getElementById('pCloseWindow').onclick = () => window.close();
+    document.getElementById('pSaveNow').onclick = () => {
+      const { shared, personal } = splitData(data);
+      pushShared(shared);
+      pushPersonal(profiles.current, personal);
+      lastShared = shared;
+      lastPersonal = personal;
+      persistLocal();
+      toast('Сохранено ✓');
+    };
     bindPlannerTabs();
     bindPlannerEvents();
 
